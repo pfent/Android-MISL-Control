@@ -1,5 +1,5 @@
 # Android-MISL-Control
-An Android app used to control TAMUs ASEP Robot, controlled a MISL Stack
+An Android app used to control TAMUs ASEP Robot, controlled by a MISL Stack
 
 ## Useful Documentation
 http://eset-wiki.net/index.php?title=Modular_Integrated_Stackable_Layer
