@@ -1,4 +1,4 @@
-package de.tum.in.android_misl_control;
+package de.tum.in.android_misl_control.connection;
 
 import java.io.IOException;
 import java.io.InterruptedIOException;
@@ -7,9 +7,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.EventListener;
 
 public class ASEPConnector {
     private static final int PORT = 30190;

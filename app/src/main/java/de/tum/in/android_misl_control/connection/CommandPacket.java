@@ -1,4 +1,4 @@
-package de.tum.in.android_misl_control;
+package de.tum.in.android_misl_control.connection;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
