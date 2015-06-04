@@ -1,4 +1,4 @@
-package de.tum.in.android_misl_control;
+package de.tum.in.mislcontrol;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
