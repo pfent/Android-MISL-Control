@@ -1,4 +1,4 @@
-package de.tum.in.android_misl_control.connection;
+package de.tum.in.mislcontrol.communication;
 
 import java.io.IOException;
 import java.io.InterruptedIOException;
