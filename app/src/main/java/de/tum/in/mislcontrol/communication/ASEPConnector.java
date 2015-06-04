@@ -45,7 +45,7 @@ public class ASEPConnector {
      *
      * @param receiver Callbacks for received packets
      */
-    ASEPConnector(TelemetryReceivedListener receiver) {
+    public ASEPConnector(TelemetryReceivedListener receiver) {
         this.receiver = receiver;
         try {
             inetAddress = InetAddress.getByAddress(BYTE_ADDRESS);
@@ -135,6 +135,15 @@ public class ASEPConnector {
      */
     public synchronized void stop() {
         listening = false;
+    }
+
+    /**
+     * Checks the connection to the ASEP robot.
+     * @return Returns true when the connection to the ASEP robot has been established, else false.
+     */
+    public boolean checkConnection() {
+        // TODO check whether the connection to the ASEP robot has already been established
+        return true;
     }
 
     /**

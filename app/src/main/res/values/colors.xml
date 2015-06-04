@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="appColorDark">#222</color>
+    <color name="appColorSemiDark">#666</color>
+    <color name="appColorSemiLight">#ccc</color>
+    <color name="appColorLight">#eee</color>
+    <color name="appColorAccent1">#0b3d91</color>
+    <color name="appColorAccent2">#500000</color>
+</resources>
