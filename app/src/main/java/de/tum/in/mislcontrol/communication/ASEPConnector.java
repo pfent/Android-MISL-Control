@@ -143,7 +143,7 @@ public class ASEPConnector {
      */
     public boolean checkConnection() {
         // TODO check whether the connection to the ASEP robot has already been established
-        return true;
+        return false;
     }
 
     /**

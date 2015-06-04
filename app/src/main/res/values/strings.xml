@@ -1,9 +1,10 @@
 <resources>
+    <!-- General -->
     <string name="app_name">Android-MISL-Control</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-	<string name="title_activity_start">StartActivity</string>
 
+    <!-- Data fragment -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ch1_command">CH1 command</string>
     <string name="ch2_command">CH2 command</string>
@@ -16,4 +17,8 @@
     <string name="z_accel">Z Accel:</string>
     <string name="latitude">Latitude:</string>
     <string name="longitude">Longitude:</string>
+
+    <!-- Dialog setup wizard fragment -->
+    <string name="skip">Skip</string>
+    <string name="setup">Setup</string>
 </resources>

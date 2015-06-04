@@ -3,13 +3,16 @@ package de.tum.in.mislcontrol;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 
 import de.tum.in.mislcontrol.R;
 import de.tum.in.mislcontrol.communication.ASEPConnector;
 import de.tum.in.mislcontrol.communication.TelemetryPacket;
+import de.tum.in.mislcontrol.dialogs.SetupWizardDialogFragment;
 
 /**
  * The initial activity of the application. It shows a splash screen and checks for the connection
@@ -17,6 +20,11 @@ import de.tum.in.mislcontrol.communication.TelemetryPacket;
  * automatically. If not, it guides the user how to setup the connection.
  */
 public class StartActivity extends AppCompatActivity implements ASEPConnector.TelemetryReceivedListener {
+
+    /**
+     * The key to identify the setup wizard dialog in the visual tree.
+     */
+    public static final String WIZARD_DIALOG_KEY = "wizardDialog";
 
     /**
      * The handler for delayed events.
@@ -30,7 +38,12 @@ public class StartActivity extends AppCompatActivity implements ASEPConnector.Te
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(savedInstanceState);
+
+        // hide action bar
+        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_start);
     }
 
@@ -52,7 +65,8 @@ public class StartActivity extends AppCompatActivity implements ASEPConnector.Te
 
                 } else {
                     // diplay a wifi-setup guide popup
-                    // TODO: show wifi-setup guide popup
+                    DialogFragment wizardDialog = new SetupWizardDialogFragment();
+                    wizardDialog.show(getSupportFragmentManager(), WIZARD_DIALOG_KEY);
                 }
             }
         }, 2000);
