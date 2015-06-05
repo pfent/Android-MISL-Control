@@ -9,10 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
-import de.tum.in.mislcontrol.communication.ASEPConnector;
 import de.tum.in.mislcontrol.communication.IConnector;
 import de.tum.in.mislcontrol.communication.MockConnector;
-import de.tum.in.mislcontrol.communication.TelemetryPacket;
 import de.tum.in.mislcontrol.dialogs.SetupWizardDialogFragment;
 
 /**
