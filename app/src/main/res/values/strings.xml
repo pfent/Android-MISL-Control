@@ -21,4 +21,6 @@
     <!-- Dialog setup wizard fragment -->
     <string name="skip">Skip</string>
     <string name="setup">Setup</string>
+    <string name="steering_command">Steering command</string>
+    <string name="straight_movement_command">Straight movement</string>
 </resources>
