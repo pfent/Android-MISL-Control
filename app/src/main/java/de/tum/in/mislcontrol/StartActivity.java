@@ -11,6 +11,7 @@ import android.view.Window;
 
 import de.tum.in.mislcontrol.communication.ASEPConnector;
 import de.tum.in.mislcontrol.communication.IConnector;
+import de.tum.in.mislcontrol.communication.MockConnector;
 import de.tum.in.mislcontrol.communication.TelemetryPacket;
 import de.tum.in.mislcontrol.dialogs.SetupWizardDialogFragment;
 
@@ -34,7 +35,7 @@ public class StartActivity extends AppCompatActivity {
     /**
      * The ASEP connector.
      */
-    private ASEPConnector asepConnector;
+    private IConnector connector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +52,14 @@ public class StartActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        asepConnector = new ASEPConnector();
-        asepConnector.start();
+        connector = new MockConnector();
+        connector.start();
 
         delayedActionHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
 
-                if (asepConnector.checkConnection()) {
+                if (connector.checkConnection()) {
                     // auto forward to main activity
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
@@ -76,7 +77,7 @@ public class StartActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        asepConnector.close();
+        connector.close();
     }
 
     @Override

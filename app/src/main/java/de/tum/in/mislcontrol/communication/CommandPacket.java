@@ -3,11 +3,14 @@ package de.tum.in.mislcontrol.communication;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class CommandPacket {
-    byte[] command = {
+/**
+ * The ASEP command packet.
+ */
+public class CommandPacket implements IPacket {
+    private byte[] data = {
             0x02, 0x03, //Packet Version
             0x00, 0x04, //Size = 64
-            0x00, 0x00, //Recieve SeqCnt
+            0x00, 0x00, //Receive SeqCnt
             0x75, 0x65, //Command (AFAIK this isn't checked anywhere)
             0x00, 0x00, //CH1 Cmd
             0x00, 0x00, //CH2 Cmd
@@ -20,26 +23,37 @@ public class CommandPacket {
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
     };
 
-    public void increaseSeqCnt() {
-        if (++command[5] == 0) {
-            command[6]++; //In case of overflow
-        }
+    @Override
+    public byte[] getData() {
+        return data;
     }
 
+    @Override
+    public int getLength() {
+        return data.length;
+    }
+
+    @Override
     public short getSeqCnt() {
-        return ByteBuffer.wrap(command, 5, 2).order(ByteOrder.BIG_ENDIAN).getShort();
+        return ByteBuffer.wrap(data, 5, 2).order(ByteOrder.BIG_ENDIAN).getShort();
+    }
+
+    public void increaseSeqCnt() {
+        if (++data[5] == 0) {
+            data[6]++; //In case of overflow
+        }
     }
 
     public void setCH1Cmd(short cmd) {
         byte[] raw = ByteBuffer.allocate(2).putShort(cmd).order(ByteOrder.BIG_ENDIAN).array();
-        command[8] = raw[0];
-        command[9] = raw[1];
+        data[8] = raw[0];
+        data[9] = raw[1];
     }
 
     public void setCH2Cmd(short cmd) {
         byte[] raw = ByteBuffer.allocate(2).putShort(cmd).order(ByteOrder.BIG_ENDIAN).array();
-        command[10] = raw[0];
-        command[11] = raw[1];
+        data[10] = raw[0];
+        data[11] = raw[1];
     }
 
     public void calculateChecksum() {
@@ -60,10 +74,10 @@ public class CommandPacket {
 
         short checksum = 0;
         for (int i = 0; i < 12; i++) {
-            checksum += command[0];
+            checksum += data[0];
         }
         byte[] raw = ByteBuffer.allocate(2).putShort(checksum).order(ByteOrder.BIG_ENDIAN).array();
-        command[12] = raw[0];
-        command[13] = raw[1];
+        data[12] = raw[0];
+        data[13] = raw[1];
     }
 }

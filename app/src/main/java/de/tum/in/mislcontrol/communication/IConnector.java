@@ -10,6 +10,16 @@ import java.net.DatagramPacket;
 public interface IConnector {
 
     /**
+     * The default timeout of 2 seconds.
+     */
+    int DEFAULT_TIMEOUT = 2 * 1000; // 2 Seconds
+
+    /**
+     * The default transmission interval of 25ms.
+     */
+    int DEFAULT_INTERVAL = 250; // FIXME typo? Because 25ms would be a value of 25, not 250
+
+    /**
      * Set the movement command for ASEP, which gets sent in the next packet to ASEP.
      *
      * @param ch1 Channel 1 command, (left?) wheel speed. Ranges -6 to 6
@@ -51,7 +61,7 @@ public interface IConnector {
      * Interface for receiving TelemetryPackets.
      * Its functions are called asynchronously. Remember to use runOnUiThread.
      */
-    public interface OnTelemetryReceivedListener {
+    interface OnTelemetryReceivedListener {
         /**
          * This function gets called, when a new packet has been received.
          *

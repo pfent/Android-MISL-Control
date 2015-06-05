@@ -3,8 +3,11 @@ package de.tum.in.mislcontrol.communication;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class TelemetryPacket {
-    byte[] telemetry = {
+/**
+ * The ASEP telemetry packet.
+ */
+public class TelemetryPacket implements IPacket {
+    private byte[] data = {
             0x02, 0x03, //Packet Version
             0x00, 0x40, //Size = 64
             0x00, 0x00, //Recieve SeqCnt
@@ -24,39 +27,50 @@ public class TelemetryPacket {
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00
     };
 
-    public short getSeqCont() {
-        return ByteBuffer.wrap(telemetry, 4, 2).order(ByteOrder.BIG_ENDIAN).getShort();
+    @Override
+    public byte[] getData() {
+        return data;
+    }
+
+    @Override
+    public int getLength() {
+        return data.length;
+    }
+
+    @Override
+    public short getSeqCnt() {
+        return ByteBuffer.wrap(data, 4, 2).order(ByteOrder.BIG_ENDIAN).getShort();
     }
 
     public float getXEuler() {
-        return ByteBuffer.wrap(telemetry, 8, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
+        return ByteBuffer.wrap(data, 8, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }
 
     public float getYEuler() {
-        return ByteBuffer.wrap(telemetry, 12, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
+        return ByteBuffer.wrap(data, 12, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }
 
     public float getZEuler() {
-        return ByteBuffer.wrap(telemetry, 16, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
+        return ByteBuffer.wrap(data, 16, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }
 
     public float getXAccel() {
-        return ByteBuffer.wrap(telemetry, 20, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
+        return ByteBuffer.wrap(data, 20, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }
 
     public float getYAccel() {
-        return ByteBuffer.wrap(telemetry, 24, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
+        return ByteBuffer.wrap(data, 24, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }
 
     public float getZAccel() {
-        return ByteBuffer.wrap(telemetry, 28, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
+        return ByteBuffer.wrap(data, 28, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }
 
     public float getLatitude() {
-        return ByteBuffer.wrap(telemetry, 32, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
+        return ByteBuffer.wrap(data, 32, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }
 
     public float getLongitude() {
-        return ByteBuffer.wrap(telemetry, 36, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
+        return ByteBuffer.wrap(data, 36, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }
 }

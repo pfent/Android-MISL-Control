@@ -14,8 +14,6 @@ import java.net.UnknownHostException;
 public class ASEPConnector implements IConnector {
     private static final int DEFAULT_PORT = 30190;
     private static final byte[] DEFAULT_BYTE_ADDRESS = {(byte) 192, (byte) 168, (byte) 16, (byte) 254};
-    private static final int DEFAULT_TIMEOUT = 2 * 1000; // 2 Seconds
-    private static final int DEFAULT_INTERVAL = 250; //25ms interval
 
     private static InetAddress inetAddress;
     private OnTelemetryReceivedListener receiver;
@@ -57,7 +55,7 @@ public class ASEPConnector implements IConnector {
         sending.increaseSeqCnt();
         sending.calculateChecksum();
         DatagramPacket command =
-                new DatagramPacket(sending.command, sending.command.length, inetAddress, DEFAULT_PORT);
+                new DatagramPacket(sending.getData(), sending.getLength(), inetAddress, DEFAULT_PORT);
         sock.send(command);
     }
 
@@ -76,16 +74,16 @@ public class ASEPConnector implements IConnector {
                         sendCommand(ch1, ch2);
 
                         //Wait for the response packet
-                        TelemetryPacket next = new TelemetryPacket();
+                        TelemetryPacket nextTelemetry = new TelemetryPacket();
                         DatagramPacket packet =
-                                new DatagramPacket(next.telemetry, next.telemetry.length);
+                                new DatagramPacket(nextTelemetry.getData(), nextTelemetry.getLength());
                         sock.receive(packet);
 
                         //unsigned comparison
-                        if (next.getSeqCont() - receiving.getSeqCont() > 0) {
+                        if (nextTelemetry.getSeqCnt() - receiving.getSeqCnt() > 0) {
                             timedOut = false;
-                            receiving = next;
-                            receiver.onTelemetryReceived(next);
+                            receiving = nextTelemetry;
+                            receiver.onTelemetryReceived(nextTelemetry);
                         }
 
                         Thread.sleep(DEFAULT_INTERVAL);
