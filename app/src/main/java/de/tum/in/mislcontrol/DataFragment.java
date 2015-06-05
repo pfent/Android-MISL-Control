@@ -7,14 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import de.tum.in.mislcontrol.communication.ASEPConnector;
+import de.tum.in.mislcontrol.communication.IConnector;
 import de.tum.in.mislcontrol.communication.TelemetryPacket;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DataFragment extends Fragment implements ASEPConnector.TelemetryReceivedListener {
+public class DataFragment extends Fragment implements IConnector.OnTelemetryReceivedListener {
 
 
     public DataFragment() {

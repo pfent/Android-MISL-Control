@@ -9,8 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
-import de.tum.in.mislcontrol.R;
 import de.tum.in.mislcontrol.communication.ASEPConnector;
+import de.tum.in.mislcontrol.communication.IConnector;
 import de.tum.in.mislcontrol.communication.TelemetryPacket;
 import de.tum.in.mislcontrol.dialogs.SetupWizardDialogFragment;
 
@@ -19,7 +19,7 @@ import de.tum.in.mislcontrol.dialogs.SetupWizardDialogFragment;
  * to the ASEP robot. It auto forwards to the main activity when a connection could be established
  * automatically. If not, it guides the user how to setup the connection.
  */
-public class StartActivity extends AppCompatActivity implements ASEPConnector.TelemetryReceivedListener {
+public class StartActivity extends AppCompatActivity {
 
     /**
      * The key to identify the setup wizard dialog in the visual tree.
@@ -51,7 +51,7 @@ public class StartActivity extends AppCompatActivity implements ASEPConnector.Te
     protected void onResume() {
         super.onResume();
 
-        asepConnector = new ASEPConnector(this);
+        asepConnector = new ASEPConnector();
         asepConnector.start();
 
         delayedActionHandler.postDelayed(new Runnable() {
@@ -99,15 +99,5 @@ public class StartActivity extends AppCompatActivity implements ASEPConnector.Te
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onTelemetryReceived(TelemetryPacket packet) {
-        // TODO make this callback optional?
-    }
-
-    @Override
-    public void onTelemetryTimedOut() {
-        // TODO make this callback optional?
     }
 }

@@ -8,13 +8,17 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-public class ASEPConnector {
-    private static final int PORT = 30190;
-    private static final byte[] BYTE_ADDRESS = {(byte) 192, (byte) 168, (byte) 16, (byte) 254};
-    private static final int TIMEOUT = 2 * 1000; // 2 Seconds
-    private static final int INTERVAL = 250; //25ms interval
+/**
+ * The ASEP connector implementations to send commands and receive status information.
+ */
+public class ASEPConnector implements IConnector {
+    private static final int DEFAULT_PORT = 30190;
+    private static final byte[] DEFAULT_BYTE_ADDRESS = {(byte) 192, (byte) 168, (byte) 16, (byte) 254};
+    private static final int DEFAULT_TIMEOUT = 2 * 1000; // 2 Seconds
+    private static final int DEFAULT_INTERVAL = 250; //25ms interval
+
     private static InetAddress inetAddress;
-    private TelemetryReceivedListener receiver;
+    private OnTelemetryReceivedListener receiver;
     private CommandPacket sending = new CommandPacket();
     private TelemetryPacket receiving = new TelemetryPacket();
     private DatagramSocket sock;
@@ -22,46 +26,19 @@ public class ASEPConnector {
     private short ch1, ch2;
 
     /**
-     * Interface for receiving TelemetryPackets
-     * Its functions are called asynchronously. Remember to use runOnUiThread
+     * Creates a ASEP connector instance to send commands and receive status information.
      */
-    public interface TelemetryReceivedListener {
-        /**
-         * This function gets called, when a new packet has been recieved
-         *
-         * @param packet The Packet received
-         */
-        void onTelemetryReceived(TelemetryPacket packet);
-
-        /**
-         * This function gets called, when the TelemetryPacket times out, but only once for every
-         * sequence of uninterrupted timeouts
-         */
-        void onTelemetryTimedOut();
-    }
-
-    /**
-     * Create a new
-     *
-     * @param receiver Callbacks for received packets
-     */
-    public ASEPConnector(TelemetryReceivedListener receiver) {
-        this.receiver = receiver;
+    public ASEPConnector() {
         try {
-            inetAddress = InetAddress.getByAddress(BYTE_ADDRESS);
-            sock = new DatagramSocket(PORT);
-            sock.setSoTimeout(TIMEOUT);
+            inetAddress = InetAddress.getByAddress(DEFAULT_BYTE_ADDRESS);
+            sock = new DatagramSocket(DEFAULT_PORT);
+            sock.setSoTimeout(DEFAULT_TIMEOUT);
         } catch (UnknownHostException | SocketException e) {
             //TODO should not be thrown, probably do some logging
         }
     }
 
-    /**
-     * Set the movement command for ASEP, which gets sent in the next packet to ASEP
-     *
-     * @param ch1 Channel 1 command, (left?) wheel speed. Ranges -6 to 6
-     * @param ch2 Channel 2 command, (right?) wheel speed. Ranges -6 to 6
-     */
+    @Override
     public synchronized void setCommand(short ch1, short ch2) {
         this.ch1 = ch1;
         this.ch2 = ch2;
@@ -80,14 +57,11 @@ public class ASEPConnector {
         sending.increaseSeqCnt();
         sending.calculateChecksum();
         DatagramPacket command =
-                new DatagramPacket(sending.command, sending.command.length, inetAddress, PORT);
+                new DatagramPacket(sending.command, sending.command.length, inetAddress, DEFAULT_PORT);
         sock.send(command);
     }
 
-    /**
-     * Periodically sends the latest commands from setCommand() and notifies the associated
-     * TelemetryReceivedListener about incoming response packets or timeouts
-     */
+    @Override
     public synchronized void start() {
         if (listening || sock == null) {
             return;
@@ -114,9 +88,9 @@ public class ASEPConnector {
                             receiver.onTelemetryReceived(next);
                         }
 
-                        Thread.sleep(INTERVAL);
+                        Thread.sleep(DEFAULT_INTERVAL);
                     } catch (InterruptedIOException e) {
-                        //this means the TIMEOUT expired, connection has been lost
+                        //this means the DEFAULT_TIMEOUT expired, connection has been lost
                         if (!timedOut) {
                             timedOut = true;
                             receiver.onTelemetryTimedOut();
@@ -129,26 +103,23 @@ public class ASEPConnector {
         }).start();
     }
 
-    /**
-     * Stops sending and receiving of packets.
-     * The callbacks in TelemetryReceivedListener may get called a last time.
-     */
+    @Override
     public synchronized void stop() {
         listening = false;
     }
 
-    /**
-     * Checks the connection to the ASEP robot.
-     * @return Returns true when the connection to the ASEP robot has been established, else false.
-     */
+    @Override
     public boolean checkConnection() {
         // TODO check whether the connection to the ASEP robot has already been established
         return false;
     }
 
-    /**
-     * Release all resources
-     */
+    @Override
+    public void setOnTelemetryReceivedListener(OnTelemetryReceivedListener receiver) {
+        this.receiver = receiver;
+    }
+
+    @Override
     public void close() {
         stop();
         if (sock != null) {
