@@ -17,7 +17,7 @@ public interface IConnector {
     /**
      * The default transmission interval of 25ms.
      */
-    int DEFAULT_INTERVAL = 250; // FIXME typo? Because 25ms would be a value of 25, not 250
+    int DEFAULT_INTERVAL = 25;
 
     /**
      * Set the movement command for ASEP, which gets sent in the next packet to ASEP.
