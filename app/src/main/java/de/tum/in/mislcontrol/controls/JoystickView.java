@@ -2,6 +2,7 @@ package de.tum.in.mislcontrol.controls;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.PixelFormat;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -54,6 +55,10 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlle
     public JoystickView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         getHolder().addCallback(this);
+
+        setZOrderOnTop(true);
+        getHolder().setFormat(PixelFormat.TRANSPARENT);
+
         joystickModel = new JoystickModel(getResources(), R.drawable.joystick_control, R.drawable.joystick_background);
         joystickController = new JoystickController(joystickModel);
         setOnTouchListener(joystickController);

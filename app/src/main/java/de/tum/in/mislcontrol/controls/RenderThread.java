@@ -2,6 +2,7 @@ package de.tum.in.mislcontrol.controls;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -70,7 +71,7 @@ public class RenderThread extends Thread {
                     // render
                     synchronized (surfaceHolder) {
                         // clear screen
-                        c.drawColor(Color.WHITE);
+                        c.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
                         // render the view
                         renderView.render(c);
                     }
