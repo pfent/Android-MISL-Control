@@ -6,9 +6,19 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 
 /**
- * The model class of a joystick.
+ * The model class of a sensor controller.
  */
-public class JoystickModel {
+public class SensorControlModel {
+
+    /**
+     * The absolute steering threshold.
+     */
+    public static final double STEERING_THRESHOLD = 2.0;
+
+    /**
+     * The steering limit.
+     */
+    public static final double STEERING_LIMIT= 9.0;
 
     /**
      * The maximum control value.
@@ -29,6 +39,11 @@ public class JoystickModel {
      * The x position of the joystick relative to the top-left.
      */
     private volatile Point touchPosition = new Point();
+    /**
+     * The steering value of the accelerometer x-axis. Remember that this is the pure sensor value,
+     * where the x value is swapped and has a range from approximately [-10,10].
+     */
+    private volatile double steeringValue;
 
     /**
      * The bitmap image of the control stick.
@@ -41,12 +56,12 @@ public class JoystickModel {
     private final Bitmap backgroundBitmap;
 
     /**
-     * The joystick model.
+     * The sensor control model.
      * @param res The android resources.
      * @param stickResource The resource code for the stick image.
      * @param backgroundResource The resource code for the background image.
      */
-    public JoystickModel(Resources res, int stickResource, int backgroundResource) {
+    public SensorControlModel(Resources res, int stickResource, int backgroundResource) {
         // load image resources
         stickBitmap = BitmapFactory.decodeResource(res, stickResource);
         backgroundBitmap = BitmapFactory.decodeResource(res, backgroundResource);
@@ -68,8 +83,8 @@ public class JoystickModel {
      * Resets the joystick position to the center.
      */
     public void reset() {
-        setStickX(0);
         setStickY(0);
+        setSteeringValue(0);
     }
 
     /**
@@ -131,23 +146,6 @@ public class JoystickModel {
     }
 
     /**
-     * Gets the stick x position relative to the center.
-     * @return The stick x position.
-     */
-    public synchronized double getStickX() {
-        Vector2D vector = getStickVectorRelativeToCenterInBounds();
-        return vector.getX();
-    }
-
-    /**
-     * Sets the stick x position relative to the center.
-     * @param x The stick x position.
-     */
-    public synchronized void setStickX(double x) {
-        touchPosition.x = (int)(getCenter().x + x);
-    }
-
-    /**
      * Gets the stick y position relative to the center.
      * @return The stick y position.
      */
@@ -165,13 +163,44 @@ public class JoystickModel {
     }
 
     /**
+     * Sets the raw x steering.
+     * @param value The raw x steering.
+     */
+    public synchronized void setSteeringValue(double value) {
+        steeringValue = value;
+    }
+
+    /**
+     * Gets the raw steering value along the x axis.
+     * @return The raw steering x value.
+     */
+    public synchronized double getSteeringValue() {
+        return steeringValue;
+    }
+
+    /**
      * Gets the control value that could be transmitted to ASEP.
      * @return The control value.
      */
     public synchronized Vector2D getValue() {
         Vector2D vector = getStickVectorRelativeToCenterInBounds();
         double backgroundRadius = getBackgroundHeight() / 2; // we assume width and height are equal
-        return vector.scale(MAX_VALUE / backgroundRadius);
+        Vector2D scaledVector = vector.scale(MAX_VALUE / backgroundRadius);
+
+        double steeringValue = getSteeringValue();
+        boolean isLeftSteering = (steeringValue > 0);
+        double steeringValueAbs = Math.abs(steeringValue);
+        // adjust steering value to bounds
+        if (steeringValueAbs < STEERING_THRESHOLD) {
+            steeringValueAbs = STEERING_THRESHOLD;
+        } else if (steeringValueAbs > STEERING_LIMIT) {
+            steeringValueAbs = STEERING_LIMIT;
+        }
+        double valueX = (isLeftSteering) ? steeringValueAbs : -steeringValueAbs;
+        // scale the value from range [STEERING_THRESHOLD, STEERING_LIMIT] to [0, MAX_VALUE]
+        double valueXScaled = (valueX - STEERING_THRESHOLD / (STEERING_LIMIT - STEERING_THRESHOLD)) * MAX_VALUE;
+
+        return new Vector2D(valueXScaled, scaledVector.getY());
     }
 
     /**

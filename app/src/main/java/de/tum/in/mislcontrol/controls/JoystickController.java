@@ -1,6 +1,10 @@
 package de.tum.in.mislcontrol.controls;
 
 import android.graphics.Point;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -11,7 +15,7 @@ public class JoystickController implements View.OnTouchListener {
     /**
      * The joystick model.
      */
-    private JoystickModel joystickModel;
+    private final JoystickModel joystickModel;
 
     /**
      * Indicates whether the users finger is currently down and dragging around the stick.

@@ -7,8 +7,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:id="@+id/container"/>
-    <view android:layout_width="172dp" android:layout_height="172dp"
-        android:layout_gravity="bottom|right"
-        class="de.tum.in.mislcontrol.controls.JoystickView" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom">
+        <view android:layout_width="172dp" android:layout_height="172dp"
+            android:layout_gravity="left"
+            class="de.tum.in.mislcontrol.controls.JoystickView" />
+        <view android:layout_width="172dp" android:layout_height="172dp"
+            android:layout_gravity="right"
+            class="de.tum.in.mislcontrol.controls.SensorControlView" />
+    </LinearLayout>
 </LinearLayout>
 

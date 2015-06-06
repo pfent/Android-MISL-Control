@@ -7,33 +7,32 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-
 import de.tum.in.mislcontrol.R;
 
 /**
- * A virtual joystick view element based on a SurfaceView.
+ * A sensor control view element based on a SurfaceView.
  */
-public class JoystickView extends SurfaceView implements IRenderable, IController, SurfaceHolder.Callback {
+public class SensorControlView extends SurfaceView implements IRenderable, IController, SurfaceHolder.Callback {
     /**
      * The thread to render all the stuff.
      */
     private RenderThread renderThread;
 
     /**
-     * The joystick model.
+     * The sensor control model.
      */
-    private JoystickModel joystickModel;
+    private final SensorControlModel sensorControlModel;
 
     /**
-     * The joystick controller.
+     * The sensor control controller.
      */
-    private final JoystickController joystickController;
+    private final SensorControlController sensorControlController;
 
     /**
      * Creates a virtual joystick view instance.
      * @param context The android context.
      */
-    public JoystickView(Context context) {
+    public SensorControlView(Context context) {
         this(context, null, 0);
     }
 
@@ -42,7 +41,7 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlle
      * @param context The android context.
      * @param attrs The attribute set.
      */
-    public JoystickView(Context context, AttributeSet attrs) {
+    public SensorControlView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
@@ -52,16 +51,16 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlle
      * @param attrs The attribute set.
      * @param defStyle the default style.
      */
-    public JoystickView(Context context, AttributeSet attrs, int defStyle) {
+    public SensorControlView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         getHolder().addCallback(this);
 
         setZOrderOnTop(true);
         getHolder().setFormat(PixelFormat.TRANSPARENT);
 
-        joystickModel = new JoystickModel(getResources(), R.drawable.joystick_control, R.drawable.joystick_background);
-        joystickController = new JoystickController(joystickModel);
-        setOnTouchListener(joystickController);
+        sensorControlModel = new SensorControlModel(getResources(), R.drawable.joystick_control, R.drawable.sensor_control_background);
+        sensorControlController = new SensorControlController(context, sensorControlModel);
+        setOnTouchListener(sensorControlController);
         renderThread = new RenderThread(getHolder(), this);
         setFocusable(true);
     }
@@ -72,15 +71,15 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlle
             return;
 
         // draw the joystick background
-        canvas.drawBitmap(joystickModel.getBackgroundBitmap(),
-                getWidth() / 2 - joystickModel.getBackgroundWidth() / 2,
-                getWidth() / 2 - joystickModel.getBackgroundHeight() / 2,
+        canvas.drawBitmap(sensorControlModel.getBackgroundBitmap(),
+                getWidth() / 2 - sensorControlModel.getBackgroundWidth() / 2,
+                getWidth() / 2 - sensorControlModel.getBackgroundHeight() / 2,
                 null);
 
         // draw the draggable joystick
-        canvas.drawBitmap(joystickModel.getStickBitmap(),
-                (int) (joystickModel.getCenter().x + joystickModel.getStickX() - joystickModel.getStickWidth() / 2),
-                (int) (joystickModel.getCenter().y + joystickModel.getStickY() - joystickModel.getStickHeight() / 2),
+        canvas.drawBitmap(sensorControlModel.getStickBitmap(),
+                (sensorControlModel.getCenter().x - sensorControlModel.getStickWidth() / 2),
+                (int) (sensorControlModel.getCenter().y + sensorControlModel.getStickY() - sensorControlModel.getStickHeight() / 2),
                 null);
     }
 
@@ -95,8 +94,8 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlle
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        joystickModel.updateBoundingBox(width, height);
-        joystickController.update(null);
+        sensorControlModel.updateBoundingBox(width, height);
+        sensorControlController.update(null);
     }
 
     @Override
@@ -106,6 +105,6 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlle
 
     @Override
     public Vector2D getValue() {
-        return joystickModel.getValue();
+        return sensorControlModel.getValue();
     }
 }
