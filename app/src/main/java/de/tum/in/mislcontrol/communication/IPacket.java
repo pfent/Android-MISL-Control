@@ -1,8 +1,5 @@
 package de.tum.in.mislcontrol.communication;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-
 /**
  * The packet interface.
  */
