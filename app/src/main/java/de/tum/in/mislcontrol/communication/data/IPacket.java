@@ -1,4 +1,4 @@
-package de.tum.in.mislcontrol.communication;
+package de.tum.in.mislcontrol.communication.data;
 
 /**
  * The packet interface.

@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 
+import de.tum.in.mislcontrol.math.Vector2D;
+
 /**
  * The model class of a sensor controller.
  */

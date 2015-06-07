@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import de.tum.in.mislcontrol.communication.IConnector;
-import de.tum.in.mislcontrol.communication.TelemetryPacket;
+import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 
 
 /**

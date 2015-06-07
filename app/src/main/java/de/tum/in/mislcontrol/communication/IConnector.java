@@ -1,5 +1,7 @@
 package de.tum.in.mislcontrol.communication;
 
+import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
+
 /**
  * Robot connection interface.
  */

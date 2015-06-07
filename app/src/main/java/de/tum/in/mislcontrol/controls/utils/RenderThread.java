@@ -1,4 +1,4 @@
-package de.tum.in.mislcontrol.controls;
+package de.tum.in.mislcontrol.controls.utils;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

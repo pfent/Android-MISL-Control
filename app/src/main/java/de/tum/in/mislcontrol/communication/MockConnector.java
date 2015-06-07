@@ -2,6 +2,8 @@ package de.tum.in.mislcontrol.communication;
 
 import android.os.Handler;
 
+import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
+
 /**
  * Mock implementation of the connector, mainly for UI testing purposes.
  */

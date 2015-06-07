@@ -1,4 +1,4 @@
-package de.tum.in.mislcontrol.controls;
+package de.tum.in.mislcontrol.math;
 
 /**
  * A simple immutable 2D vector implementation.
@@ -63,7 +63,7 @@ public class Vector2D {
 
     /**
      * Computes the squared magnitude of the 2D vector as an optimization
-     * of {@link de.tum.in.mislcontrol.controls.Vector2D#length}.
+     * of {@link Vector2D#length}.
      * @return The squared magnitude.
      */
     public double lengthSquared() {

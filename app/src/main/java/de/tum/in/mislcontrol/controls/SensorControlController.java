@@ -17,7 +17,7 @@ public class SensorControlController implements SensorEventListener, View.OnTouc
     /**
      * The joystick model.
      */
-    private final SensorControlModel sensorControlModel;
+    private final SensorControlModel model;
 
     /**
      * The motion sensor manager.
@@ -42,10 +42,10 @@ public class SensorControlController implements SensorEventListener, View.OnTouc
 
     /**
      * Creates a sensor control controller instance.
-     * @param sensorControlModel The model.
+     * @param model The model.
      */
-    public SensorControlController(Context context, SensorControlModel sensorControlModel) {
-        this.sensorControlModel = sensorControlModel;
+    public SensorControlController(Context context, SensorControlModel model) {
+        this.model = model;
 
         // sensor registration
         sensorManager = (SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
@@ -59,12 +59,7 @@ public class SensorControlController implements SensorEventListener, View.OnTouc
 
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
-
-
-
-            Log.d(getClass().getName(), String.format("[%f, %f, %f]", x, y, z));
+            model.setSteeringValue(x);
         }
     }
 
@@ -91,15 +86,15 @@ public class SensorControlController implements SensorEventListener, View.OnTouc
             lastEvent = event;
         } else {
             // when there is no event, just perform a reset
-            sensorControlModel.reset();
+            model.reset();
             return;
         }
 
         //drag drop
         if (event.getAction() == MotionEvent.ACTION_DOWN ) {
             // start dragging when the touch was inside of our surface
-            if ((int)event.getX() >= 0 && (int)event.getX() <= sensorControlModel.getBoundingBoxWidth() &&
-                    (int)event.getY() >= 0 && (int)event.getY() <= sensorControlModel.getBoundingBoxHeight())
+            if ((int)event.getX() >= 0 && (int)event.getX() <= model.getBoundingBoxWidth() &&
+                    (int)event.getY() >= 0 && (int)event.getY() <= model.getBoundingBoxHeight())
                 isDragging = true;
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             isDragging = false;
@@ -107,9 +102,9 @@ public class SensorControlController implements SensorEventListener, View.OnTouc
 
         if (isDragging) {
             // set touch positions
-            sensorControlModel.setTouchPosition(new Point(0, (int)event.getY()));
+            model.setTouchPosition(new Point(0, (int) event.getY()));
         } else {
-            sensorControlModel.reset();
+            model.reset();
         }
     }
 }

@@ -8,6 +8,9 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import de.tum.in.mislcontrol.communication.data.CommandPacket;
+import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
+
 /**
  * The ASEP connector implementations to send commands and receive status information.
  */

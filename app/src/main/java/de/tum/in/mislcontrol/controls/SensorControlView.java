@@ -8,11 +8,14 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import de.tum.in.mislcontrol.R;
+import de.tum.in.mislcontrol.controls.utils.IRenderable;
+import de.tum.in.mislcontrol.controls.utils.RenderThread;
+import de.tum.in.mislcontrol.math.Vector2D;
 
 /**
  * A sensor control view element based on a SurfaceView.
  */
-public class SensorControlView extends SurfaceView implements IRenderable, IController, SurfaceHolder.Callback {
+public class SensorControlView extends SurfaceView implements IRenderable, IControlValue, SurfaceHolder.Callback {
     /**
      * The thread to render all the stuff.
      */
@@ -21,12 +24,12 @@ public class SensorControlView extends SurfaceView implements IRenderable, ICont
     /**
      * The sensor control model.
      */
-    private final SensorControlModel sensorControlModel;
+    private final SensorControlModel model;
 
     /**
      * The sensor control controller.
      */
-    private final SensorControlController sensorControlController;
+    private final SensorControlController controller;
 
     /**
      * Creates a virtual joystick view instance.
@@ -58,9 +61,9 @@ public class SensorControlView extends SurfaceView implements IRenderable, ICont
         setZOrderOnTop(true);
         getHolder().setFormat(PixelFormat.TRANSPARENT);
 
-        sensorControlModel = new SensorControlModel(getResources(), R.drawable.joystick_control, R.drawable.sensor_control_background);
-        sensorControlController = new SensorControlController(context, sensorControlModel);
-        setOnTouchListener(sensorControlController);
+        model = new SensorControlModel(getResources(), R.drawable.joystick_control, R.drawable.sensor_control_background);
+        controller = new SensorControlController(context, model);
+        setOnTouchListener(controller);
         renderThread = new RenderThread(getHolder(), this);
         setFocusable(true);
     }
@@ -71,15 +74,15 @@ public class SensorControlView extends SurfaceView implements IRenderable, ICont
             return;
 
         // draw the joystick background
-        canvas.drawBitmap(sensorControlModel.getBackgroundBitmap(),
-                getWidth() / 2 - sensorControlModel.getBackgroundWidth() / 2,
-                getWidth() / 2 - sensorControlModel.getBackgroundHeight() / 2,
+        canvas.drawBitmap(model.getBackgroundBitmap(),
+                getWidth() / 2 - model.getBackgroundWidth() / 2,
+                getWidth() / 2 - model.getBackgroundHeight() / 2,
                 null);
 
         // draw the draggable joystick
-        canvas.drawBitmap(sensorControlModel.getStickBitmap(),
-                (sensorControlModel.getCenter().x - sensorControlModel.getStickWidth() / 2),
-                (int) (sensorControlModel.getCenter().y + sensorControlModel.getStickY() - sensorControlModel.getStickHeight() / 2),
+        canvas.drawBitmap(model.getStickBitmap(),
+                (model.getCenter().x - model.getStickWidth() / 2),
+                (int) (model.getCenter().y + model.getStickY() - model.getStickHeight() / 2),
                 null);
     }
 
@@ -94,8 +97,8 @@ public class SensorControlView extends SurfaceView implements IRenderable, ICont
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        sensorControlModel.updateBoundingBox(width, height);
-        sensorControlController.update(null);
+        model.updateBoundingBox(width, height);
+        controller.update(null);
     }
 
     @Override
@@ -105,6 +108,6 @@ public class SensorControlView extends SurfaceView implements IRenderable, ICont
 
     @Override
     public Vector2D getValue() {
-        return sensorControlModel.getValue();
+        return model.getValue();
     }
 }

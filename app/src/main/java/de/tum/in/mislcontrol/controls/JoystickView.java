@@ -9,11 +9,14 @@ import android.view.SurfaceView;
 
 
 import de.tum.in.mislcontrol.R;
+import de.tum.in.mislcontrol.controls.utils.IRenderable;
+import de.tum.in.mislcontrol.controls.utils.RenderThread;
+import de.tum.in.mislcontrol.math.Vector2D;
 
 /**
  * A virtual joystick view element based on a SurfaceView.
  */
-public class JoystickView extends SurfaceView implements IRenderable, IController, SurfaceHolder.Callback {
+public class JoystickView extends SurfaceView implements IRenderable, IControlValue, SurfaceHolder.Callback {
     /**
      * The thread to render all the stuff.
      */
@@ -22,12 +25,12 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlle
     /**
      * The joystick model.
      */
-    private JoystickModel joystickModel;
+    private JoystickModel model;
 
     /**
      * The joystick controller.
      */
-    private final JoystickController joystickController;
+    private final JoystickController controller;
 
     /**
      * Creates a virtual joystick view instance.
@@ -59,9 +62,9 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlle
         setZOrderOnTop(true);
         getHolder().setFormat(PixelFormat.TRANSPARENT);
 
-        joystickModel = new JoystickModel(getResources(), R.drawable.joystick_control, R.drawable.joystick_background);
-        joystickController = new JoystickController(joystickModel);
-        setOnTouchListener(joystickController);
+        model = new JoystickModel(getResources(), R.drawable.joystick_control, R.drawable.joystick_background);
+        controller = new JoystickController(model);
+        setOnTouchListener(controller);
         renderThread = new RenderThread(getHolder(), this);
         setFocusable(true);
     }
@@ -72,15 +75,15 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlle
             return;
 
         // draw the joystick background
-        canvas.drawBitmap(joystickModel.getBackgroundBitmap(),
-                getWidth() / 2 - joystickModel.getBackgroundWidth() / 2,
-                getWidth() / 2 - joystickModel.getBackgroundHeight() / 2,
+        canvas.drawBitmap(model.getBackgroundBitmap(),
+                getWidth() / 2 - model.getBackgroundWidth() / 2,
+                getWidth() / 2 - model.getBackgroundHeight() / 2,
                 null);
 
         // draw the draggable joystick
-        canvas.drawBitmap(joystickModel.getStickBitmap(),
-                (int) (joystickModel.getCenter().x + joystickModel.getStickX() - joystickModel.getStickWidth() / 2),
-                (int) (joystickModel.getCenter().y + joystickModel.getStickY() - joystickModel.getStickHeight() / 2),
+        canvas.drawBitmap(model.getStickBitmap(),
+                (int) (model.getCenter().x + model.getStickX() - model.getStickWidth() / 2),
+                (int) (model.getCenter().y + model.getStickY() - model.getStickHeight() / 2),
                 null);
     }
 
@@ -95,8 +98,8 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlle
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        joystickModel.updateBoundingBox(width, height);
-        joystickController.update(null);
+        model.updateBoundingBox(width, height);
+        controller.update(null);
     }
 
     @Override
@@ -106,6 +109,6 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlle
 
     @Override
     public Vector2D getValue() {
-        return joystickModel.getValue();
+        return model.getValue();
     }
 }
