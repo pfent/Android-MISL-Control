@@ -4,14 +4,17 @@ import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.View;
 
+import de.tum.in.mislcontrol.math.MathHelper;
+import de.tum.in.mislcontrol.math.Vector2D;
+
 /**
  * The controller implementation of the virtual joystick to handle touch events.
  */
 public class JoystickController implements View.OnTouchListener {
     /**
-     * The joystick model.
+     * The joystick control model.
      */
-    private final JoystickModel model;
+    private final ControlModel model;
 
     /**
      * Indicates whether the users finger is currently down and dragging around the stick.
@@ -25,10 +28,10 @@ public class JoystickController implements View.OnTouchListener {
     private MotionEvent lastEvent;
 
     /**
-     * Creates a joystick controller instance.
+     * Creates a joystick control controller instance.
      * @param model The model.
      */
-    public JoystickController(JoystickModel model) {
+    public JoystickController(ControlModel model) {
         this.model = model;
     }
 
@@ -65,10 +68,30 @@ public class JoystickController implements View.OnTouchListener {
         }
 
         if (isDragging) {
-            // set touch positions
-            model.setTouchPosition(new Point((int) event.getX(), (int) event.getY()));
+            // set relative value
+            Vector2D relativeOnScreen = touchPositionToRelativeValue(new Vector2D(event.getX(), event.getY()));
+            model.setRelativeValue(relativeOnScreen);
         } else {
             model.reset();
         }
+    }
+
+    /**
+     * Translate the touch position to the relative control value.
+     * @param touch The touch position relative to the top left of the view.
+     * @return The translated relative control value.
+     */
+    private Vector2D touchPositionToRelativeValue(Vector2D touch) {
+        double valueX = (touch.getX() - model.getBoundingBoxWidth() / 2) / model.getBackgroundWidth();
+        double relativeX = MathHelper.between(valueX, -1, 1);
+
+        double valueY = (touch.getY() - model.getBoundingBoxHeight() / 2) / model.getBackgroundHeight();
+        double relativeY = MathHelper.between(valueY, -1, 1);
+
+        Vector2D vector = new Vector2D(relativeX, relativeY);
+        if (vector.lengthSquared() > 1)
+            return vector.normalize();
+        else
+            return vector;
     }
 }

@@ -23,9 +23,9 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlVa
     private RenderThread renderThread;
 
     /**
-     * The joystick model.
+     * The joystick control model.
      */
-    private JoystickModel model;
+    private ControlModel model;
 
     /**
      * The joystick controller.
@@ -62,7 +62,7 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlVa
         setZOrderOnTop(true);
         getHolder().setFormat(PixelFormat.TRANSPARENT);
 
-        model = new JoystickModel(getResources(), R.drawable.joystick_control, R.drawable.joystick_background);
+        model = new ControlModel(getResources(), R.drawable.joystick_control, R.drawable.joystick_background);
         controller = new JoystickController(model);
         setOnTouchListener(controller);
         renderThread = new RenderThread(getHolder(), this);
@@ -82,8 +82,8 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlVa
 
         // draw the draggable joystick
         canvas.drawBitmap(model.getStickBitmap(),
-                (int) (model.getCenter().x + model.getStickX() - model.getStickWidth() / 2),
-                (int) (model.getCenter().y + model.getStickY() - model.getStickHeight() / 2),
+                (int)(model.getCenter().x + model.getRelativeValue().getX() * model.getBackgroundWidth() / 2 - model.getStickWidth() / 2),
+                (int)(model.getCenter().y + model.getRelativeValue().getY() * model.getBackgroundHeight() / 2 - model.getStickHeight() / 2),
                 null);
     }
 
@@ -109,6 +109,6 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlVa
 
     @Override
     public Vector2D getValue() {
-        return model.getValue();
+        return model.getRelativeValue();
     }
 }

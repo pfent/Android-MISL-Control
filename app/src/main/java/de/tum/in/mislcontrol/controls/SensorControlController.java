@@ -135,7 +135,7 @@ public class SensorControlController implements SensorEventListener, View.OnTouc
         if (isDragging) {
             // set relative value
             double relativeYOnScreen = touchPositionToRelativeValueY(event.getY());
-            model.setRelativeValue(new Vector2D(0, -relativeYOnScreen));
+            model.setRelativeValue(new Vector2D(0, relativeYOnScreen));
         } else {
             model.reset();
         }
