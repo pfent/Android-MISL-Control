@@ -8,15 +8,9 @@ import android.graphics.Point;
 import de.tum.in.mislcontrol.math.Vector2D;
 
 /**
- * The model class of a joystick.
+ * The model class of a control element.
  */
-public class JoystickModel {
-
-    /**
-     * The maximum control value.
-     */
-    public static final int MAX_VALUE = 255;
-
+public class ControlModel {
     /**
      * The bounding box width of the view.
      */
@@ -28,9 +22,9 @@ public class JoystickModel {
     private int boundingBoxHeight;
 
     /**
-     * The x position of the joystick relative to the top-left.
+     * The relative control value in range x [-1,1] and y [-1,1], where the origin is in the center.
      */
-    private volatile Point touchPosition = new Point();
+    private volatile Vector2D relativeValue = new Vector2D();
 
     /**
      * The bitmap image of the control stick.
@@ -48,7 +42,7 @@ public class JoystickModel {
      * @param stickResource The resource code for the stick image.
      * @param backgroundResource The resource code for the background image.
      */
-    public JoystickModel(Resources res, int stickResource, int backgroundResource) {
+    public ControlModel(Resources res, int stickResource, int backgroundResource) {
         // load image resources
         stickBitmap = BitmapFactory.decodeResource(res, stickResource);
         backgroundBitmap = BitmapFactory.decodeResource(res, backgroundResource);
@@ -70,29 +64,11 @@ public class JoystickModel {
      * Resets the joystick position to the center.
      */
     public void reset() {
-        setStickX(0);
-        setStickY(0);
+        setRelativeValue(new Vector2D());
     }
 
     /**
-     * Gets the stick position relative to the center. It is ensured that the position is in bounds
-     * of the background image.
-     * @return The vector in screen pixel coordinates relative to the center.
-     */
-    private Vector2D getStickVectorRelativeToCenterInBounds() {
-        Vector2D value = new Vector2D(touchPosition.x - getCenter().x, touchPosition.y - getCenter().y);
-        double length = value.length();
-        double backgroundRadius = getBackgroundHeight() / 2; // we assume width and height are equal
-        double scaleFactor = length;
-        if (length > backgroundRadius) {
-            scaleFactor = backgroundRadius;
-        }
-        Vector2D normalizedVector = value.normalize();
-        return normalizedVector.scale(scaleFactor);
-    }
-
-    /**
-     * Gets the bounding box width of the joystick.
+     * Gets the bounding box width of the control elements view.
      * @return The bounding box width.
      */
     public int getBoundingBoxWidth() {
@@ -100,7 +76,7 @@ public class JoystickModel {
     }
 
     /**
-     * Gets the bounding box height of the joystick.
+     * Gets the bounding box height of the control elements view.
      * @return The bounding box height.
      */
     public int getBoundingBoxHeight() {
@@ -116,55 +92,19 @@ public class JoystickModel {
     }
 
     /**
-     * Sets the touch position relative to the top-left of the view element.
-     * @param touchPosition The touch position.
+     * Sets the relative control value in range [-1,1] relative to the center.
+     * @param relativeValue The relativeValue.
      */
-    public synchronized void setTouchPosition(Point touchPosition) {
-        this.touchPosition = touchPosition;
+    public synchronized void setRelativeValue(Vector2D relativeValue) {
+        this.relativeValue = relativeValue;
     }
 
     /**
-     * Gets the stick x position relative to the center.
-     * @return The stick x position.
+     * Gets the relative control value in range [-1,1] relative to the center.
+     * @return relativeValue The relativeValue.
      */
-    public synchronized double getStickX() {
-        Vector2D vector = getStickVectorRelativeToCenterInBounds();
-        return vector.getX();
-    }
-
-    /**
-     * Sets the stick x position relative to the center.
-     * @param x The stick x position.
-     */
-    public synchronized void setStickX(double x) {
-        touchPosition.x = (int)(getCenter().x + x);
-    }
-
-    /**
-     * Gets the stick y position relative to the center.
-     * @return The stick y position.
-     */
-    public synchronized double getStickY() {
-        Vector2D vector = getStickVectorRelativeToCenterInBounds();
-        return vector.getY();
-    }
-
-    /**
-     * Sets the stick y position relative to the center.
-     * @param y The stick y position.
-     */
-    public synchronized void setStickY(double y) {
-        touchPosition.y = (int)(getCenter().y + y);
-    }
-
-    /**
-     * Gets the control value that could be transmitted to ASEP.
-     * @return The control value.
-     */
-    public synchronized Vector2D getValue() {
-        Vector2D vector = getStickVectorRelativeToCenterInBounds();
-        double backgroundRadius = getBackgroundHeight() / 2; // we assume width and height are equal
-        return vector.scale(MAX_VALUE / backgroundRadius);
+    public synchronized Vector2D getRelativeValue() {
+        return relativeValue;
     }
 
     /**

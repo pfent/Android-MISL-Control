@@ -24,7 +24,7 @@ public class SensorControlView extends SurfaceView implements IRenderable, ICont
     /**
      * The sensor control model.
      */
-    private final SensorControlModel model;
+    private final ControlModel model;
 
     /**
      * The sensor control controller.
@@ -61,7 +61,7 @@ public class SensorControlView extends SurfaceView implements IRenderable, ICont
         setZOrderOnTop(true);
         getHolder().setFormat(PixelFormat.TRANSPARENT);
 
-        model = new SensorControlModel(getResources(), R.drawable.joystick_control, R.drawable.sensor_control_background);
+        model = new ControlModel(getResources(), R.drawable.joystick_control, R.drawable.sensor_control_background);
         controller = new SensorControlController(context, model);
         setOnTouchListener(controller);
         renderThread = new RenderThread(getHolder(), this);
@@ -82,7 +82,7 @@ public class SensorControlView extends SurfaceView implements IRenderable, ICont
         // draw the draggable joystick
         canvas.drawBitmap(model.getStickBitmap(),
                 (model.getCenter().x - model.getStickWidth() / 2),
-                (int) (model.getCenter().y + model.getStickY() - model.getStickHeight() / 2),
+                (int)(model.getCenter().y - model.getRelativeValue().getY() * model.getBackgroundHeight() / 2 - model.getStickHeight() / 2),
                 null);
     }
 
@@ -108,6 +108,6 @@ public class SensorControlView extends SurfaceView implements IRenderable, ICont
 
     @Override
     public Vector2D getValue() {
-        return model.getValue();
+        return model.getRelativeValue();
     }
 }
