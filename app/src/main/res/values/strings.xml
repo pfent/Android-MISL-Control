@@ -23,4 +23,7 @@
     <string name="setup">Setup</string>
     <string name="steering_command">Steering command</string>
     <string name="straight_movement_command">Straight movement</string>
+
+    <!-- Google Play Services -->
+    <string name="play_services_legal_notices_title">Legal Notices</string>
 </resources>
