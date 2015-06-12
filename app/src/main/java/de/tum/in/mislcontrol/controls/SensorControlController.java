@@ -90,8 +90,6 @@ public class SensorControlController implements SensorEventListener, View.OnTouc
             double newX = (isLeftSteering) ? -steeringValueAbs : steeringValueAbs;
             Vector2D oldValue = model.getRelativeValue();
             model.setRelativeValue(new Vector2D(newX, oldValue.getY()));
-
-            Log.d(getClass().getName(), model.getRelativeValue().toString());
         }
     }
 
@@ -135,7 +133,7 @@ public class SensorControlController implements SensorEventListener, View.OnTouc
         if (isDragging) {
             // set relative value
             double relativeYOnScreen = touchPositionToRelativeValueY(event.getY());
-            model.setRelativeValue(new Vector2D(0, relativeYOnScreen));
+            model.setRelativeValue(new Vector2D(0, -relativeYOnScreen));
         } else {
             model.reset();
         }

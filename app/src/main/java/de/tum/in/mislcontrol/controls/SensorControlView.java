@@ -82,7 +82,7 @@ public class SensorControlView extends SurfaceView implements IRenderable, ICont
         // draw the draggable joystick
         canvas.drawBitmap(model.getStickBitmap(),
                 (model.getCenter().x - model.getStickWidth() / 2),
-                (int)(model.getCenter().y + model.getRelativeValue().getY() * model.getBackgroundHeight() / 2 - model.getStickHeight() / 2),
+                (int)(model.getCenter().y - model.getRelativeValue().getY() * model.getBackgroundHeight() / 2 - model.getStickHeight() / 2),
                 null);
     }
 
