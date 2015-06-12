@@ -14,8 +14,8 @@ import de.tum.in.mislcontrol.controls.IControlValue;
 
 public class MainActivity extends AppCompatActivity implements IConnector.OnTelemetryReceivedListener {
 
-    //private final IConnector connection = new ASEPConnector();
-    private final IConnector connection = new MockConnector();
+    private final IConnector connection = new ASEPConnector();
+    //private final IConnector connection = new MockConnector();
 
     private IControlValue controller;
 
