@@ -74,6 +74,7 @@ public class ASEPConnector implements IConnector {
                 boolean timedOut = false;
                 while (listening) {
                     try {
+                        final long startTime = System.nanoTime();
                         sendCommand(ch1, ch2);
 
                         //Wait for the response packet
@@ -83,13 +84,16 @@ public class ASEPConnector implements IConnector {
                         sock.receive(packet);
 
                         //unsigned comparison
+                        //TODO check overflows!
                         if (nextTelemetry.getSeqCnt() - receiving.getSeqCnt() > 0) {
                             timedOut = false;
                             receiving = nextTelemetry;
                             receiver.onTelemetryReceived(nextTelemetry);
                         }
 
-                        Thread.sleep(DEFAULT_INTERVAL);
+                        final long sleepTime = DEFAULT_INTERVAL - ((System.nanoTime() - startTime) / 1000000L);
+                        if (sleepTime > 0)
+                            Thread.sleep(sleepTime);
                     } catch (InterruptedIOException e) {
                         //this means the DEFAULT_TIMEOUT expired, connection has been lost
                         if (!timedOut) {
