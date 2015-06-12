@@ -1,6 +1,7 @@
 package de.tum.in.mislcontrol.communication;
 
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
+import de.tum.in.mislcontrol.controls.IControlValue;
 
 /**
  * Robot connection interface.
@@ -49,6 +50,9 @@ public interface IConnector {
      * @param receiver The listener to receive events.
      */
     void setOnTelemetryReceivedListener(OnTelemetryReceivedListener receiver);
+
+
+    void setIControlValue(IControlValue controller);
 
     /**
      * Release all resources

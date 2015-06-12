@@ -1,26 +1,13 @@
 package de.tum.in.mislcontrol;
 
+import android.util.Pair;
+
 import de.tum.in.mislcontrol.communication.ASEPConnector;
 import de.tum.in.mislcontrol.communication.IConnector;
 
 public class ASEPAdapter {
-    private final IConnector connector;
 
-    public ASEPAdapter(IConnector.OnTelemetryReceivedListener receiver) {
-        connector = new ASEPConnector();
-        connector.setOnTelemetryReceivedListener(receiver);
-    }
-
-    public void start() {
-        connector.start();
-    }
-
-    public void stop() {
-        connector.stop();
-    }
-
-    public void close() {
-        connector.close();
+    private ASEPAdapter(){
     }
 
     /**
@@ -29,7 +16,7 @@ public class ASEPAdapter {
      * @param value the desired value range -1 ~ 1
      * @return the value translated to a discrete range -6 ~ 6
      */
-    public short translateToASEPCommand(double value) {
+    public static short translateToASEPCommand(double value) {
         if (value < -1 || value > 1) {
             throw new IllegalArgumentException(value + "not in range -1 ~ 1");
         }
@@ -42,8 +29,9 @@ public class ASEPAdapter {
      *
      * @param xDirection the rotational / steering left or right command. Range -1 ~ 1
      * @param yDirection the target speed. Range -1 ~ 1
+     * @return a Pair with channel1 command and channel2 command
      */
-    public void drive(double xDirection, double yDirection) {
+    public static Pair<Short, Short> drive(double xDirection, double yDirection) {
         final short x = translateToASEPCommand(xDirection);
         final short y = translateToASEPCommand(yDirection);
 
@@ -110,6 +98,6 @@ public class ASEPAdapter {
             }
         }
 
-        connector.setCommand(ch1, ch2);
+        return new Pair<>(ch1, ch2);
     }
 }

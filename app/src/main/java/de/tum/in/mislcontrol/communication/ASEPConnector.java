@@ -1,5 +1,7 @@
 package de.tum.in.mislcontrol.communication;
 
+import android.util.Pair;
+
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.DatagramPacket;
@@ -8,8 +10,11 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import de.tum.in.mislcontrol.ASEPAdapter;
 import de.tum.in.mislcontrol.communication.data.CommandPacket;
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
+import de.tum.in.mislcontrol.controls.IControlValue;
+import de.tum.in.mislcontrol.math.Vector2D;
 
 /**
  * The ASEP connector implementations to send commands and receive status information.
@@ -20,6 +25,7 @@ public class ASEPConnector implements IConnector {
 
     private static InetAddress inetAddress;
     private OnTelemetryReceivedListener receiver;
+    private IControlValue controller;
     private CommandPacket sending = new CommandPacket();
     private TelemetryPacket receiving = new TelemetryPacket();
     private DatagramSocket sock;
@@ -75,6 +81,12 @@ public class ASEPConnector implements IConnector {
                 while (listening) {
                     try {
                         final long startTime = System.nanoTime();
+
+                        if(controller != null) {
+                            Vector2D direction = controller.getValue();
+                            Pair<Short, Short> channels = ASEPAdapter.drive(direction.getX(), direction.getY());
+                            setCommand(channels.first, channels.second);
+                        }
                         sendCommand(ch1, ch2);
 
                         //Wait for the response packet
@@ -122,6 +134,11 @@ public class ASEPConnector implements IConnector {
     @Override
     public void setOnTelemetryReceivedListener(OnTelemetryReceivedListener receiver) {
         this.receiver = receiver;
+    }
+
+    @Override
+    public void setIControlValue(IControlValue controller) {
+        this.controller = controller;
     }
 
     @Override

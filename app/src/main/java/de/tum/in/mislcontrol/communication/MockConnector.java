@@ -3,6 +3,7 @@ package de.tum.in.mislcontrol.communication;
 import android.os.Handler;
 
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
+import de.tum.in.mislcontrol.controls.IControlValue;
 
 /**
  * Mock implementation of the connector, mainly for UI testing purposes.
@@ -91,6 +92,11 @@ public class MockConnector implements IConnector {
     @Override
     public void setOnTelemetryReceivedListener(OnTelemetryReceivedListener receiver) {
         this.receiver = receiver;
+    }
+
+    @Override
+    public void setIControlValue(IControlValue controller) {
+        throw new NoSuchMethodError();
     }
 
     @Override

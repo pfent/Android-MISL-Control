@@ -10,6 +10,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import de.tum.in.mislcontrol.communication.ASEPConnector;
 import de.tum.in.mislcontrol.communication.IConnector;
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 
@@ -17,12 +18,9 @@ import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DataFragment extends Fragment implements IConnector.OnTelemetryReceivedListener,
-        SeekBar.OnSeekBarChangeListener {
+public class DataFragment extends Fragment implements IConnector.OnTelemetryReceivedListener {
 
-    private final ASEPAdapter connection = new ASEPAdapter(this);
-    private SeekBar straight;
-    private SeekBar steering;
+    private final IConnector connection = new ASEPConnector();
     private TextView xEuler;
     private TextView yEuler;
     private TextView zEuler;
@@ -45,8 +43,6 @@ public class DataFragment extends Fragment implements IConnector.OnTelemetryRece
 
         View v = inflater.inflate(R.layout.fragment_data, container, false);
 
-        straight = (SeekBar) v.findViewById(R.id.straightCommandSeekBar);
-        steering = (SeekBar) v.findViewById(R.id.steeringCommandSeekBar);
         xEuler = (TextView) v.findViewById(R.id.xEulerTextView);
         yEuler = (TextView) v.findViewById(R.id.yEulerTextView);
         zEuler = (TextView) v.findViewById(R.id.zEulerTextView);
@@ -56,8 +52,7 @@ public class DataFragment extends Fragment implements IConnector.OnTelemetryRece
         latitude = (TextView) v.findViewById(R.id.LatitudeTextView);
         longitude = (TextView) v.findViewById(R.id.LongitudeTextView);
 
-        straight.setOnSeekBarChangeListener(this);
-        steering.setOnSeekBarChangeListener(this);
+        connection.setOnTelemetryReceivedListener(this);
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_data, container, false);
@@ -107,28 +102,5 @@ public class DataFragment extends Fragment implements IConnector.OnTelemetryRece
                         "Connection timed out.\n Is ASEP still in range?", Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    //TODO this does somehow not get called ATM?
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        final double seekBarPercentage = progress / seekBar.getMax(); // Range 0 ~ 1
-        final double normalized = seekBarPercentage * 2 - 1; // Range -1 ~ 1
-
-        if (seekBar == straight) {
-            xDirection = normalized;
-        } else if (seekBar == steering) {
-            yDirection = normalized;
-        }
-
-        connection.drive(xDirection, yDirection);
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
     }
 }
