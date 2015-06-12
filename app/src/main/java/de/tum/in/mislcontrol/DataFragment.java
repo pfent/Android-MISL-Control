@@ -18,9 +18,9 @@ import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DataFragment extends Fragment implements IConnector.OnTelemetryReceivedListener {
+public class DataFragment extends Fragment {
 
-    private final IConnector connection = new ASEPConnector();
+
     private TextView xEuler;
     private TextView yEuler;
     private TextView zEuler;
@@ -52,55 +52,25 @@ public class DataFragment extends Fragment implements IConnector.OnTelemetryRece
         latitude = (TextView) v.findViewById(R.id.LatitudeTextView);
         longitude = (TextView) v.findViewById(R.id.LongitudeTextView);
 
-        connection.setOnTelemetryReceivedListener(this);
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_data, container, false);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        connection.start();
+    public void setEuler(float roll, float pitch, float yaw) {
+        xEuler.setText(Float.toString(roll));
+        yEuler.setText(Float.toString(pitch));
+        zEuler.setText(Float.toString(yaw));
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        connection.stop();
+    public void setAcceleration(float x, float y, float z) {
+        xAccel.setText(Float.toString(x));
+        yAccel.setText(Float.toString(y));
+        zAccel.setText(Float.toString(z));
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        connection.stop();
+    public void setLocatoin(float latitude, float longitude) {
+        this.latitude.setText(Float.toString(latitude));
+        this.longitude.setText(Float.toString(longitude));
     }
 
-    @Override
-    public void onTelemetryReceived(final TelemetryPacket packet) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                xEuler.setText(Float.toString(packet.getXEuler()));
-                yEuler.setText(Float.toString(packet.getYEuler()));
-                zEuler.setText(Float.toString(packet.getZEuler()));
-                xAccel.setText(Float.toString(packet.getXAccel()));
-                yAccel.setText(Float.toString(packet.getYAccel()));
-                zAccel.setText(Float.toString(packet.getZAccel()));
-                latitude.setText(Float.toString(packet.getLatitude()));
-                longitude.setText(Float.toString(packet.getLongitude()));
-            }
-        });
-    }
-
-    @Override
-    public void onTelemetryTimedOut() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(getActivity(),
-                        "Connection timed out.\n Is ASEP still in range?", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
 }

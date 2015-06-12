@@ -1,21 +1,51 @@
 package de.tum.in.mislcontrol;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import de.tum.in.mislcontrol.communication.ASEPConnector;
+import de.tum.in.mislcontrol.communication.IConnector;
+import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
+import de.tum.in.mislcontrol.controls.IControlValue;
+
+public class MainActivity extends AppCompatActivity implements IConnector.OnTelemetryReceivedListener {
+
+    private final IConnector connection = new ASEPConnector();
+
+    private IControlValue controller;
+
+    private DataFragment dataFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
+            dataFragment = new DataFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new DataFragment())
+                    .add(R.id.container, dataFragment)
                     .commit();
         }
+
+        connection.setOnTelemetryReceivedListener(this);
+        controller = (IControlValue)findViewById(R.id.joystick);
+        connection.setIControlValue(controller);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        connection.start();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        connection.stop();
     }
 
     @Override
@@ -38,5 +68,29 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onTelemetryReceived(final TelemetryPacket packet) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // update fragment UI
+                dataFragment.setEuler(packet.getXEuler(), packet.getYEuler(), packet.getZEuler());
+                dataFragment.setAcceleration(packet.getXAccel(), packet.getYAccel(), packet.getZAccel());
+                dataFragment.setLocatoin(packet.getLatitude(), packet.getLongitude());
+            }
+        });
+    }
+
+    @Override
+    public void onTelemetryTimedOut() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(),
+                        "Connection timed out.\n Is ASEP still in range?", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
