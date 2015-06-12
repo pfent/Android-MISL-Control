@@ -11,8 +11,10 @@ import de.tum.in.mislcontrol.communication.IConnector;
 import de.tum.in.mislcontrol.communication.MockConnector;
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 import de.tum.in.mislcontrol.controls.IControlValue;
+import de.tum.in.mislcontrol.location.GoogleMapsFragment;
+import de.tum.in.mislcontrol.location.IMapView;
 
-public class MainActivity extends AppCompatActivity implements IConnector.OnTelemetryReceivedListener {
+public class MainActivity extends AppCompatActivity implements IConnector.OnTelemetryReceivedListener, GoogleMapsFragment.OnLocationViewInteractionListener {
 
     private final IConnector connection = new ASEPConnector();
     //private final IConnector connection = new MockConnector();
@@ -21,15 +23,27 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
 
     private DataFragment dataFragment;
 
+    private IMapView mapView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
+            // add fragments
             dataFragment = new DataFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, dataFragment)
+                    .add(R.id.dataContainer, dataFragment)
                     .commit();
+
+            // check if layout has a container for the map
+            if (findViewById(R.id.mapContainer) != null) {
+                GoogleMapsFragment mapFragment = GoogleMapsFragment.newInstance(19, 30.617326, -96.341768); // Texas A&M
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.mapContainer, mapFragment)
+                        .commit();
+                mapView = mapFragment;
+            }
         }
 
         connection.setOnTelemetryReceivedListener(this);
@@ -41,6 +55,13 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
     public void onResume() {
         super.onResume();
         connection.start();
+
+        // add dome dummy data
+        mapView.addRouteLocation(30.617178, -96.341969);
+        mapView.addRouteLocation(30.616883, -96.342448);
+        mapView.addRouteLocation(30.617204, -96.342847);
+        mapView.addRouteLocation(30.617436, -96.343084);
+        mapView.addRouteLocation(30.617070, -96.343109);
     }
 
     @Override
@@ -93,5 +114,15 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
                         "Connection timed out.\n Is ASEP still in range?", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onMaximize() {
+
+    }
+
+    @Override
+    public void onMinimize() {
+
     }
 }

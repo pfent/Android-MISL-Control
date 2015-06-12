@@ -5,18 +5,14 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:id="@+id/container"/>
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/dataContainer"/>
 
-        <view android:layout_width="172dp" android:layout_height="172dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            class="de.tum.in.mislcontrol.controls.JoystickView"
-            android:id="@+id/joystick"/>
-        <!--<view android:layout_width="172dp" android:layout_height="172dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            class="de.tum.in.mislcontrol.controls.SensorControlView"
-            android:id="@+id/joystick"/>-->
+    <view android:layout_width="172dp" android:layout_height="172dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        class="de.tum.in.mislcontrol.controls.JoystickView"
+        android:id="@+id/joystick"/>
 </RelativeLayout>
 
