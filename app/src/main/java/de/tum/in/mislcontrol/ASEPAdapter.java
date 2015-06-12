@@ -34,70 +34,72 @@ public class ASEPAdapter {
     public static Pair<Short, Short> drive(double xDirection, double yDirection) {
         final short x = translateToASEPCommand(xDirection);
         final short y = translateToASEPCommand(yDirection);
+        //According to Hectors logs, a command 6 6 is the idle / non moving command for ASEP
+        final short ch1Base = 6, ch2Base = 6;
 
-        short ch1 = 0, ch2 = 0;
+        short ch1Delta = 0, ch2Delta = 0;
         if (((x < -2) || (x > 2)) && ((y < 2) && (y > -2))) { //X only
-            ch1 = x; //rotate
-            ch2 = (short) -x;
+            ch1Delta = x; //rotate
+            ch2Delta = (short) -x;
         } else if ((x == 0) && (y != 0)) {
-            ch1 = y; //drive straight
-            ch2 = y;
+            ch1Delta = y; //drive straight
+            ch2Delta = y;
         } else if ((x == 6) && (y == 6)) { // 6 equals full throttle
-            ch1 = y;
-            ch2 = -2;
+            ch1Delta = y;
+            ch2Delta = -2;
         } else if ((x == -6) && (y == 6)) {
-            ch1 = -2;
-            ch2 = y;
+            ch1Delta = -2;
+            ch2Delta = y;
         } else if ((x == 6) && (y == -6)) {
-            ch1 = y;
-            ch2 = 2;
+            ch1Delta = y;
+            ch2Delta = 2;
         } else if ((x == -6) && (y == -6)) {
-            ch1 = 2;
-            ch2 = y;
+            ch1Delta = 2;
+            ch2Delta = y;
         } else if (Math.abs(x) < Math.abs(y)) {
             if (y < 0) {
                 if (x < -1) {
-                    ch1 = (short) (y + (2 + Math.abs(x)));
-                    ch2 = y;
+                    ch1Delta = (short) (y + (2 + Math.abs(x)));
+                    ch2Delta = y;
                 } else if (x > 1) {
-                    ch1 = y;
-                    ch2 = (short) (y + (2 + Math.abs(x)));
+                    ch1Delta = y;
+                    ch2Delta = (short) (y + (2 + Math.abs(x)));
                 } else {
-                    ch1 = y;
-                    ch2 = y;
+                    ch1Delta = y;
+                    ch2Delta = y;
                 }
             } else if (y > 0) {
                 if (x < -1) {
-                    ch1 = (short) (y - (2 + Math.abs(x)));
-                    ch2 = y;
+                    ch1Delta = (short) (y - (2 + Math.abs(x)));
+                    ch2Delta = y;
                 } else if (x > 1) {
-                    ch1 = y;
-                    ch2 = (short) (y - (2 + Math.abs(x)));
+                    ch1Delta = y;
+                    ch2Delta = (short) (y - (2 + Math.abs(x)));
                 } else {
-                    ch1 = y;
-                    ch2 = y;
+                    ch1Delta = y;
+                    ch2Delta = y;
                 }
             }
         } else if (Math.abs(x) >= Math.abs(y)) {
             if (y < 0) {
                 if (x < 0) {
-                    ch1 = 1;
-                    ch2 = y;
+                    ch1Delta = 1;
+                    ch2Delta = y;
                 } else if (x > 0) {
-                    ch1 = y;
-                    ch2 = 1;
+                    ch1Delta = y;
+                    ch2Delta = 1;
                 }
             } else if (y > 0) {
                 if (x < 0) {
-                    ch1 = -1;
-                    ch2 = y;
+                    ch1Delta = -1;
+                    ch2Delta = y;
                 } else if (x > 0) {
-                    ch1 = y;
-                    ch2 = -1;
+                    ch1Delta = y;
+                    ch2Delta = -1;
                 }
             }
         }
 
-        return new Pair<>(ch1, ch2);
+        return new Pair<>((short)(ch1Base + ch1Delta), (short)(ch1Base + ch2Delta));
     }
 }

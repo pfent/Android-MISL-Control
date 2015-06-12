@@ -1,5 +1,6 @@
 package de.tum.in.mislcontrol.communication;
 
+import android.util.Log;
 import android.util.Pair;
 
 import java.io.IOException;
@@ -27,7 +28,6 @@ public class ASEPConnector implements IConnector {
     private OnTelemetryReceivedListener receiver;
     private IControlValue controller;
     private CommandPacket sending = new CommandPacket();
-    private TelemetryPacket receiving = new TelemetryPacket();
     private DatagramSocket sock;
     private boolean listening = false;
     private short ch1, ch2;
@@ -41,7 +41,7 @@ public class ASEPConnector implements IConnector {
             sock = new DatagramSocket(DEFAULT_PORT);
             sock.setSoTimeout(DEFAULT_TIMEOUT);
         } catch (UnknownHostException | SocketException e) {
-            //TODO should not be thrown, probably do some logging
+            Log.e("ASEPConnector", "Unexpected Exception while initializing", e);
         }
     }
 
@@ -61,7 +61,7 @@ public class ASEPConnector implements IConnector {
     private synchronized void sendCommand(short ch1, short ch2) throws IOException {
         sending.setCH1Cmd(ch1);
         sending.setCH2Cmd(ch2);
-        sending.increaseSeqCnt();
+        //sending.increaseSeqCnt();
         sending.calculateChecksum();
         DatagramPacket command =
                 new DatagramPacket(sending.getData(), sending.getLength(), inetAddress, DEFAULT_PORT);
@@ -82,12 +82,14 @@ public class ASEPConnector implements IConnector {
                     try {
                         final long startTime = System.nanoTime();
 
-                        if(controller != null) {
+                        if (controller != null) {
                             Vector2D direction = controller.getValue();
                             Pair<Short, Short> channels = ASEPAdapter.drive(direction.getX(), direction.getY());
                             setCommand(channels.first, channels.second);
+                            Log.d("ASEPConnector", "Joytick returned x:" + direction.getX() + ", y:" + direction.getY());
                         }
                         sendCommand(ch1, ch2);
+                        Log.d("ASEPConnector", "Sent command ch1:" + ch1 + ", ch2:" + ch2);
 
                         //Wait for the response packet
                         TelemetryPacket nextTelemetry = new TelemetryPacket();
@@ -95,13 +97,10 @@ public class ASEPConnector implements IConnector {
                                 new DatagramPacket(nextTelemetry.getData(), nextTelemetry.getLength());
                         sock.receive(packet);
 
-                        //unsigned comparison
-                        //TODO check overflows!
-                        if (nextTelemetry.getSeqCnt() - receiving.getSeqCnt() > 0) {
-                            timedOut = false;
-                            receiving = nextTelemetry;
-                            receiver.onTelemetryReceived(nextTelemetry);
-                        }
+                        //ignore sequence count, we probably don't have routed connections, so there
+                        //should be no packet reordering
+                        timedOut = false;
+                        receiver.onTelemetryReceived(nextTelemetry);
 
                         final long sleepTime = DEFAULT_INTERVAL - ((System.nanoTime() - startTime) / 1000000L);
                         if (sleepTime > 0)
@@ -113,7 +112,7 @@ public class ASEPConnector implements IConnector {
                             receiver.onTelemetryTimedOut();
                         }
                     } catch (IOException | InterruptedException e) {
-                        //TODO probably do some logging
+                        Log.e("ASEPConnector", "Unexpected Exception while sending", e);
                     }
                 }
             }
