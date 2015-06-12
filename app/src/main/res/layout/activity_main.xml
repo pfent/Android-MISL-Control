@@ -17,7 +17,8 @@
             android:id="@+id/joystick"/>
         <!--<view android:layout_width="172dp" android:layout_height="172dp"
             android:layout_gravity="right"
-            class="de.tum.in.mislcontrol.controls.SensorControlView" />-->
+            class="de.tum.in.mislcontrol.controls.SensorControlView"
+            android:id="@+id/joystick"/>-->
     </LinearLayout>
 </LinearLayout>
 

@@ -69,8 +69,8 @@ public class JoystickController implements View.OnTouchListener {
 
         if (isDragging) {
             // set relative value
-            Vector2D relativeOnScreen = touchPositionToRelativeValue(new Vector2D(event.getX(), event.getY()));
-            model.setRelativeValue(relativeOnScreen);
+            Vector2D relativeValue = touchPositionToRelativeValue(new Vector2D(event.getX(), event.getY()));
+            model.setRelativeValue(relativeValue);
         } else {
             model.reset();
         }
@@ -88,7 +88,7 @@ public class JoystickController implements View.OnTouchListener {
         double valueY = (touch.getY() - model.getBoundingBoxHeight() / 2) / model.getBackgroundHeight();
         double relativeY = MathHelper.between(valueY, -1, 1);
 
-        Vector2D vector = new Vector2D(relativeX, relativeY);
+        Vector2D vector = new Vector2D(relativeX, -relativeY);
         if (vector.lengthSquared() > 1)
             return vector.normalize();
         else

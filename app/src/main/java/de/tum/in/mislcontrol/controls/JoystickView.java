@@ -82,7 +82,7 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlVa
         // draw the draggable joystick
         canvas.drawBitmap(model.getStickBitmap(),
                 (int)(model.getCenter().x + model.getRelativeValue().getX() * model.getBackgroundWidth() / 2 - model.getStickWidth() / 2),
-                (int)(model.getCenter().y + model.getRelativeValue().getY() * model.getBackgroundHeight() / 2 - model.getStickHeight() / 2),
+                (int)(model.getCenter().y - model.getRelativeValue().getY() * model.getBackgroundHeight() / 2 - model.getStickHeight() / 2),
                 null);
     }
 
