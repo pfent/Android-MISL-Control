@@ -88,10 +88,7 @@ public class SensorControlView extends SurfaceView implements IRenderable, ICont
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        if(renderThread.getRenderState() == RenderThread.RenderState.PAUSED){
-            //When game is opened again in the Android OS
-            renderThread = new RenderThread(getHolder(),this);
-        }
+        renderThread = new RenderThread(getHolder(), this);
         renderThread.start();
     }
 
@@ -104,6 +101,7 @@ public class SensorControlView extends SurfaceView implements IRenderable, ICont
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         renderThread.terminate();
+        renderThread = null;
     }
 
     @Override
