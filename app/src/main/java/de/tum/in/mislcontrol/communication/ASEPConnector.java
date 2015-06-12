@@ -97,8 +97,7 @@ public class ASEPConnector implements IConnector {
                                 new DatagramPacket(nextTelemetry.getData(), nextTelemetry.getLength());
                         sock.receive(packet);
 
-                        //ignore sequence count, we probably don't have routed connections, so there
-                        //should be no packet reordering
+                        //ignore sequence count, since ASEP does not update them
                         timedOut = false;
                         receiver.onTelemetryReceived(nextTelemetry);
 

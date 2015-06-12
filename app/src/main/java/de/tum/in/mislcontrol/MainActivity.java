@@ -8,12 +8,14 @@ import android.widget.Toast;
 
 import de.tum.in.mislcontrol.communication.ASEPConnector;
 import de.tum.in.mislcontrol.communication.IConnector;
+import de.tum.in.mislcontrol.communication.MockConnector;
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 import de.tum.in.mislcontrol.controls.IControlValue;
 
 public class MainActivity extends AppCompatActivity implements IConnector.OnTelemetryReceivedListener {
 
-    private final IConnector connection = new ASEPConnector();
+    //private final IConnector connection = new ASEPConnector();
+    private final IConnector connection = new MockConnector();
 
     private IControlValue controller;
 
