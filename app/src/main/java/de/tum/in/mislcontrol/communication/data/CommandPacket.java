@@ -10,7 +10,7 @@ public class CommandPacket implements IPacket {
     private byte[] data = {
             0x02, 0x03, //Packet Version
             0x00, 0x40, //Size = 64
-            0x00, 0x01, //Receive SeqCnt
+            0x00, 0x00, //Receive SeqCnt
             0x40, 0x56, //Command (AFAIK this isn't checked anywhere)
             0x00, 0x00, //CH1 Cmd
             0x00, 0x00, //CH2 Cmd

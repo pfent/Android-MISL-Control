@@ -61,7 +61,7 @@ public class ASEPConnector implements IConnector {
     private synchronized void sendCommand(short ch1, short ch2) throws IOException {
         sending.setCH1Cmd(ch1);
         sending.setCH2Cmd(ch2);
-        //sending.increaseSeqCnt();
+        sending.increaseSeqCnt();
         sending.calculateChecksum();
         DatagramPacket command =
                 new DatagramPacket(sending.getData(), sending.getLength(), inetAddress, DEFAULT_PORT);
