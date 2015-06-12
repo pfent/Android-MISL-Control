@@ -1,24 +1,22 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical"
     tools:context=".MainActivity" tools:ignore="MergeRootFrame">
     <FrameLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
+        android:layout_centerInParent="true"
         android:id="@+id/container"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom">
+
         <view android:layout_width="172dp" android:layout_height="172dp"
-            android:layout_gravity="left"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             class="de.tum.in.mislcontrol.controls.JoystickView"
             android:id="@+id/joystick"/>
         <!--<view android:layout_width="172dp" android:layout_height="172dp"
-            android:layout_gravity="right"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             class="de.tum.in.mislcontrol.controls.SensorControlView"
             android:id="@+id/joystick"/>-->
-    </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
 
