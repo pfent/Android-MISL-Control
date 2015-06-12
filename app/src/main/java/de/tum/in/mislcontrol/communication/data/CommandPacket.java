@@ -72,10 +72,9 @@ public class CommandPacket implements IPacket {
         // }
         // return 1;  // HAPPY OUTPUT! A packet has been extracted and stored in payload structure
 
-        //TODO this seems bogus and is not the same as Hectors logged value
         short checksum = 0;
         for (int i = 0; i < 12; i++) {
-            checksum += data[0];
+            checksum += data[i];
         }
         byte[] raw = ByteBuffer.allocate(2).putShort(checksum).order(ByteOrder.BIG_ENDIAN).array();
         data[12] = raw[0];
