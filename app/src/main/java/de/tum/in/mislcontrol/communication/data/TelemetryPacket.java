@@ -73,4 +73,26 @@ public class TelemetryPacket implements IPacket {
     public float getLongitude() {
         return ByteBuffer.wrap(data, 36, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }
+
+    /**
+     * only to be used for mocking!
+     */
+    public void setLatitude(float latitude) {
+        byte[] raw = ByteBuffer.allocate(4).putFloat(latitude).order(ByteOrder.BIG_ENDIAN).array();
+        data[32] = raw[0];
+        data[33] = raw[1];
+        data[34] = raw[2];
+        data[35] = raw[3];
+    }
+
+    /**
+     * only to be used for mocking!
+     */
+    public void setLongitude(float longitude) {
+        byte[] raw = ByteBuffer.allocate(4).putFloat(longitude).order(ByteOrder.BIG_ENDIAN).array();
+        data[36] = raw[0];
+        data[37] = raw[1];
+        data[38] = raw[2];
+        data[39] = raw[3];
+    }
 }

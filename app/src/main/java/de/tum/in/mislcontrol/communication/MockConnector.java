@@ -4,11 +4,16 @@ import android.os.Handler;
 
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 import de.tum.in.mislcontrol.controls.IControlValue;
+import de.tum.in.mislcontrol.math.Vector2D;
 
 /**
  * Mock implementation of the connector, mainly for UI testing purposes.
  */
 public class MockConnector implements IConnector {
+
+    IControlValue controller;
+
+    float latitude = 0, longitude = 0;
 
     /**
      * The first few packets from Hactors packetdump
@@ -137,10 +142,19 @@ public class MockConnector implements IConnector {
          * @param telemetryPacket The telemetry packet to update.
          */
         private void updateTelemetryPacket(TelemetryPacket telemetryPacket) {
+            //Simulate Latitude / Longitude movement
+            //Let Latitude equal x movement and Longitude y movement
+            final float singleSpeed = (float) (360.0 / 6367444.0);
+            Vector2D direction = controller.getValue();
+            latitude += singleSpeed * 6 * direction.getX();
+            longitude += singleSpeed * 6 * direction.getY();
+
             counter++;
             //Return the same packet 40 times, which equals ~ 40*25ms = 1s
             byte[] mockPacket = mockPackets[(counter / 40) % mockPackets.length];
             System.arraycopy(mockPacket, 0, telemetryPacket.getData(), 0, mockPacket.length);
+            telemetryPacket.setLatitude(latitude);
+            telemetryPacket.setLongitude(longitude);
         }
     };
 
@@ -183,7 +197,7 @@ public class MockConnector implements IConnector {
 
     @Override
     public void setIControlValue(IControlValue controller) {
-        // NOP
+        this.controller = controller;
     }
 
     @Override

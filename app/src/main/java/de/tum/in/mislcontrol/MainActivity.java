@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
                 // update fragment UI
                 dataFragment.setEuler(packet.getXEuler(), packet.getYEuler(), packet.getZEuler());
                 dataFragment.setAcceleration(packet.getXAccel(), packet.getYAccel(), packet.getZAccel());
-                dataFragment.setLocatoin(packet.getLatitude(), packet.getLongitude());
+                dataFragment.setLocation(packet.getLatitude(), packet.getLongitude());
             }
         });
     }

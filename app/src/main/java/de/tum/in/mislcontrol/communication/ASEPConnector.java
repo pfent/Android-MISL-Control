@@ -86,7 +86,7 @@ public class ASEPConnector implements IConnector {
                             Vector2D direction = controller.getValue();
                             Pair<Short, Short> channels = ASEPAdapter.drive(direction.getX(), direction.getY());
                             setCommand(channels.first, channels.second);
-                            Log.d("ASEPConnector", "Joytick returned x:" + direction.getX() + ", y:" + direction.getY());
+                            Log.d("ASEPConnector", "Joystick returned x:" + direction.getX() + ", y:" + direction.getY());
                         }
                         sendCommand(ch1, ch2);
                         Log.d("ASEPConnector", "Sent command ch1:" + ch1 + ", ch2:" + ch2);

@@ -58,20 +58,20 @@ public class DataFragment extends Fragment {
     }
 
     public void setEuler(float roll, float pitch, float yaw) {
-        xEuler.setText(Float.toString(roll));
-        yEuler.setText(Float.toString(pitch));
-        zEuler.setText(Float.toString(yaw));
+        xEuler.setText(String.format("%.04f",roll));
+        yEuler.setText(String.format("%.04f", pitch));
+        zEuler.setText(String.format("%.04f", yaw));
     }
 
     public void setAcceleration(float x, float y, float z) {
-        xAccel.setText(Float.toString(x));
-        yAccel.setText(Float.toString(y));
-        zAccel.setText(Float.toString(z));
+        xAccel.setText(String.format("%.04f", x));
+        yAccel.setText(String.format("%.04f", y));
+        zAccel.setText(String.format("%.04f", z));
     }
 
-    public void setLocatoin(float latitude, float longitude) {
-        this.latitude.setText(Float.toString(latitude));
-        this.longitude.setText(Float.toString(longitude));
+    public void setLocation(float latitude, float longitude) {
+        this.latitude.setText(String.format("%.04f", latitude));
+        this.longitude.setText(String.format("%.04f", longitude));
     }
 
 }
