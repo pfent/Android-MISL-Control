@@ -14,7 +14,7 @@ import java.net.UnknownHostException;
 import de.tum.in.mislcontrol.ASEPAdapter;
 import de.tum.in.mislcontrol.communication.data.CommandPacket;
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
-import de.tum.in.mislcontrol.controls.IControlValue;
+import de.tum.in.mislcontrol.controls.IInputController;
 import de.tum.in.mislcontrol.math.Vector2D;
 
 /**
@@ -26,7 +26,7 @@ public class ASEPConnector implements IConnector {
 
     private static InetAddress inetAddress;
     private OnTelemetryReceivedListener receiver;
-    private IControlValue controller;
+    private IInputController inputController;
     private CommandPacket sending = new CommandPacket();
     private DatagramSocket sock;
     private boolean listening = false;
@@ -82,8 +82,8 @@ public class ASEPConnector implements IConnector {
                     try {
                         final long startTime = System.nanoTime();
 
-                        if (controller != null) {
-                            Vector2D direction = controller.getValue();
+                        if (inputController != null) {
+                            Vector2D direction = inputController.getValue();
                             Pair<Short, Short> channels = ASEPAdapter.drive(direction.getX(), direction.getY());
                             setCommand(channels.first, channels.second);
                             Log.d("ASEPConnector", "Joystick returned x:" + direction.getX() + ", y:" + direction.getY());
@@ -135,8 +135,8 @@ public class ASEPConnector implements IConnector {
     }
 
     @Override
-    public void setIControlValue(IControlValue controller) {
-        this.controller = controller;
+    public void setInputController(IInputController controller) {
+        this.inputController = controller;
     }
 
     @Override

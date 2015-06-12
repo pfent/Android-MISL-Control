@@ -5,7 +5,7 @@ import de.tum.in.mislcontrol.math.Vector2D;
 /**
  * Interface for all controller implementations.
  */
-public interface IControlValue {
+public interface IInputController {
     /**
      * Gets the control value that could be transmitted to ASEP.
      * @return The control value.

@@ -1,7 +1,7 @@
 package de.tum.in.mislcontrol.communication;
 
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
-import de.tum.in.mislcontrol.controls.IControlValue;
+import de.tum.in.mislcontrol.controls.IInputController;
 
 /**
  * Robot connection interface.
@@ -52,7 +52,11 @@ public interface IConnector {
     void setOnTelemetryReceivedListener(OnTelemetryReceivedListener receiver);
 
 
-    void setIControlValue(IControlValue controller);
+    /**
+     * Sets the controller to receive the user input.
+     * @param inputController The input controller
+     */
+    void setInputController(IInputController inputController);
 
     /**
      * Release all resources

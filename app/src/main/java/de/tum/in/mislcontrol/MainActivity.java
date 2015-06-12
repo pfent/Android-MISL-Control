@@ -8,9 +8,8 @@ import android.widget.Toast;
 
 import de.tum.in.mislcontrol.communication.ASEPConnector;
 import de.tum.in.mislcontrol.communication.IConnector;
-import de.tum.in.mislcontrol.communication.MockConnector;
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
-import de.tum.in.mislcontrol.controls.IControlValue;
+import de.tum.in.mislcontrol.controls.IInputController;
 import de.tum.in.mislcontrol.location.GoogleMapsFragment;
 import de.tum.in.mislcontrol.location.IMapView;
 
@@ -19,7 +18,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
     private final IConnector connection = new ASEPConnector();
     //private final IConnector connection = new MockConnector();
 
-    private IControlValue controller;
+    private IInputController controller;
 
     private DataFragment dataFragment;
 
@@ -47,8 +46,8 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
         }
 
         connection.setOnTelemetryReceivedListener(this);
-        controller = (IControlValue)findViewById(R.id.joystick);
-        connection.setIControlValue(controller);
+        controller = (IInputController)findViewById(R.id.joystick);
+        connection.setInputController(controller);
     }
 
     @Override

@@ -15,7 +15,7 @@ import de.tum.in.mislcontrol.math.Vector2D;
 /**
  * A sensor control view element based on a SurfaceView.
  */
-public class SensorControlView extends SurfaceView implements IRenderable, IControlValue, SurfaceHolder.Callback {
+public class SensorControlView extends SurfaceView implements IRenderable, IInputController, SurfaceHolder.Callback {
     /**
      * The thread to render all the stuff.
      */

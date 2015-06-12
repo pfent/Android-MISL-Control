@@ -16,7 +16,7 @@ import de.tum.in.mislcontrol.math.Vector2D;
 /**
  * A virtual joystick view element based on a SurfaceView.
  */
-public class JoystickView extends SurfaceView implements IRenderable, IControlValue, SurfaceHolder.Callback {
+public class JoystickView extends SurfaceView implements IRenderable, IInputController, SurfaceHolder.Callback {
     /**
      * The thread to render all the stuff.
      */

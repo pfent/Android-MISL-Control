@@ -3,7 +3,7 @@ package de.tum.in.mislcontrol.communication;
 import android.os.Handler;
 
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
-import de.tum.in.mislcontrol.controls.IControlValue;
+import de.tum.in.mislcontrol.controls.IInputController;
 import de.tum.in.mislcontrol.math.Vector2D;
 
 /**
@@ -11,7 +11,7 @@ import de.tum.in.mislcontrol.math.Vector2D;
  */
 public class MockConnector implements IConnector {
 
-    IControlValue controller;
+    IInputController inputController;
 
     float latitude = 0, longitude = 0;
 
@@ -145,7 +145,7 @@ public class MockConnector implements IConnector {
             //Simulate Latitude / Longitude movement
             //Let Latitude equal x movement and Longitude y movement
             final float singleSpeed = (float) (360.0 / 6367444.0);
-            Vector2D direction = controller.getValue();
+            Vector2D direction = inputController.getValue();
             latitude += singleSpeed * 6 * direction.getX();
             longitude += singleSpeed * 6 * direction.getY();
 
@@ -196,8 +196,8 @@ public class MockConnector implements IConnector {
     }
 
     @Override
-    public void setIControlValue(IControlValue controller) {
-        this.controller = controller;
+    public void setInputController(IInputController inputController) {
+        this.inputController = inputController;
     }
 
     @Override
