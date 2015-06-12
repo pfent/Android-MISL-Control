@@ -28,14 +28,13 @@ public class RenderThread extends Thread {
      */
     public enum RenderState {
         RUNNING,
-        PAUSED,
         STOPPED
     }
 
     /**
      * The thread state.
      */
-    private RenderState state = RenderState.RUNNING;
+    private RenderState state = RenderState.STOPPED;
 
     /**
      * The view to render.
@@ -57,6 +56,8 @@ public class RenderThread extends Thread {
     public void run() {
 
         Log.d(getClass().getName(), "Started");
+
+        state = RenderState.RUNNING;
 
         // render loop
         while (state== RenderState.RUNNING) {
@@ -89,15 +90,6 @@ public class RenderThread extends Thread {
                     sleep(sleepTime);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(RenderThread.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-
-            while (state== RenderState.PAUSED){
-                Log.d(getClass().getName(), "Paused");
-                try {
-                    sleep(1000);
-                } catch (InterruptedException e) {
-                    Log.w(getClass().getName(), "Interrupted");
                 }
             }
         }

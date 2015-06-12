@@ -65,7 +65,6 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlVa
         model = new ControlModel(getResources(), R.drawable.joystick_control, R.drawable.joystick_background);
         controller = new JoystickController(model);
         setOnTouchListener(controller);
-        renderThread = new RenderThread(getHolder(), this);
         setFocusable(true);
     }
 
@@ -89,10 +88,7 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlVa
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        if(renderThread.getRenderState() == RenderThread.RenderState.PAUSED){
-            //When game is opened again in the Android OS
-            renderThread = new RenderThread(getHolder(),this);
-        }
+        renderThread = new RenderThread(getHolder(), this);
         renderThread.start();
     }
 
@@ -105,6 +101,7 @@ public class JoystickView extends SurfaceView implements IRenderable, IControlVa
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         renderThread.terminate();
+        renderThread = null;
     }
 
     @Override
