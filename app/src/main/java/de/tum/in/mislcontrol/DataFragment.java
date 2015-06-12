@@ -6,13 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import de.tum.in.mislcontrol.communication.ASEPConnector;
-import de.tum.in.mislcontrol.communication.IConnector;
-import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 
 
 /**
@@ -43,6 +37,16 @@ public class DataFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_data, container, false);
 
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_data, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        final View v = getView();
+        if (v == null) return;
         xEuler = (TextView) v.findViewById(R.id.xEulerTextView);
         yEuler = (TextView) v.findViewById(R.id.yEulerTextView);
         zEuler = (TextView) v.findViewById(R.id.zEulerTextView);
@@ -51,9 +55,6 @@ public class DataFragment extends Fragment {
         zAccel = (TextView) v.findViewById(R.id.zAccelTextView);
         latitude = (TextView) v.findViewById(R.id.LatitudeTextView);
         longitude = (TextView) v.findViewById(R.id.LongitudeTextView);
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_data, container, false);
     }
 
     public void setEuler(float roll, float pitch, float yaw) {
