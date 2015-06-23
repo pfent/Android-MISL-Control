@@ -1,4 +1,4 @@
-package de.tum.in.mislcontrol.communication.data;
+package de.tum.in.ASEPMock;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -6,7 +6,7 @@ import java.nio.ByteOrder;
 /**
  * The ASEP command packet.
  */
-public class CommandPacket implements IPacket {
+public class CommandPacket {
     private final byte[] data = {
             0x02, 0x03, //Packet Version
             0x00, 0x40, //Size = 64
@@ -23,40 +23,27 @@ public class CommandPacket implements IPacket {
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
     };
 
-    @Override
     public byte[] getData() {
         return data;
     }
 
-    @Override
     public int getLength() {
         return data.length;
     }
 
-    @Override
     public short getSeqCnt() {
         return ByteBuffer.wrap(data, 5, 2).order(ByteOrder.BIG_ENDIAN).getShort();
     }
 
-    public void increaseSeqCnt() {
-        if (++data[5] == 0) {
-            data[6]++; //In case of overflow
-        }
+    public short getCH1Cmd() {
+        return ByteBuffer.wrap(data, 8, 2).order(ByteOrder.BIG_ENDIAN).getShort();
     }
 
-    public void setCH1Cmd(short cmd) {
-        byte[] raw = ByteBuffer.allocate(2).putShort(cmd).order(ByteOrder.BIG_ENDIAN).array();
-        data[8] = raw[0];
-        data[9] = raw[1];
+    public short getCH2Cmd() {
+        return ByteBuffer.wrap(data, 10, 2).order(ByteOrder.BIG_ENDIAN).getShort();
     }
 
-    public void setCH2Cmd(short cmd) {
-        byte[] raw = ByteBuffer.allocate(2).putShort(cmd).order(ByteOrder.BIG_ENDIAN).array();
-        data[10] = raw[0];
-        data[11] = raw[1];
-    }
-
-    public void calculateChecksum() {
+    public boolean checkChecksum() {
         // Checksum calculation according to "WizFi630Board.c"
         // Note, that the buffer_w has an offset of 2 in comparison to our buffer!
         //
@@ -77,7 +64,6 @@ public class CommandPacket implements IPacket {
             checksum += data[i];
         }
         byte[] raw = ByteBuffer.allocate(2).putShort(checksum).order(ByteOrder.BIG_ENDIAN).array();
-        data[12] = raw[0];
-        data[13] = raw[1];
+        return data[12] == raw[0] && data[13] == raw[1];
     }
 }
