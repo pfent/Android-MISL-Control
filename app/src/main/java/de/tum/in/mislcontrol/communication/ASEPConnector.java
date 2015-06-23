@@ -74,10 +74,13 @@ public class ASEPConnector implements IConnector {
             return;
         }
         listening = true;
+
+        // Since ASEP does not reliably respond to our packets, we need asynchronous send/receive
+        // Send packets in 25ms intervals, so we properly trigger responses, even when ASEP looses
+        // some of our commands
         new Thread(new Runnable() {
             @Override
             public void run() {
-                boolean timedOut = false;
                 while (listening) {
                     try {
                         final long startTime = System.nanoTime();
@@ -91,6 +94,27 @@ public class ASEPConnector implements IConnector {
                         sendCommand(ch1, ch2);
                         Log.d("ASEPConnector", "Sent command ch1:" + ch1 + ", ch2:" + ch2);
 
+                        final long sleepTime = DEFAULT_INTERVAL - ((System.nanoTime() - startTime) / 1000000L);
+                        if (sleepTime > 0) {
+                            Log.d("ASEPConnector", "Slept for " + sleepTime + " ms");
+                            Thread.sleep(sleepTime);
+                        }
+
+                    } catch (IOException | InterruptedException e) {
+                        Log.e("ASEPConnector", "Unexpected Exception while sending", e);
+                    }
+                }
+            }
+        }).start();
+
+        //Continuously listen for telemetry
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean timedOut = false;
+
+                while (listening) {
+                    try {
                         //Wait for the response packet
                         TelemetryPacket nextTelemetry = new TelemetryPacket();
                         DatagramPacket packet =
@@ -100,18 +124,14 @@ public class ASEPConnector implements IConnector {
                         //ignore sequence count, since ASEP does not update them
                         timedOut = false;
                         receiver.onTelemetryReceived(nextTelemetry);
-
-                        final long sleepTime = DEFAULT_INTERVAL - ((System.nanoTime() - startTime) / 1000000L);
-                        if (sleepTime > 0)
-                            Thread.sleep(sleepTime);
                     } catch (InterruptedIOException e) {
                         //this means the DEFAULT_TIMEOUT expired, connection has been lost
                         if (!timedOut) {
                             timedOut = true;
                             receiver.onTelemetryTimedOut();
                         }
-                    } catch (IOException | InterruptedException e) {
-                        Log.e("ASEPConnector", "Unexpected Exception while sending", e);
+                    } catch (IOException e) {
+                        Log.e("ASEPConnector", "Unexpected Exception while recieving", e);
                     }
                 }
             }
