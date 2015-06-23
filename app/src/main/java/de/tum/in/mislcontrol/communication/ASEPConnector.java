@@ -10,6 +10,9 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import de.tum.in.mislcontrol.ASEPAdapter;
 import de.tum.in.mislcontrol.communication.data.CommandPacket;
@@ -29,6 +32,7 @@ public class ASEPConnector implements IConnector {
     private IInputController inputController;
     private CommandPacket sending = new CommandPacket();
     private DatagramSocket sock;
+    private ScheduledExecutorService schedulerService;
     private boolean listening = false;
     private short ch1, ch2;
 
@@ -78,34 +82,25 @@ public class ASEPConnector implements IConnector {
         // Since ASEP does not reliably respond to our packets, we need asynchronous send/receive
         // Send packets in 25ms intervals, so we properly trigger responses, even when ASEP looses
         // some of our commands
-        new Thread(new Runnable() {
+        schedulerService = Executors.newScheduledThreadPool(1);
+        schedulerService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                while (listening) {
-                    try {
-                        final long startTime = System.nanoTime();
-
-                        if (inputController != null) {
-                            Vector2D direction = inputController.getValue();
-                            Pair<Short, Short> channels = ASEPAdapter.drive(direction.getX(), direction.getY());
-                            setCommand(channels.first, channels.second);
-                            Log.d("ASEPConnector", "Joystick returned x:" + direction.getX() + ", y:" + direction.getY());
-                        }
-                        sendCommand(ch1, ch2);
-                        Log.d("ASEPConnector", "Sent command ch1:" + ch1 + ", ch2:" + ch2);
-
-                        final long sleepTime = DEFAULT_INTERVAL - ((System.nanoTime() - startTime) / 1000000L);
-                        if (sleepTime > 0) {
-                            Log.d("ASEPConnector", "Slept for " + sleepTime + " ms");
-                            Thread.sleep(sleepTime);
-                        }
-
-                    } catch (IOException | InterruptedException e) {
-                        Log.e("ASEPConnector", "Unexpected Exception while sending", e);
+                try {
+                    if (inputController != null) {
+                        Vector2D direction = inputController.getValue();
+                        Pair<Short, Short> channels = ASEPAdapter.drive(direction.getX(), direction.getY());
+                        setCommand(channels.first, channels.second);
+                        //Log.d("ASEPConnector", "Joystick returned x:" + direction.getX() + ", y:" + direction.getY());
                     }
+                    sendCommand(ch1, ch2);
+                    Log.d("ASEPConnector", "Sent command ch1:" + ch1 + ", ch2:" + ch2);
+
+                } catch (IOException e) {
+                    Log.e("ASEPConnector", "Unexpected Exception while sending", e);
                 }
             }
-        }).start();
+        }, 0, DEFAULT_INTERVAL, TimeUnit.MILLISECONDS);
 
         //Continuously listen for telemetry
         new Thread(new Runnable() {
@@ -141,6 +136,7 @@ public class ASEPConnector implements IConnector {
     @Override
     public synchronized void stop() {
         listening = false;
+        schedulerService.shutdown();
     }
 
     @Override
