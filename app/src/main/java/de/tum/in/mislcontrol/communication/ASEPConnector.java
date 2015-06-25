@@ -24,9 +24,8 @@ import de.tum.in.mislcontrol.math.Vector2D;
  * The ASEP connector implementations to send commands and receive status information.
  */
 public class ASEPConnector implements IConnector {
-    private static final int REMOTE_PORT = 30190;
-    private static final int LOCAL_PORT = 30195;
-    private static final byte[] DEFAULT_BYTE_ADDRESS = {(byte) 255, (byte) 255, (byte) 255, (byte) 255};
+    private static final int DEFAULT_PORT = 30190;
+    private static final byte[] DEFAULT_BYTE_ADDRESS = {(byte) 192, (byte) 168, (byte) 16, (byte) 254};
 
     private static InetAddress inetAddress;
     private OnTelemetryReceivedListener receiver;
@@ -43,7 +42,7 @@ public class ASEPConnector implements IConnector {
     public ASEPConnector() {
         try {
             inetAddress = InetAddress.getByAddress(DEFAULT_BYTE_ADDRESS);
-            sock = new DatagramSocket(LOCAL_PORT);
+            sock = new DatagramSocket(DEFAULT_PORT);
             sock.setSoTimeout(DEFAULT_TIMEOUT);
         } catch (UnknownHostException | SocketException e) {
             Log.e("ASEPConnector", "Unexpected Exception while initializing", e);
@@ -70,7 +69,7 @@ public class ASEPConnector implements IConnector {
         //sending.increaseSeqCnt();
         sending.calculateChecksum();
         DatagramPacket command =
-                new DatagramPacket(sending.getData(), sending.getLength(), inetAddress, REMOTE_PORT);
+                new DatagramPacket(sending.getData(), sending.getLength(), inetAddress, DEFAULT_PORT);
         sock.send(command);
     }
 
