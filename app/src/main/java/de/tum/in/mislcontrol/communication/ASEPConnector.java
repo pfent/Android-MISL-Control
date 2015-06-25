@@ -1,5 +1,8 @@
 package de.tum.in.mislcontrol.communication;
 
+import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.util.Log;
 import android.util.Pair;
 
@@ -26,6 +29,7 @@ import de.tum.in.mislcontrol.math.Vector2D;
 public class ASEPConnector implements IConnector {
     private static final int DEFAULT_PORT = 30190;
     private static final byte[] DEFAULT_BYTE_ADDRESS = {(byte) 192, (byte) 168, (byte) 16, (byte) 254};
+    private static final String WIFI_SSID = "MISL_ROBOT_WPA";
 
     private static InetAddress inetAddress;
     private OnTelemetryReceivedListener receiver;
@@ -141,9 +145,12 @@ public class ASEPConnector implements IConnector {
     }
 
     @Override
-    public boolean checkConnection() {
-        // TODO check whether the connection to the ASEP robot has already been established
-        return false;
+    public boolean checkConnection(Context context) {
+
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        return wifiInfo != null &&
+                wifiInfo.getSSID().contains(WIFI_SSID);
     }
 
     @Override

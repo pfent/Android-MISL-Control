@@ -57,7 +57,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                if (connector.checkConnection()) {
+                if (connector.checkConnection(StartActivity.this)) {
                     // auto forward to main activity
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);

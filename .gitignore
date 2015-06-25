@@ -37,3 +37,5 @@
 .DS_Store
 /build
 /app/app-release.apk
+app/src/androidTest/ASEP.pcapng
+.idea/misc.xml
