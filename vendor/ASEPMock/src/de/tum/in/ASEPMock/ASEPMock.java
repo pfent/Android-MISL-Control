@@ -26,8 +26,13 @@ public class ASEPMock {
                 continue;
             }
             System.out.println("Recieved Command Packet!");
-            System.out.println("CH1 command: " + recievedCommand.getCH1Cmd());
-            System.out.println("CH2 command: " + recievedCommand.getCH2Cmd());
+            for(int i = 0; i < recievedCommand.getData().length; i++) {
+                System.out.print(String.format("%02x ", recievedCommand.getData()[i]));
+                if((i + 1) % 4 == 0)
+                    System.out.print(" ");
+                if((i + 1) % 8 == 0)
+                    System.out.print("\n");
+            }
             System.out.println("Checksum valid? " + recievedCommand.checkChecksum());
             
             byte[] sending = DummyData.
