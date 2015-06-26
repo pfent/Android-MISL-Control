@@ -1,5 +1,7 @@
 package de.tum.in.mislcontrol.communication;
 
+import android.content.Context;
+
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 import de.tum.in.mislcontrol.controls.IInputController;
 
@@ -43,7 +45,7 @@ public interface IConnector {
      * Checks the connection to the ASEP robot.
      * @return Returns true when the connection to the ASEP robot has been established, else false.
      */
-    boolean checkConnection();
+    boolean checkConnection(Context context);
 
     /**
      * Sets the telemetry receiver callback function.

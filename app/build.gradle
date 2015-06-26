@@ -5,7 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "de.tum.in.android_misl_control"
+        applicationId "de.tum.in.mislcontrol"
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 4
