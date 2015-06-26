@@ -28,7 +28,7 @@ import de.tum.in.mislcontrol.math.Vector2D;
  */
 public class ASEPConnector implements IConnector {
     private static final int DEFAULT_PORT = 30190;
-    private static final byte[] DEFAULT_BYTE_ADDRESS = {(byte) 192, (byte) 168, (byte) 16, (byte) 254};
+    private static final byte[] DEFAULT_BYTE_ADDRESS = {(byte) 10, (byte) 42, (byte) 0, (byte) 1};
     private static final String WIFI_SSID = "MISL_ROBOT_WPA";
 
     private static InetAddress inetAddress;
@@ -141,7 +141,8 @@ public class ASEPConnector implements IConnector {
     @Override
     public synchronized void stop() {
         listening = false;
-        schedulerService.shutdown();
+        if(schedulerService != null)
+            schedulerService.shutdown();
     }
 
     @Override
