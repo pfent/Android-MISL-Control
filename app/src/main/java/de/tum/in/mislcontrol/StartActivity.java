@@ -4,13 +4,14 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
+import de.tum.in.mislcontrol.communication.ASEPConnector;
 import de.tum.in.mislcontrol.communication.IConnector;
-import de.tum.in.mislcontrol.communication.MockConnector;
 import de.tum.in.mislcontrol.dialogs.SetupWizardDialogFragment;
 
 /**
@@ -41,7 +42,9 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // hide action bar
-        getSupportActionBar().hide();
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+            actionBar.hide();
 
         setContentView(R.layout.activity_start);
     }
@@ -50,8 +53,7 @@ public class StartActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        connector = new MockConnector();
-        connector.start();
+        connector = new ASEPConnector();
 
         delayedActionHandler.postDelayed(new Runnable() {
             @Override
@@ -74,8 +76,6 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
-        connector.close();
     }
 
     @Override

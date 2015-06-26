@@ -21,5 +21,12 @@
         android:layout_alignParentBottom="true"
         class="de.tum.in.mislcontrol.controls.JoystickView"
         android:id="@+id/joystick"/>
+
+    <fragment
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        class="de.tum.in.mislcontrol.Model3DFragment" />
 </RelativeLayout>
 

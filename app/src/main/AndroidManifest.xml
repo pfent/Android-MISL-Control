@@ -51,14 +51,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Model3DActivity"
-            android:label="@string/title_activity_model3_d"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.tum.in.mislcontrol.MainActivity" />
-        </activity>
     </application>
 
 </manifest>

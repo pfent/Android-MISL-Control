@@ -6,36 +6,45 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import de.tum.in.mislcontrol.model3d.RenderFragment;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.parser.IParser;
 import min3d.parser.Parser;
+import min3d.vos.Light;
 
 
 /**
  * The fragment for rendering the 3D model of ASEP.
  */
-public class Model3DFragment extends Fragment { //TODO: Create a RenderingFrament like RenderingActivity of min3d engine
+public class Model3DFragment extends RenderFragment {
 
-    /**
-     * The 3D model object.
-     */
-    private Object3dContainer object3d;
+    private Object3dContainer objModel;
 
-    public Model3DFragment() {
-        // Required empty public constructor
+    @Override
+    public void initScene() {
+        scene.lights().add(new Light());
 
+        IParser parser = Parser.createParser(Parser.Type.OBJ, getResources(), String.format("%s:%s", getActivity().getPackageName(), "raw/asep_obj") , false);
+        if (parser != null)
+        {
+            parser.parse();
+
+            objModel = parser.getParsedObject();
+            objModel.scale().x = objModel.scale().y = objModel.scale().z = .1f;
+            scene.addChild(objModel);
+
+            scene.camera().position.z += 2.5f;
+        }
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    public void updateScene() {
+        if (objModel == null)
+            return;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_model3d, container, false);
+        objModel.rotation().x++;
+        objModel.rotation().z++;
+
     }
 }
