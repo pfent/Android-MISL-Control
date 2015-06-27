@@ -27,4 +27,5 @@
     <!-- Google Play Services -->
     <string name="play_services_legal_notices_title">Legal Notices</string>
     <string name="title_activity_model3_d">Model3DActivity</string>
+    <string name="title_activity_about">AboutActivity</string>
 </resources>
