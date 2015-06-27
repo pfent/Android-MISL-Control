@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Control Settings">
+
+        <ListPreference
+            android:key="controlType_preference"
+            android:title="Control Type"
+            android:summary="Select how you would like to control ASEP."
+            android:defaultValue="1"
+            android:entries="@array/controlTypeArray"
+            android:entryValues="@array/controlTypeValues"
+            android:dialogTitle="Control Type" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
