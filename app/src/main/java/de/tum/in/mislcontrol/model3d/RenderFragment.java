@@ -1,6 +1,5 @@
 package de.tum.in.mislcontrol.model3d;
 
-import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import de.tum.in.mislcontrol.R;
 import min3d.Shared;
 import min3d.core.Renderer;
 import min3d.core.Scene;

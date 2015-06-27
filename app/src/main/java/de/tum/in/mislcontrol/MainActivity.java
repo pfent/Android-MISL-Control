@@ -12,6 +12,7 @@ import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 import de.tum.in.mislcontrol.controls.IInputController;
 import de.tum.in.mislcontrol.location.GoogleMapsFragment;
 import de.tum.in.mislcontrol.location.IMapView;
+import de.tum.in.mislcontrol.model3d.IModel3dView;
 
 public class MainActivity extends AppCompatActivity implements IConnector.OnTelemetryReceivedListener, GoogleMapsFragment.OnLocationViewInteractionListener {
 
@@ -23,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
     private DataFragment dataFragment;
 
     private IMapView mapView;
+
+    private IModel3dView model3dView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,14 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
                         .commit();
                 mapView = mapFragment;
             }*/
+
+            if (findViewById(R.id.model3dFragment) != null) {
+                Model3DFragment model3DFragment = new Model3DFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.model3dFragment, model3DFragment)
+                        .commit();
+                model3dView = model3DFragment;
+            }
         }
 
         connection.setOnTelemetryReceivedListener(this);
@@ -106,6 +117,8 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
                 dataFragment.setEuler(packet.getXEuler(), packet.getYEuler(), packet.getZEuler());
                 dataFragment.setAcceleration(packet.getXAccel(), packet.getYAccel(), packet.getZAccel());
                 dataFragment.setLocation(packet.getLatitude(), packet.getLongitude());
+
+                //model3dView.setRotation(packet.getXEuler(), packet.getZEuler(), packet.getYEuler());
             }
         });
     }
