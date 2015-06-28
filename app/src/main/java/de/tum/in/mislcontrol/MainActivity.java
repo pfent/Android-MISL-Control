@@ -1,39 +1,59 @@
 package de.tum.in.mislcontrol;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import de.tum.in.mislcontrol.communication.ASEPConnector;
 import de.tum.in.mislcontrol.communication.IConnector;
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 import de.tum.in.mislcontrol.controls.IInputController;
+import de.tum.in.mislcontrol.controls.JoystickView;
+import de.tum.in.mislcontrol.controls.SensorControlView;
 import de.tum.in.mislcontrol.location.GoogleMapsFragment;
 import de.tum.in.mislcontrol.location.IMapView;
 import de.tum.in.mislcontrol.model3d.IModel3dView;
 
 public class MainActivity extends AppCompatActivity implements IConnector.OnTelemetryReceivedListener, GoogleMapsFragment.OnLocationViewInteractionListener {
 
+    /**
+     * The connection to ASEP.
+     */
     private final IConnector connection = new ASEPConnector();
-    //private final IConnector connection = new MockConnector();
 
-    private IInputController controller;
+    /**
+     * The input controller to steer ASEP.
+     */
+    private IInputController inputController;
 
+    /**
+     * The data fragment to (temporarily) visualize the data.
+     */
     private DataFragment dataFragment;
 
+    /**
+     * The map view.
+     */
     private IMapView mapView;
 
+    /**
+     * The view for the 3D model.
+     */
     private IModel3dView model3dView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // add fragments
         if (savedInstanceState == null) {
-            // add fragments
             dataFragment = new DataFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.dataContainer, dataFragment)
@@ -56,10 +76,6 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
                 model3dView = model3DFragment;
             }
         }
-
-        connection.setOnTelemetryReceivedListener(this);
-        controller = (IInputController)findViewById(R.id.joystick);
-        connection.setInputController(controller);
     }
 
     @Override
@@ -73,6 +89,11 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
         mapView.addRouteLocation(30.617204, -96.342847);
         mapView.addRouteLocation(30.617436, -96.343084);
         mapView.addRouteLocation(30.617070, -96.343109);*/
+
+        addOrReplaceControlView();
+
+        connection.setOnTelemetryReceivedListener(this);
+        connection.setInputController(inputController);
     }
 
     @Override
@@ -144,5 +165,40 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
     @Override
     public void onMinimize() {
 
+    }
+
+    /**
+     * Add or replaces the control view according the the shared preferences.
+     */
+    private void addOrReplaceControlView() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String newControlType = prefs.getString(getString(R.string.setting_controlType_key), getString(R.string.setting_controlType_joystick));
+
+        // check if current control view has changed
+        if (inputController != null && !inputController.getType().equals(newControlType)) {
+            removeControlView();
+        }
+
+        ViewGroup controlContainer = (ViewGroup)findViewById(R.id.controlContainer);
+        if (newControlType == null || newControlType.equals(getString(R.string.setting_controlType_joystick))) {
+            JoystickView controlView = new JoystickView(this);
+            controlContainer.addView(controlView);
+            inputController = controlView;
+        } else {
+            SensorControlView controlView = new SensorControlView(this);
+            controlContainer.addView(controlView);
+            inputController = controlView;
+        }
+    }
+
+    /**
+     * removes the control view in the visual tree.
+     */
+    private void removeControlView() {
+        ViewGroup controlContainer = (ViewGroup)findViewById(R.id.controlContainer);
+        if (controlContainer.getChildCount() > 0) {
+            controlContainer.removeAllViews();
+        }
+        inputController = null;
     }
 }

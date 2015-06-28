@@ -6,10 +6,10 @@
         android:title="Control Settings">
 
         <ListPreference
-            android:key="controlType_preference"
+            android:key="@string/setting_controlType_key"
             android:title="Control Type"
             android:summary="Select how you would like to control ASEP."
-            android:defaultValue="1"
+            android:defaultValue="@string/setting_controlType_joystick"
             android:entries="@array/controlTypeArray"
             android:entryValues="@array/controlTypeValues"
             android:dialogTitle="Control Type" />

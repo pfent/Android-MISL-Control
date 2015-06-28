@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -16,6 +17,8 @@ import de.tum.in.mislcontrol.math.Vector2D;
  * A sensor control view element based on a SurfaceView.
  */
 public class SensorControlView extends SurfaceView implements IRenderable, IInputController, SurfaceHolder.Callback {
+    private final String LOG_TAG = "SensorControlView";
+
     /**
      * The thread to render all the stuff.
      */
@@ -82,12 +85,13 @@ public class SensorControlView extends SurfaceView implements IRenderable, IInpu
         // draw the draggable joystick
         canvas.drawBitmap(model.getStickBitmap(),
                 (model.getCenter().x - model.getStickWidth() / 2),
-                (int)(model.getCenter().y - model.getRelativeValue().getY() * model.getBackgroundHeight() / 2 - model.getStickHeight() / 2),
+                (int) (model.getCenter().y - model.getRelativeValue().getY() * model.getBackgroundHeight() / 2 - model.getStickHeight() / 2),
                 null);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        Log.d(LOG_TAG, "surfaceCreated");
         renderThread = new RenderThread(getHolder(), this);
         renderThread.start();
     }
@@ -100,6 +104,7 @@ public class SensorControlView extends SurfaceView implements IRenderable, IInpu
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        Log.d(LOG_TAG, "surfaceDestroyed");
         renderThread.terminate();
         renderThread = null;
     }
@@ -107,5 +112,10 @@ public class SensorControlView extends SurfaceView implements IRenderable, IInpu
     @Override
     public Vector2D getValue() {
         return model.getRelativeValue();
+    }
+
+    @Override
+    public String getType() {
+        return getResources().getString(R.string.setting_controlType_sensor);
     }
 }

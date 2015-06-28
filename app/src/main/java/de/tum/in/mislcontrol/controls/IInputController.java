@@ -11,4 +11,10 @@ public interface IInputController {
      * @return The control value.
      */
     Vector2D getValue();
+
+    /**
+     * Gets the input controler type name.
+     * @return The input controller type name.
+     */
+    String getType();
 }

@@ -1,6 +1,5 @@
 package de.tum.in.mislcontrol;
 
-import android.app.Application;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;

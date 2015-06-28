@@ -7,4 +7,11 @@ public class MockController implements IInputController {
     public Vector2D getValue() {
         return new Vector2D(1,0);
     }
+
+    @Override
+    public String getType() {
+        return "Mock";
+    }
+
+
 }

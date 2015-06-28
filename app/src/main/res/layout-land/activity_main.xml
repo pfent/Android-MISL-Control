@@ -16,11 +16,12 @@
         android:layout_alignParentRight="true"
         android:id="@+id/mapContainer"/>
 
-    <view android:layout_width="172dp" android:layout_height="172dp"
+    <FrameLayout
+        android:layout_width="172dp"
+        android:layout_height="172dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        class="de.tum.in.mislcontrol.controls.JoystickView"
-        android:id="@+id/joystick"/>
+        android:id="@+id/controlContainer"/>
 
     <FrameLayout
         android:layout_width="420dp"

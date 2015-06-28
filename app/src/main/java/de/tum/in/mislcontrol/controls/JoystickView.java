@@ -4,9 +4,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
 
 import de.tum.in.mislcontrol.R;
 import de.tum.in.mislcontrol.controls.utils.IRenderable;
@@ -17,6 +17,8 @@ import de.tum.in.mislcontrol.math.Vector2D;
  * A virtual joystick view element based on a SurfaceView.
  */
 public class JoystickView extends SurfaceView implements IRenderable, IInputController, SurfaceHolder.Callback {
+    private final String LOG_TAG = "JoystickView";
+
     /**
      * The thread to render all the stuff.
      */
@@ -88,6 +90,7 @@ public class JoystickView extends SurfaceView implements IRenderable, IInputCont
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        Log.d(LOG_TAG, "surfaceCreated");
         renderThread = new RenderThread(getHolder(), this);
         renderThread.start();
     }
@@ -100,6 +103,7 @@ public class JoystickView extends SurfaceView implements IRenderable, IInputCont
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        Log.d(LOG_TAG, "surfaceDestroyed");
         renderThread.terminate();
         renderThread = null;
     }
@@ -107,5 +111,10 @@ public class JoystickView extends SurfaceView implements IRenderable, IInputCont
     @Override
     public Vector2D getValue() {
         return model.getRelativeValue();
+    }
+
+    @Override
+    public String getType() {
+        return getResources().getString(R.string.setting_controlType_joystick);
     }
 }
