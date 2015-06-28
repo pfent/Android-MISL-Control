@@ -28,6 +28,6 @@
         android:layout_height="420dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:id="@+id/model3dFragment"/>
+        android:id="@+id/model3dContainer"/>
 </RelativeLayout>
 
