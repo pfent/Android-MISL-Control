@@ -54,11 +54,6 @@ public class GoogleMapsFragment extends Fragment implements IMapView, OnMapReady
     private LatLng initialCenter = new LatLng(0, 0);
 
     /**
-     * The interaction listener of the location view to interact with the activity.
-     */
-    private OnLocationViewInteractionListener interactionListener;
-
-    /**
      * A flag that indicates whether the map is ready to use.
      */
     private boolean isMapReady = false;
@@ -120,35 +115,6 @@ public class GoogleMapsFragment extends Fragment implements IMapView, OnMapReady
         mapView.getMapAsync(this);
 
         return view;
-    }
-
-    private void onMaximizeButtonPressed() {
-        if (interactionListener != null) {
-            interactionListener.onMaximize();
-        }
-    }
-
-    private void onMinimizeButtonPressed() {
-        if (interactionListener != null) {
-            interactionListener.onMinimize();
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            interactionListener = (OnLocationViewInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        interactionListener = null;
     }
 
     @Override
@@ -218,16 +184,5 @@ public class GoogleMapsFragment extends Fragment implements IMapView, OnMapReady
     private void updateRoute() {
         googleMap.clear();
         googleMap.addPolyline(path);
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
-    public interface OnLocationViewInteractionListener {
-        void onMaximize();
-        void onMinimize();
     }
 }

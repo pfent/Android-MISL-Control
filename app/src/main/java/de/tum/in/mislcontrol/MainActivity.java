@@ -16,11 +16,10 @@ import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 import de.tum.in.mislcontrol.controls.IInputController;
 import de.tum.in.mislcontrol.controls.JoystickView;
 import de.tum.in.mislcontrol.controls.SensorControlView;
-import de.tum.in.mislcontrol.location.GoogleMapsFragment;
 import de.tum.in.mislcontrol.location.IMapView;
 import de.tum.in.mislcontrol.model3d.IModel3dView;
 
-public class MainActivity extends AppCompatActivity implements IConnector.OnTelemetryReceivedListener, GoogleMapsFragment.OnLocationViewInteractionListener {
+public class MainActivity extends AppCompatActivity implements IConnector.OnTelemetryReceivedListener {
 
     /**
      * The connection to ASEP.
@@ -155,16 +154,6 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
                         "Connection timed out.\n Is ASEP still in range?", Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    @Override
-    public void onMaximize() {
-
-    }
-
-    @Override
-    public void onMinimize() {
-
     }
 
     /**
