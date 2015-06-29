@@ -5,8 +5,8 @@ import android.media.MediaRecorder;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.ParcelFileDescriptor;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.Menu;
@@ -16,23 +16,19 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.SocketException;
-import java.util.Enumeration;
 
 import de.tum.in.mislcontrol.camera.CameraPreview;
 
 
-public class VideoStreamSenderActivity extends ActionBarActivity {
+public class VideoStreamSenderActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "VideoStreamSender";
 
     TextView connectionStatus;
 
-    MediaRecorder recorder;
+    private MediaRecorder recorder;
     public static String SERVERIP = "192.168.1.123";
     public static final int SERVERPORT = 6789;
     private Handler handler = new Handler();
@@ -52,7 +48,6 @@ public class VideoStreamSenderActivity extends ActionBarActivity {
         // Run new thread to handle socket communications
         Thread sendVideo = new Thread(new SendVideoThread());
         sendVideo.start();
-
     }
 
     /**
@@ -85,9 +80,15 @@ public class VideoStreamSenderActivity extends ActionBarActivity {
     protected void onPause() {
         super.onPause();
 
+        if (recorder != null && camera != null) {
+            // stop recording and release camera
+            recorder.stop();  // stop the recording
+            releaseMediaRecorder(); // release the MediaRecorder object
+            camera.lock();         // take camera access back from MediaRecorder
+        }
+
         if (camera != null){
             camera.release();
-            camera = null;
         }
 
         closeServerSocket();
@@ -126,23 +127,13 @@ public class VideoStreamSenderActivity extends ActionBarActivity {
         }
     }
 
-    public String getLocalIpAddress() {
-        try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress()) {
-                        String ip = Formatter.formatIpAddress(inetAddress.hashCode());
-                        Log.i(LOG_TAG, "***** IP="+ ip);
-                        return ip;
-                    }
-                }
-            }
-        } catch (SocketException ex) {
-            Log.e(LOG_TAG, ex.toString());
+    private void releaseMediaRecorder(){
+        if (recorder != null) {
+            recorder.reset();   // clear recorder configuration
+            recorder.release(); // release the recorder object
+            recorder = null;
+            camera.lock();           // lock camera for later use
         }
-        return null;
     }
 
     public class SendVideoThread implements Runnable{
@@ -178,21 +169,40 @@ public class VideoStreamSenderActivity extends ActionBarActivity {
                             handler.post(new Runnable(){
                                 @Override
                                 public void run(){
+                                    // Steps from: http://developer.android.com/guide/topics/media/camera.html
                                     recorder = new MediaRecorder();
+
+                                    // Step 1: Unlock and set camera to MediaRecorder
+                                    camera.unlock();
+                                    recorder.setCamera(camera);
+
+                                    // Step 2: Set sources
                                     recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-                                    recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                                    recorder.setOutputFile(pfd.getFileDescriptor());
+
+                                    // Step 3: Set a CamcorderProfile (requires API Level 8 or higher)
+                                    //recorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
+                                    recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+                                    recorder.setVideoEncoder(MediaRecorder.VideoEncoder.DEFAULT);
+                                    //recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
                                     //recorder.setVideoFrameRate(20); http://stackoverflow.com/questions/11249642/mediarecorder-start-failed-19
                                     recorder.setVideoSize(176,144);
-                                    recorder.setVideoEncoder(MediaRecorder.VideoEncoder.H263);
-                                    recorder.setPreviewDisplay(cameraPreview.getSurface());
+                                    //recorder.setVideoEncoder(MediaRecorder.VideoEncoder.H263);
+
+                                    // Step 4: Set output file
+                                    recorder.setOutputFile(pfd.getFileDescriptor());
+
+                                    // Step 5: Set the preview output
+                                    //recorder.setPreviewDisplay(cameraPreview.getSurface());
                                     try {
                                         recorder.prepare();
                                     } catch (IllegalStateException e) {
                                         Log.w("LOG_TAG", "Illegal state.");
+                                        releaseMediaRecorder();
                                     } catch (IOException e) {
                                         Log.w("LOG_TAG", "IO error.");
+                                        releaseMediaRecorder();
                                     }
+                                    //camera.lock();
                                     recorder.start();
                                 }
                             });
