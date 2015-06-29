@@ -35,4 +35,5 @@
     <string name="setting_controlType_key">controlTypeKey</string>
     <string name="setting_controlType_joystick">joystick</string>
     <string name="setting_controlType_sensor">sensor</string>
+    <string name="title_activity_video_steam_sender">VideoSteamSenderActivity</string>
 </resources>

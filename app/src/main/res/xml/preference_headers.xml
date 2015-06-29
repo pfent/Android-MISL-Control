@@ -24,6 +24,12 @@
         <extra android:name="someKey" android:value="someHeaderValue" />
     </header>
 
+    <header android:icon="@android:drawable/ic_media_play"
+        android:title="Video Stream Sender">
+        <intent android:targetPackage="de.tum.in.mislcontrol"
+            android:targetClass="de.tum.in.mislcontrol.VideoStreamSenderActivity" />
+    </header>
+
     <header android:icon="@android:drawable/ic_dialog_info"
         android:title="About the app">
         <intent android:targetPackage="de.tum.in.mislcontrol"
