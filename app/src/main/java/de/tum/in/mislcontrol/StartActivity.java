@@ -55,27 +55,6 @@ public class StartActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-/*
-        connector = new ASEPConnector();
-
-        delayedActionHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                if (connector.checkConnection(StartActivity.this)) {
-                    // auto forward to main activity
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-
-                } else {
-                    // diplay a wifi-setup guide popup
-                    //DialogFragment wizardDialog = new SetupWizardDialogFragment();
-                    //wizardDialog.show(getSupportFragmentManager(), WIZARD_DIALOG_KEY);
-                    StartActivity.this.setContentView(R.layout.activity_start_wizard);
-                }
-            }
-        }, 2000);
-        */
     }
 
     @Override

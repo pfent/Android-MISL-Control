@@ -11,6 +11,7 @@ import java.io.InterruptedIOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.concurrent.Executors;
@@ -46,7 +47,10 @@ public class ASEPConnector implements IConnector {
     public ASEPConnector() {
         try {
             inetAddress = InetAddress.getByAddress(DEFAULT_BYTE_ADDRESS);
-            sock = new DatagramSocket(DEFAULT_PORT);
+            //explicitly set SO_REUSEADDR, so we don't get EADDRINUSE
+            sock = new DatagramSocket(null);
+            sock.setReuseAddress(true);
+            sock.bind(new InetSocketAddress(DEFAULT_PORT));
             sock.setSoTimeout(DEFAULT_TIMEOUT);
         } catch (UnknownHostException | SocketException e) {
             Log.e("ASEPConnector", "Unexpected Exception while initializing", e);
