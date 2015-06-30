@@ -1,25 +1,21 @@
 package de.tum.in.mislcontrol;
 
 import android.content.Intent;
-import android.os.Handler;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 
 import de.tum.in.mislcontrol.communication.ASEPConnector;
 import de.tum.in.mislcontrol.communication.IConnector;
-import de.tum.in.mislcontrol.dialogs.SetupWizardDialogFragment;
 
 /**
  * The initial activity of the application. It shows a splash screen and checks for the connection
  * to the ASEP robot. It auto forwards to the main activity when a connection could be established
  * automatically. If not, it guides the user how to setup the connection.
  */
-public class StartActivity extends AppCompatActivity {
+public class StartActivity extends FragmentActivity {
 
     /**
      * The key to identify the setup wizard dialog in the visual tree.
@@ -34,25 +30,32 @@ public class StartActivity extends AppCompatActivity {
     /**
      * The ASEP connector.
      */
-    private IConnector connector;
+    private IConnector connector = new ASEPConnector();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        //getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(savedInstanceState);
 
-        // hide action bar
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
-            actionBar.hide();
-
         setContentView(R.layout.activity_start);
+        if (connector.checkConnection(this)) {
+            // auto forward to main activity
+            delayedActionHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+            }, 2000);
+        } else {
+            setContentView(R.layout.activity_start_wizard);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+/*
         connector = new ASEPConnector();
 
         delayedActionHandler.postDelayed(new Runnable() {
@@ -66,11 +69,13 @@ public class StartActivity extends AppCompatActivity {
 
                 } else {
                     // diplay a wifi-setup guide popup
-                    DialogFragment wizardDialog = new SetupWizardDialogFragment();
-                    wizardDialog.show(getSupportFragmentManager(), WIZARD_DIALOG_KEY);
+                    //DialogFragment wizardDialog = new SetupWizardDialogFragment();
+                    //wizardDialog.show(getSupportFragmentManager(), WIZARD_DIALOG_KEY);
+                    StartActivity.this.setContentView(R.layout.activity_start_wizard);
                 }
             }
         }, 2000);
+        */
     }
 
     @Override
