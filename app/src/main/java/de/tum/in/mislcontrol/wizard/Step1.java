@@ -22,7 +22,7 @@ public class Step1 extends WizardStep {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.wizard_instructionstep, container, false);
         TextView tv = (TextView) v.findViewById(R.id.instructionTextView);
-        tv.setText("Make sure batteries are charged and plugged in for both ASEP and your device");
+        tv.setText(getText(R.string.wizard_step_1));
         return v;
     }
 

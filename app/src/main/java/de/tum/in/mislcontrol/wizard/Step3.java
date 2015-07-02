@@ -22,8 +22,7 @@ public class Step3 extends WizardStep {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.wizard_instructionstep, container, false);
         TextView tv = (TextView) v.findViewById(R.id.instructionTextView);
-        tv.setText("There is a small smd button on the MISL stack second board from the bottom. \n" +
-                "Press this button to initialize ASEP.");
+        tv.setText(R.string.wizard_step_3);
         return v;
     }
 }

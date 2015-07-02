@@ -36,4 +36,8 @@
     <string name="setting_controlType_joystick">joystick</string>
     <string name="setting_controlType_sensor">sensor</string>
     <string name="title_activity_video_steam_sender">VideoSteamSenderActivity</string>
+    <string name="wizard_step_1">Make sure batteries are charged and plugged in for both ASEP and your device</string>
+    <string name="wizard_step_2">Flip the power switch on the T-rex board to power on.</string>
+    <string name="wizard_step_3">There is a small smd button on the MISL stack second board from the bottom. \nPress this button to initialize ASEP.</string>
+    <string name="wizard_step_4">Connect the your WiFi to the WiFi of ASEP.</string>
 </resources>

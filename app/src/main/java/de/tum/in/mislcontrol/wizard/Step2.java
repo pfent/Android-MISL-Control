@@ -22,7 +22,7 @@ public class Step2 extends WizardStep {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.wizard_instructionstep, container, false);
         TextView tv = (TextView) v.findViewById(R.id.instructionTextView);
-        tv.setText("Flip the power switch on the T-rex board to power on.");
+        tv.setText(getText(R.string.wizard_step_2));
         return v;
     }
 }

@@ -1,6 +1,9 @@
 package de.tum.in.mislcontrol.wizard;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +12,11 @@ import android.widget.TextView;
 
 import org.codepond.wizardroid.WizardStep;
 
+import java.util.List;
+
 import de.tum.in.mislcontrol.MainActivity;
 import de.tum.in.mislcontrol.R;
+import de.tum.in.mislcontrol.communication.ASEPConnector;
 
 public class Step4 extends WizardStep {
 
@@ -22,7 +28,28 @@ public class Step4 extends WizardStep {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.wizard_instructionstep, container, false);
         TextView tv = (TextView) v.findViewById(R.id.instructionTextView);
-        tv.setText("Connect the your WiFi to the WiFi of ASEP.");
+        tv.setText(R.string.wizard_step_4);
+
+        WifiManager wifiMan = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
+        wifiMan.setWifiEnabled(true);
+
+        WifiConfiguration wifiC = new WifiConfiguration();
+        wifiC.SSID = "\"" + ASEPConnector.WIFI_SSID +  "\"";
+        wifiC.preSharedKey = "\"" + "password" + "\"";
+
+        //TODO:
+        //wifiMan.addNetwork(wifiC);
+        List<WifiConfiguration> configs = wifiMan.getConfiguredNetworks();
+        for (WifiConfiguration config : configs) {
+            if(config.SSID != null && config.SSID.equals(wifiC.SSID)) {
+                wifiMan.disconnect();
+                wifiMan.enableNetwork(config.networkId, true);
+                wifiMan.reconnect();
+                notifyCompleted();
+                break;
+            }
+        }
+
         return v;
     }
 
