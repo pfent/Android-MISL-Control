@@ -1,33 +1,43 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal"
-    tools:context=".MainActivity" tools:ignore="MergeRootFrame">
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:id="@+id/dataContainer"/>
+    tools:context=".MainActivity" tools:ignore="MergeRootFrame"
+    android:weightSum="100">
 
-    <FrameLayout
-        android:layout_width="420dp"
-        android:layout_height="420dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:id="@+id/mapContainer"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="100"
+        android:layout_weight="40">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mapContainer"/>
+    </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="172dp"
-        android:layout_height="172dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/controlContainer"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="100"
+        android:layout_weight="60">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="40"
+            android:id="@+id/model3dContainer"/>
 
-    <FrameLayout
-        android:layout_width="420dp"
-        android:layout_height="420dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:id="@+id/model3dContainer"/>
-</RelativeLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="60"
+            android:id="@+id/controlContainer"/>
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>
 

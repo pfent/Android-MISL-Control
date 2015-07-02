@@ -23,7 +23,7 @@ import de.tum.in.mislcontrol.communication.ASEPConnector;
 
 public class Step4 extends WizardStep {
 
-    /* WIFI ICON BY Björn Andersson */
+    /* WIFI ICON BY Bjoern Andersson */
 
     /**
      * The handler for delayed events.

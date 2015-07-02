@@ -59,13 +59,13 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
 
         // add fragments
         if (savedInstanceState == null) {
-            View dataContainer = findViewById(R.id.dataContainer);
+            /*View dataContainer = findViewById(R.id.dataContainer);
             if (dataContainer != null) {
                 dataFragment = new DataFragment();
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.dataContainer, dataFragment)
                         .commit();
-            }
+            }*/
 
             // check if layout has a container for the map
             if (findViewById(R.id.mapContainer) != null) {
