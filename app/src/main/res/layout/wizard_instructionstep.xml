@@ -16,5 +16,6 @@
         android:id="@+id/instructionImageView"
         android:layout_gravity="center"
         android:src="@drawable/onoff"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

@@ -59,10 +59,13 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
 
         // add fragments
         if (savedInstanceState == null) {
-            dataFragment = new DataFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.dataContainer, dataFragment)
-                    .commit();
+            View dataContainer = findViewById(R.id.dataContainer);
+            if (dataContainer != null) {
+                dataFragment = new DataFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.dataContainer, dataFragment)
+                        .commit();
+            }
 
             // check if layout has a container for the map
             if (findViewById(R.id.mapContainer) != null) {
@@ -115,11 +118,13 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
         connection.start();
 
         // add dome dummy data
-        mapView.addRouteLocation(30.617178, -96.341969);
-        mapView.addRouteLocation(30.616883, -96.342448);
-        mapView.addRouteLocation(30.617204, -96.342847);
-        mapView.addRouteLocation(30.617436, -96.343084);
-        mapView.addRouteLocation(30.617070, -96.343109);
+        if (mapView != null) {
+            mapView.addRouteLocation(30.617178, -96.341969);
+            mapView.addRouteLocation(30.616883, -96.342448);
+            mapView.addRouteLocation(30.617204, -96.342847);
+            mapView.addRouteLocation(30.617436, -96.343084);
+            mapView.addRouteLocation(30.617070, -96.343109);
+        }
 
         addOrReplaceControlView();
 
@@ -168,9 +173,11 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
             @Override
             public void run() {
                 // update fragment UI
-                dataFragment.setEuler(packet.getXEuler(), packet.getYEuler(), packet.getZEuler());
-                dataFragment.setAcceleration(packet.getXAccel(), packet.getYAccel(), packet.getZAccel());
-                dataFragment.setLocation(packet.getLatitude(), packet.getLongitude());
+                if (dataFragment != null) {
+                    dataFragment.setEuler(packet.getXEuler(), packet.getYEuler(), packet.getZEuler());
+                    dataFragment.setAcceleration(packet.getXAccel(), packet.getYAccel(), packet.getZAccel());
+                    dataFragment.setLocation(packet.getLatitude(), packet.getLongitude());
+                }
 
                 //model3dView.setRotation(packet.getXEuler(), packet.getZEuler(), packet.getYEuler());
             }
