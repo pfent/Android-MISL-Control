@@ -7,11 +7,9 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import de.tum.in.mislcontrol.animation.ResizeAnimation;
 import de.tum.in.mislcontrol.communication.ASEPConnector;
 import de.tum.in.mislcontrol.communication.IConnector;
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
@@ -48,9 +46,6 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
      * The view for the 3D model.
      */
     private IModel3dView model3dView;
-    private int widthValue;
-    private int heightValue;
-    private boolean useAnimation = false; // FIXME we use no animation, because it looks bad on the 3D model view
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,31 +79,6 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
                         .commit();
                 model3dView = model3DFragment;
             }
-
-            final ViewGroup modelContainer = (ViewGroup) findViewById(R.id.model3dContainer);
-            if (modelContainer != null)
-                modelContainer.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) { // TODO currently just test code for an animation. replace it with real values
-                        if (widthValue == 600) {
-                            widthValue = 400;
-                            heightValue = 300;
-                        } else {
-                            widthValue = 600;
-                            heightValue = 400;
-                        }
-                        if (useAnimation) {
-                            ResizeAnimation anim = new ResizeAnimation(modelContainer, widthValue, heightValue);
-                            anim.setDuration(250);
-                            modelContainer.startAnimation(anim);
-                        } else {
-                            ViewGroup.LayoutParams layoutParams = modelContainer.getLayoutParams();
-                            layoutParams.height = heightValue;
-                            layoutParams.width = widthValue;
-                            modelContainer.setLayoutParams(layoutParams);
-                        }
-                    }
-                });
         }
     }
 
