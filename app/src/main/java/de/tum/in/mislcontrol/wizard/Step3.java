@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.codepond.wizardroid.WizardStep;
@@ -13,6 +14,8 @@ import de.tum.in.mislcontrol.MainActivity;
 import de.tum.in.mislcontrol.R;
 
 public class Step3 extends WizardStep {
+
+    /*Thomas Le Bas*/
 
     //Wire the layout to the step
     public Step3() {

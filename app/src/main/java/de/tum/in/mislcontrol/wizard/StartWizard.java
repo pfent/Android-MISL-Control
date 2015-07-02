@@ -1,5 +1,7 @@
 package de.tum.in.mislcontrol.wizard;
 
+import android.widget.Button;
+
 import org.codepond.wizardroid.WizardFlow;
 import org.codepond.wizardroid.layouts.BasicWizardLayout;
 
@@ -15,7 +17,6 @@ public class StartWizard extends BasicWizardLayout {
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -25,14 +26,7 @@ public class StartWizard extends BasicWizardLayout {
                 .addStep(Step2.class)
                 .addStep(Step3.class)
                 .addStep(Step4.class)
-                .addStep(StepFinish.class)
                 .create();
     }
 
-    @Override
-    public void onStepChanged() {
-        if(wizard.isFirstStep()) {
-            setBackButtonText("skip");
-        }
-    }
 }
