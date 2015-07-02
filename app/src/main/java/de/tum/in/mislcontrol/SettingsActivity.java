@@ -24,6 +24,11 @@ public class SettingsActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    protected boolean isValidFragment(String fragmentName) {
+        return true;
+    }
+
     /**
      * Sets the default values of the shared preferences. This method must be called in any other
      * activity through which the user may enter your application for the first time.
