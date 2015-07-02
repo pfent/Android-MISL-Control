@@ -117,15 +117,6 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
         super.onResume();
         connection.start();
 
-        // add dome dummy data
-        if (mapView != null) {
-            mapView.addRouteLocation(30.617178, -96.341969);
-            mapView.addRouteLocation(30.616883, -96.342448);
-            mapView.addRouteLocation(30.617204, -96.342847);
-            mapView.addRouteLocation(30.617436, -96.343084);
-            mapView.addRouteLocation(30.617070, -96.343109);
-        }
-
         addOrReplaceControlView();
 
         connection.setOnTelemetryReceivedListener(this);
@@ -178,8 +169,11 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
                     dataFragment.setAcceleration(packet.getXAccel(), packet.getYAccel(), packet.getZAccel());
                     dataFragment.setLocation(packet.getLatitude(), packet.getLongitude());
                 }
+                if(mapView != null && (packet.getLatitude() != 0 || packet.getLongitude() != 0)) {
+                    mapView.addRouteLocation(packet.getLatitude(), packet.getLatitude());
+                }
 
-                //model3dView.setRotation(packet.getXEuler(), packet.getZEuler(), packet.getYEuler());
+                model3dView.setRotation(packet.getXEuler(), packet.getZEuler(), packet.getYEuler());
             }
         });
     }
