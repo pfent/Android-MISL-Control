@@ -78,15 +78,7 @@ public class OpenStreetMapsFragment extends Fragment implements IMapView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_open_street_maps, container, false);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // Inflate the layout for this fragment
-        View rootView = getView();
+        View rootView = inflater.inflate(R.layout.fragment_open_street_maps, container, false);
 
         if (rootView != null) {
             mMapView = (MapView) rootView.findViewById(R.id.mapView);
@@ -96,6 +88,8 @@ public class OpenStreetMapsFragment extends Fragment implements IMapView {
             mMapController = mMapView.getController();
             resetCamera();
         }
+
+        return rootView;
     }
 
     @Override
