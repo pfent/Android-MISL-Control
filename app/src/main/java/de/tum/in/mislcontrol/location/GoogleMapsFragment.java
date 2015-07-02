@@ -28,11 +28,6 @@ import de.tum.in.mislcontrol.R;
  * The Google Maps fragment to display the location and track of the ASEP robot.
  */
 public class GoogleMapsFragment extends Fragment implements IMapView, OnMapReadyCallback {
-    // the fragment initialization parameters
-    public static final String ARG_ZOOM_LEVEL = "zoomLevel";
-    public static final String ARG_CENTER_LAT = "centerLat";
-    public static final String ARG_CENTER_LNG = "centerLng";
-
     /**
      * The map view.
      */

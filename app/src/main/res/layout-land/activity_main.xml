@@ -5,7 +5,7 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:id="@+id/dataContainer"/>
 
@@ -13,7 +13,7 @@
         android:layout_width="420dp"
         android:layout_height="420dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:id="@+id/mapContainer"/>
 
     <FrameLayout

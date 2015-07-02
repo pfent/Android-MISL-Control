@@ -19,6 +19,7 @@ import de.tum.in.mislcontrol.controls.IInputController;
 import de.tum.in.mislcontrol.controls.JoystickView;
 import de.tum.in.mislcontrol.controls.SensorControlView;
 import de.tum.in.mislcontrol.location.IMapView;
+import de.tum.in.mislcontrol.location.OpenStreetMapsFragment;
 import de.tum.in.mislcontrol.model3d.IModel3dView;
 
 public class MainActivity extends AppCompatActivity implements IConnector.OnTelemetryReceivedListener {
@@ -64,13 +65,14 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
                     .commit();
 
             // check if layout has a container for the map
-            /*if (findViewById(R.id.mapContainer) != null) {
-                GoogleMapsFragment mapFragment = GoogleMapsFragment.newInstance(19, 30.617326, -96.341768); // Texas A&M
+            if (findViewById(R.id.mapContainer) != null) {
+                //GoogleMapsFragment mapFragment = GoogleMapsFragment.newInstance(19, 30.617326, -96.341768); // Texas A&M
+                OpenStreetMapsFragment mapFragment = OpenStreetMapsFragment.newInstance(19, 30.617326, -96.341768); // Texas A&M
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.mapContainer, mapFragment)
                         .commit();
                 mapView = mapFragment;
-            }*/
+            }
 
             if (findViewById(R.id.model3dContainer) != null) {
                 Model3DFragment model3DFragment = new Model3DFragment();
@@ -113,11 +115,11 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
         connection.start();
 
         // add dome dummy data
-        /*mapView.addRouteLocation(30.617178, -96.341969);
+        mapView.addRouteLocation(30.617178, -96.341969);
         mapView.addRouteLocation(30.616883, -96.342448);
         mapView.addRouteLocation(30.617204, -96.342847);
         mapView.addRouteLocation(30.617436, -96.343084);
-        mapView.addRouteLocation(30.617070, -96.343109);*/
+        mapView.addRouteLocation(30.617070, -96.343109);
 
         addOrReplaceControlView();
 
