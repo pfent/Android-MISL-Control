@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
     /**
      * The data fragment to (temporarily) visualize the data.
      */
-    private DataFragment dataFragment;
+    private AccelerometerDataFragment dataFragment;
 
     /**
      * The map view.
@@ -54,17 +55,17 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
 
         // add fragments
         if (savedInstanceState == null) {
-            /*View dataContainer = findViewById(R.id.dataContainer);
+
+            View dataContainer = findViewById(R.id.accelerometerDataContainer);
             if (dataContainer != null) {
-                dataFragment = new DataFragment();
+                dataFragment = new AccelerometerDataFragment();
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.dataContainer, dataFragment)
+                        .add(R.id.accelerometerDataContainer, dataFragment)
                         .commit();
-            }*/
+            }
 
             // check if layout has a container for the map
             if (findViewById(R.id.mapContainer) != null) {
-                //GoogleMapsFragment mapFragment = GoogleMapsFragment.newInstance(19, 30.617326, -96.341768); // Texas A&M
                 OpenStreetMapsFragment mapFragment = OpenStreetMapsFragment.newInstance(19, 30.617326, -96.341768); // Texas A&M
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.mapContainer, mapFragment)
@@ -135,15 +136,15 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
             public void run() {
                 // update fragment UI
                 if (dataFragment != null) {
-                    dataFragment.setEuler(packet.getXEuler(), packet.getYEuler(), packet.getZEuler());
                     dataFragment.setAcceleration(packet.getXAccel(), packet.getYAccel(), packet.getZAccel());
-                    dataFragment.setLocation(packet.getLatitude(), packet.getLongitude());
                 }
                 if(mapView != null && (packet.getLatitude() != 0 || packet.getLongitude() != 0)) {
                     mapView.addRouteLocation(packet.getLatitude(), packet.getLatitude());
                 }
 
-                model3dView.setRotation(packet.getXEuler(), packet.getZEuler(), packet.getYEuler());
+                if (model3dView != null) {
+                    model3dView.setRotation(packet.getXEuler(), packet.getZEuler(), packet.getYEuler());
+                }
             }
         });
     }

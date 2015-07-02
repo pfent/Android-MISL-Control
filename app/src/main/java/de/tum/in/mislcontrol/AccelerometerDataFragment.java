@@ -28,11 +28,8 @@ public class AccelerometerDataFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View v = inflater.inflate(R.layout.fragment_data, container, false);
-
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_data, container, false);
+        return inflater.inflate(R.layout.fragment_accelerometer_data, container, false);
     }
 
     @Override
