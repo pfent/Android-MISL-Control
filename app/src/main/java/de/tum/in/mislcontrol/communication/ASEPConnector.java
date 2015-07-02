@@ -154,7 +154,7 @@ public class ASEPConnector implements IConnector {
 
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        return wifiInfo != null &&
+        return wifiInfo != null && wifiInfo.getSSID() != null &&
                 wifiInfo.getSSID().contains(WIFI_SSID);
     }
 

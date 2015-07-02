@@ -115,6 +115,9 @@ public class OpenStreetMapsFragment extends Fragment implements IMapView {
             mMapView.getOverlays().add(line);
         }
 
+        // update center position to new location
+        mMapController.setCenter(newPosition);
+
         // set the position as latest position
         lastPosition = newPosition;
     }
