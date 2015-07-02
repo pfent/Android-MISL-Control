@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.osmdroid.api.IMapController;
+import org.osmdroid.bonuspack.overlays.Polyline;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
@@ -105,7 +106,20 @@ public class OpenStreetMapsFragment extends Fragment implements IMapView {
 
     @Override
     public void addRouteLocation(double lat, double lng) {
-        // TODO
+        GeoPoint newPosition = new GeoPoint(lat, lng);
+
+        if (lastPosition == null) {
+            // add a line when this is not the first position
+            Polyline line = new Polyline(getActivity());
+            line.setColor(Color.RED);
+            line.setWidth(2.0f);
+            line.getPoints().add(lastPosition);
+            line.getPoints().add(newPosition);
+            mMapView.getOverlays().add(line);
+        }
+
+        // set the position as latest position
+        lastPosition = newPosition;
     }
 
     @Override
