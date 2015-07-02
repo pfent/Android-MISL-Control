@@ -79,7 +79,7 @@ public class SensorControlView extends SurfaceView implements IRenderable, IInpu
         // draw the joystick background
         canvas.drawBitmap(model.getBackgroundBitmap(),
                 getWidth() / 2 - model.getBackgroundWidth() / 2,
-                getWidth() / 2 - model.getBackgroundHeight() / 2,
+                getHeight() / 2 - model.getBackgroundHeight() / 2,
                 null);
 
         // draw the draggable joystick
