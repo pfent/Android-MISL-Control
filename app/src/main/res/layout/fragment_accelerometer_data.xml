@@ -1,0 +1,37 @@
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:rowCount="2" android:columnCount="3"
+    tools:context="de.tum.in.mislcontrol.AccelerometerDataFragment">
+
+    <TextView android:layout_row="0" android:layout_column="0"
+        android:layout_gravity="center_horizontal" android:layout_columnWeight="1"
+        android:textStyle="bold"
+        android:text="@string/x_acceleration"/>
+
+    <TextView android:layout_row="1" android:layout_column="0"
+        android:layout_gravity="center_horizontal" android:layout_columnWeight="1"
+        android:text="0.00 g(s)"
+        android:id="@+id/textViewAccX"/>
+
+    <TextView android:layout_row="0" android:layout_column="1"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal" android:layout_columnWeight="1"
+        android:text="@string/y_acceleration" />
+
+    <TextView android:layout_row="1" android:layout_column="1"
+        android:layout_gravity="center_horizontal" android:layout_columnWeight="1"
+        android:text="0.00 g(s)"
+        android:id="@+id/textViewAccY"/>
+
+    <TextView android:layout_row="0" android:layout_column="2"
+        android:layout_gravity="center_horizontal" android:layout_columnWeight="1"
+        android:textStyle="bold"
+        android:text="@string/z_acceleration" />
+
+    <TextView android:layout_row="1" android:layout_column="2"
+        android:layout_gravity="center_horizontal" android:layout_columnWeight="1"
+        android:text="0.00 g(s)"
+        android:id="@+id/textViewAccZ"/>
+
+</GridLayout>

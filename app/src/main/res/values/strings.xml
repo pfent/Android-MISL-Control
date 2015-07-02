@@ -40,4 +40,9 @@
     <string name="wizard_step_2">Flip the power switch on the T-rex board to power on.</string>
     <string name="wizard_step_3">There is a small smd button on the MISL stack second board from the bottom. \nPress this button to initialize ASEP.</string>
     <string name="wizard_step_4">Connect the your WiFi to the WiFi of ASEP.</string>
+
+    <!-- Accelerometer Fragment -->
+    <string name="x_acceleration">X-Acceleration</string>
+    <string name="y_acceleration">Y-Acceleration</string>
+    <string name="z_acceleration">Z-Acceleration</string>
 </resources>
