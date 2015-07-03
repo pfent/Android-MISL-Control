@@ -4,25 +4,25 @@
     <PreferenceCategory
         android:title="Network Settings">
         <EditTextPreference
-            android:title="ASEP WiFi SSID"
-            android:key="asep_wifi_ssid"
-            android:summary="The WiFi SSID this app tries to connect to"
+            android:title="@string/wifi_ssid"
+            android:key="@string/preferenceKey_ssid"
+            android:summary="@string/wifi_ssid_summary"
             android:hint="TODO" /> <!-- TODO -->
         <EditTextPreference
-            android:title="ASEP WiFi passphrase"
-            android:key="asep_wifi_pass"
-            android:summary="The WiFi passphrase this app tries for autoconnecting to ASEP"
-            android:hint="************"
+            android:title="@string/wifi_pass"
+            android:key="@string/preferenceKey_wifiPass"
+            android:summary="@string/wifi_pass_summary"
+            android:hint="@string/wifi_hint"
             android:inputType="textPassword" />
         <EditTextPreference
-            android:title="ASEP IP address"
-            android:key="asep_ip"
-            android:summary="The IP address ASEP is listening on. \nDon't change this, if you don't know what you are doing"
+            android:title="@string/ip_address"
+            android:key="@string/preferenceKey_ipaddr"
+            android:summary="@string/ip_address_summary"
             android:hint="TODO" /> <!-- TODO -->
         <EditTextPreference
-            android:title="ASEP port"
-            android:key="asep_port"
-            android:summary="The network port ASEP is listening on. \nDon't change this, if you don't know what you are doing"
+            android:title="@string/network_port"
+            android:key="@string/preferenceKey_port"
+            android:summary="@string/network_port_summary"
             android:hint="TODO"/>
     </PreferenceCategory>
 </PreferenceScreen>

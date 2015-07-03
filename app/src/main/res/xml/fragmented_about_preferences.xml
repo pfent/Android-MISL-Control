@@ -2,27 +2,27 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="About">
+        android:title="@string/aboutPreferences">
         <Preference
-            android:summary="Texas A&amp;M University \nTechnical University of Munich" />
+            android:summary="@string/universities" />
         <Preference
-            android:title="MISL"
-            android:summary="The Modular Integrated Stackable Layer architecture ASEP is based on"
-            android:key="linkToMisl" />
+            android:title="@string/misl"
+            android:summary="@string/mislSummary"
+            android:key="@string/preferenceKey_linkToMisl" />
         <Preference
-            android:title="Github"
-            android:summary="Source code and documentation of this app"
-            android:key="linkToGithub" />
+            android:title="@string/github"
+            android:summary="@string/linkToGithubSummary"
+            android:key="@string/preferenceKey_linkToGithub" />
         <Preference
-            android:title="Contributors"
-            android:summary="Benjamin Sautermeister \nPhilipp Fent" />
+            android:title="@string/contributorsTitle"
+            android:summary="@string/contributors" />
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="Licenses" >
+        android:title="@string/licenses" >
         <Preference
-            android:summary="Apache v2.0"/>
+            android:summary="@string/apacheLicense"/>
         <Preference
-            android:title="Open Source Licenses"
-            android:key="openSourceLicenses"/>
+            android:title="@string/openSourceLicenses"
+            android:key="@string/preferenceKey_openSourceLicenses"/>
     </PreferenceCategory>
 </PreferenceScreen>

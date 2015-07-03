@@ -80,27 +80,30 @@ public class SettingsActivity extends PreferenceActivity {
 
             addPreferencesFromResource(R.xml.fragmented_about_preferences);
 
-            findPreference("linkToMisl").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    Intent link = new Intent(Intent.ACTION_VIEW);
-                    link.setData(Uri.parse("http://eset-wiki.net/index.php?title=Modular_Integrated_Stackable_Layer"));
-                    startActivity(link);
-                    return true;
-                }
-            });
+            findPreference(getString(R.string.preferenceKey_linkToMisl))
+                    .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(Preference preference) {
+                            Intent link = new Intent(Intent.ACTION_VIEW);
+                            link.setData(Uri.parse(getString(R.string.link_misl_esetwiki)));
+                            startActivity(link);
+                            return true;
+                        }
+                    });
 
-            findPreference("linkToGithub").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    Intent link = new Intent(Intent.ACTION_VIEW);
-                    link.setData(Uri.parse("https://github.com/pfent/Android-MISL-Control"));
-                    startActivity(link);
-                    return true;
-                }
-            });
+            findPreference(getString(R.string.preferenceKey_linkToGithub))
+                    .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(Preference preference) {
+                            Intent link = new Intent(Intent.ACTION_VIEW);
+                            link.setData(Uri.parse(getString(R.string.link_github_mislcontrol)));
+                            startActivity(link);
+                            return true;
+                        }
+                    });
 
-            findPreference("openSourceLicenses").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            findPreference(getString(R.string.preferenceKey_openSourceLicenses))
+                    .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     new LicensesDialog.Builder(getActivity())

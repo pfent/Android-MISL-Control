@@ -4,18 +4,18 @@
 
     <header android:fragment="de.tum.in.mislcontrol.SettingsActivity$NetworkPrefsFragment"
         android:icon="@android:drawable/ic_popup_sync"
-        android:title="Network"
-        android:summary="Network configuration to set up the ASEP connectioin.">
+        android:title="@string/networkTitle"
+        android:summary="@string/networkSummary">
     </header>
 
     <header android:fragment="de.tum.in.mislcontrol.SettingsActivity$ControlPrefsFragment"
         android:icon="@android:drawable/ic_menu_directions"
-        android:title="Controls"
-        android:summary="Control configuration to steer ASEP.">
+        android:title="@string/controlsTitle"
+        android:summary="@string/controlsSummary">
     </header>
 
     <header android:icon="@android:drawable/ic_media_play"
-        android:title="Video Stream Sender">
+        android:title="@string/videoStreamTitle">
         <intent android:targetPackage="de.tum.in.mislcontrol"
             android:targetClass="de.tum.in.mislcontrol.VideoStreamSenderActivity" />
     </header>
@@ -23,7 +23,7 @@
     <header
         android:fragment="de.tum.in.mislcontrol.SettingsActivity$AboutPrefsFragment"
         android:icon="@android:drawable/ic_dialog_info"
-        android:title="About the app">
+        android:title="@string/aboutTitle">
     </header>
 
 </preference-headers>
