@@ -1,7 +1,5 @@
 package de.tum.in.mislcontrol;
 
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -24,10 +22,6 @@ import de.psdev.licensesdialog.LicensesDialog;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends PreferenceActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     protected boolean isValidFragment(String fragmentName) {

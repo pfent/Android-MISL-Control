@@ -1,31 +1,27 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+<!-- splash screen image -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appColorDark"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="de.tum.in.mislcontrol.StartActivity"
-    android:background="@color/appColorDark">
+    android:gravity="center"
+    tools:context="de.tum.in.mislcontrol.StartActivity">
 
-    <!-- splash screen image -->
-    <LinearLayout
+    <ImageView
         android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginBottom="12dp"
+        android:src="@drawable/misl_logo" />
+
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:src="@drawable/misl_logo"
-            android:layout_marginBottom="12dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/loadingMessage"
-            android:textColor="@color/appColorLight"
-            android:gravity="center_horizontal"/>
-    </LinearLayout>
-
-
-</RelativeLayout>
+        android:gravity="center_horizontal"
+        android:text="@string/loadingMessage"
+        android:textColor="@color/appColorLight" />
+</LinearLayout>

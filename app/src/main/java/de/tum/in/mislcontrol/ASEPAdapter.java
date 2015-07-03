@@ -2,9 +2,6 @@ package de.tum.in.mislcontrol;
 
 import android.util.Pair;
 
-import de.tum.in.mislcontrol.communication.ASEPConnector;
-import de.tum.in.mislcontrol.communication.IConnector;
-
 public class ASEPAdapter {
 
     private ASEPAdapter(){
@@ -16,7 +13,7 @@ public class ASEPAdapter {
      * @param value the desired value range -1 ~ 1
      * @return the value translated to a discrete range -6 ~ 6
      */
-    public static short translateToASEPCommand(double value) {
+    private static short translateToASEPCommand(double value) {
         if (value < -1 || value > 1) {
             throw new IllegalArgumentException(value + "not in range -1 ~ 1");
         }

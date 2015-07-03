@@ -1,32 +1,6 @@
 <resources>
     <!-- General -->
     <string name="app_name">Android-MISL-Control</string>
-    <string name="hello_world">Hello world!</string>
-
-    <!-- Data fragment -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="ch1_command">CH1 command</string>
-    <string name="ch2_command">CH2 command</string>
-    <string name="x_euler">X Euler:</string>
-    <string name="float_sample_value">0.0000</string>
-    <string name="y_euler">Y Euler:</string>
-    <string name="z_euler">Z Euler:</string>
-    <string name="x_accel">X Accel:</string>
-    <string name="y_accel">Y Accel:</string>
-    <string name="z_accel">Z Accel:</string>
-    <string name="latitude">Latitude:</string>
-    <string name="longitude">Longitude:</string>
-
-    <!-- Dialog setup wizard fragment -->
-    <string name="skip">Skip</string>
-    <string name="setup">Setup</string>
-    <string name="steering_command">Steering command</string>
-    <string name="straight_movement_command">Straight movement</string>
-
-    <!-- Google Play Services -->
-    <string name="play_services_legal_notices_title">Legal Notices</string>
-    <string name="title_activity_model3_d">Model3DActivity</string>
-    <string name="title_activity_about">AboutActivity</string>
 
     <!-- Settings -->
     <string name="title_activity_settings">Settings</string>
@@ -69,7 +43,6 @@
     <string name="wifi_pass">ASEP WiFi passphrase</string>
     <string name="preferenceKey_wifiPass">asep_wifi_pass</string>
     <string name="wifi_pass_summary">The WiFi passphrase this app tries for autoconnecting to ASEP</string>
-    <string name="wifi_hint">************</string>
     <string name="ip_address">ASEP IP address</string>
     <string name="preferenceKey_ipaddr">asep_ip</string>
     <string name="ip_address_summary">The IP address ASEP is listening on. \nDon\'t change this, if you don\'t know what you are doing</string>
@@ -81,4 +54,5 @@
     <string name="control_category">Control Settings</string>
     <string name="control_type">Control Type</string>
     <string name="control_type_summary">Select how you would like to control ASEP.</string>
+    <string name="default_acceleration">0.00 g(s)</string>
 </resources>

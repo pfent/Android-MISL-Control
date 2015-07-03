@@ -8,11 +8,11 @@ import android.view.animation.Transformation;
  * A simple resize animation that can be applied to a view.
  */
 public class ResizeAnimation extends Animation {
-    private int targetWidth;
-    private int startWidth;
-    private int targetHeight;
-    private int startHeight;
-    private View view;
+    private final int targetWidth;
+    private final int startWidth;
+    private final int targetHeight;
+    private final int startHeight;
+    private final View view;
 
     public ResizeAnimation(View view, int targetWidth, int targetHeight)
     {

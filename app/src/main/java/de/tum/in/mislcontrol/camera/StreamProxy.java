@@ -95,7 +95,7 @@ public class StreamProxy implements Runnable {
     private static class StreamToMediaPlayerTask extends AsyncTask<String, Void, Integer> {
 
         String localPath;
-        Socket client;
+        final Socket client;
         int cbSkip;
 
         public StreamToMediaPlayerTask(Socket client) {
@@ -148,13 +148,13 @@ public class StreamProxy implements Runnable {
             localPath = urlLine;
 
             // See if there's a "Range:" header
-            for (int i=0 ; i<headerLines.length ; i++) {
-                String headerLine = headerLines[i];
+            for (String headerLine1 : headerLines) {
+                String headerLine = headerLine1;
                 if (headerLine.startsWith("Range: bytes=")) {
                     headerLine = headerLine.substring(13);
                     charPos = headerLine.indexOf('-');
-                    if (charPos>0) {
-                        headerLine = headerLine.substring(0,charPos);
+                    if (charPos > 0) {
+                        headerLine = headerLine.substring(0, charPos);
                     }
                     cbSkip = Integer.parseInt(headerLine);
                 }

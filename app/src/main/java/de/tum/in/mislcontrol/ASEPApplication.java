@@ -2,8 +2,6 @@ package de.tum.in.mislcontrol;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 /**
  * The android application class of the app.

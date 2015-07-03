@@ -30,7 +30,7 @@ public class StartActivity extends FragmentActivity {
     /**
      * The ASEP connector.
      */
-    private IConnector connector = new ASEPConnector();
+    private final IConnector connector = new ASEPConnector();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

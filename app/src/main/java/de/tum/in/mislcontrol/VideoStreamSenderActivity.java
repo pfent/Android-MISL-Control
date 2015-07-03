@@ -29,9 +29,9 @@ public class VideoStreamSenderActivity extends AppCompatActivity {
     TextView connectionStatus;
 
     private MediaRecorder recorder;
-    public static String SERVERIP = "192.168.1.123";
+    public static final String SERVERIP = "192.168.1.123";
     public static final int SERVERPORT = 6789;
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
     private ServerSocket serverSocket;
 
     private Camera camera;

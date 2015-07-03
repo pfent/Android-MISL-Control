@@ -27,7 +27,7 @@ public class JoystickView extends SurfaceView implements IRenderable, IInputCont
     /**
      * The joystick control model.
      */
-    private ControlModel model;
+    private final ControlModel model;
 
     /**
      * The joystick controller.

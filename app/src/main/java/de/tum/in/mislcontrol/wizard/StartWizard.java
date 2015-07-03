@@ -1,7 +1,5 @@
 package de.tum.in.mislcontrol.wizard;
 
-import android.widget.Button;
-
 import org.codepond.wizardroid.WizardFlow;
 import org.codepond.wizardroid.layouts.BasicWizardLayout;
 

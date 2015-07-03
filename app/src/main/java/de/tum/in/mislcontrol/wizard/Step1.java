@@ -1,18 +1,14 @@
 package de.tum.in.mislcontrol.wizard;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.codepond.wizardroid.WizardStep;
 
-import de.tum.in.mislcontrol.MainActivity;
 import de.tum.in.mislcontrol.R;
 
 public class Step1 extends WizardStep {

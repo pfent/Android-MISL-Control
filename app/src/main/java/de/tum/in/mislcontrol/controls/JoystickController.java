@@ -1,6 +1,5 @@
 package de.tum.in.mislcontrol.controls;
 
-import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.View;
 

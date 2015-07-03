@@ -10,12 +10,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
 import de.tum.in.mislcontrol.camera.StreamProxy;
 
@@ -32,7 +29,7 @@ public class VideoStreamReceiverFragment extends Fragment implements SurfaceHold
     public static final int SERVERPORT = 6789;
     public static String SERVERIP = "192.168.178.53"; // TODO: use port from settings! Differs from device to device!
 
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
     StreamProxy streamProxy;
 

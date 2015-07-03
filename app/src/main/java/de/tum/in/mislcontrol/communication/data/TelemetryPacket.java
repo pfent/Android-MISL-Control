@@ -7,7 +7,7 @@ import java.nio.ByteOrder;
  * The ASEP telemetry packet.
  */
 public class TelemetryPacket implements IPacket {
-    private byte[] data = {
+    private final byte[] data = {
             0x02, 0x03, //Packet Version
             0x00, 0x40, //Size = 64
             0x00, 0x00, //Recieve SeqCnt

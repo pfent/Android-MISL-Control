@@ -36,7 +36,7 @@ public class ASEPConnector implements IConnector {
     private static InetAddress inetAddress;
     private OnTelemetryReceivedListener receiver;
     private IInputController inputController;
-    private CommandPacket sending = new CommandPacket();
+    private final CommandPacket sending = new CommandPacket();
     private DatagramSocket sock;
     private ScheduledExecutorService schedulerService;
     private boolean listening = false;

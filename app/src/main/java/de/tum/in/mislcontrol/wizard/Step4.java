@@ -2,7 +2,6 @@ package de.tum.in.mislcontrol.wizard;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
