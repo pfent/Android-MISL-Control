@@ -20,4 +20,19 @@ public class MathHelper {
             value = max;
         return value;
     }
+
+    /**
+     * Enables interpolation using an exponential filtering.
+     * @param currentValue The current value.
+     * @param targetValue The target value.
+     * @param alpha The alpha value
+     * @return The filtered value.
+     */
+    public static double exponentialFilter(double currentValue, double targetValue, double alpha) {
+        if (currentValue == targetValue)
+            return currentValue;
+
+        double delta = targetValue - currentValue;
+        return currentValue + delta * alpha;
+    }
 }
