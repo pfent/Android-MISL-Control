@@ -75,7 +75,7 @@ public class Step4 extends WizardStep {
                 delayedActionHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
                         startActivity(intent);
                     }
                 }, 2000);

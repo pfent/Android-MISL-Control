@@ -56,36 +56,39 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
         // add fragments
         if (savedInstanceState == null) {
 
-            View dataContainer = findViewById(R.id.accelerometerDataContainer);
-            if (dataContainer != null) {
-                dataFragment = new AccelerometerDataFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.accelerometerDataContainer, dataFragment)
-                        .commit();
-            }
 
-            // check if layout has a container for the map
-            if (findViewById(R.id.mapContainer) != null) {
-                OpenStreetMapsFragment mapFragment = OpenStreetMapsFragment.newInstance(19, 30.617326, -96.341768); // Texas A&M
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.mapContainer, mapFragment)
-                        .commit();
-                mapView = mapFragment;
-            }
-
-            if (findViewById(R.id.model3dContainer) != null) {
-                Model3DFragment model3DFragment = new Model3DFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.model3dContainer, model3DFragment)
-                        .commit();
-                model3dView = model3DFragment;
-            }
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        View dataContainer = findViewById(R.id.accelerometerDataContainer);
+        if (dataContainer != null) {
+            dataFragment = new AccelerometerDataFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.accelerometerDataContainer, dataFragment)
+                    .commit();
+        }
+
+        // check if layout has a container for the map
+        if (findViewById(R.id.mapContainer) != null) {
+            OpenStreetMapsFragment mapFragment = OpenStreetMapsFragment.newInstance(19, 30.617326, -96.341768); // Texas A&M
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.mapContainer, mapFragment)
+                    .commit();
+            mapView = mapFragment;
+        }
+
+        if (findViewById(R.id.model3dContainer) != null) {
+            Model3DFragment model3DFragment = new Model3DFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.model3dContainer, model3DFragment)
+                    .commit();
+            model3dView = model3DFragment;
+        }
+
         connection.start();
 
         addOrReplaceControlView();
