@@ -45,7 +45,7 @@ public interface IConnector {
      * Checks the connection to the ASEP robot.
      * @return Returns true when the connection to the ASEP robot has been established, else false.
      */
-    boolean checkConnection(Context context);
+    boolean checkConnection();
 
     /**
      * Sets the telemetry receiver callback function.

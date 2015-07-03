@@ -1,6 +1,5 @@
 package de.tum.in.mislcontrol.communication;
 
-import android.content.Context;
 import android.os.Handler;
 
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
@@ -187,7 +186,7 @@ public class MockConnector implements IConnector {
     }
 
     @Override
-    public boolean checkConnection(Context context) {
+    public boolean checkConnection() {
         return true;
     }
 

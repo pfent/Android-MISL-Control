@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
     /**
      * The connection to ASEP.
      */
-    private final IConnector connection = new ASEPConnector();
+    private final IConnector connection = new ASEPConnector(this);
 
     /**
      * The input controller to steer ASEP.

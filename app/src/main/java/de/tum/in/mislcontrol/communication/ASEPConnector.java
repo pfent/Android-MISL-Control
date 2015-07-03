@@ -1,8 +1,10 @@
 package de.tum.in.mislcontrol.communication;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
 
@@ -19,6 +21,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import de.tum.in.mislcontrol.ASEPAdapter;
+import de.tum.in.mislcontrol.R;
 import de.tum.in.mislcontrol.communication.data.CommandPacket;
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 import de.tum.in.mislcontrol.controls.IInputController;
@@ -29,14 +32,16 @@ import de.tum.in.mislcontrol.math.Vector2D;
  */
 public class ASEPConnector implements IConnector {
     //TODO use preferences
-    private static final int DEFAULT_PORT = 30190;
-    private static final byte[] DEFAULT_BYTE_ADDRESS = {(byte) 192, (byte) 168, (byte) 16, (byte) 254};
-    public static final String WIFI_SSID = "MISL_ROBOT_WPA";
-
+    private static final int FALLBACK_PORT = 30190;
+    private int port = FALLBACK_PORT;
+    private static final String FALLBACK_SSID = "MISL_ROBOT_WPA";
+    public  String WIFI_SSID = FALLBACK_SSID;
+    private static final String FALLBACK_IP = "192.168.16.254";
     private static InetAddress inetAddress;
     private OnTelemetryReceivedListener receiver;
     private IInputController inputController;
     private final CommandPacket sending = new CommandPacket();
+    private final Context context;
     private DatagramSocket sock;
     private ScheduledExecutorService schedulerService;
     private boolean listening = false;
@@ -44,14 +49,22 @@ public class ASEPConnector implements IConnector {
 
     /**
      * Creates a ASEP connector instance to send commands and receive status information.
+     *
+     * @param context the current context
      */
-    public ASEPConnector() {
+    public ASEPConnector(Context context) {
+        this.context = context;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        port = prefs.getInt(context.getString(R.string.preferenceKey_port), FALLBACK_PORT);
+        WIFI_SSID = prefs.getString(context.getString(R.string.preferenceKey_ssid), FALLBACK_SSID);
         try {
-            inetAddress = InetAddress.getByAddress(DEFAULT_BYTE_ADDRESS);
+            String address = prefs.getString(context.getString(R.string.preferenceKey_ipaddr),
+                    FALLBACK_IP);
+            inetAddress = InetAddress.getByName(address);
             //explicitly set SO_REUSEADDR, so we don't get EADDRINUSE
             sock = new DatagramSocket(null);
             sock.setReuseAddress(true);
-            sock.bind(new InetSocketAddress(DEFAULT_PORT));
+            sock.bind(new InetSocketAddress(port));
             sock.setSoTimeout(DEFAULT_TIMEOUT);
         } catch (UnknownHostException | SocketException e) {
             Log.e("ASEPConnector", "Unexpected Exception while initializing", e);
@@ -78,7 +91,7 @@ public class ASEPConnector implements IConnector {
         //sending.increaseSeqCnt();
         sending.calculateChecksum();
         DatagramPacket command =
-                new DatagramPacket(sending.getData(), sending.getLength(), inetAddress, DEFAULT_PORT);
+                new DatagramPacket(sending.getData(), sending.getLength(), inetAddress, port);
         sock.send(command);
     }
 
@@ -146,13 +159,12 @@ public class ASEPConnector implements IConnector {
     @Override
     public synchronized void stop() {
         listening = false;
-        if(schedulerService != null)
+        if (schedulerService != null)
             schedulerService.shutdown();
     }
 
     @Override
-    public boolean checkConnection(Context context) {
-
+    public boolean checkConnection() {
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         return wifiInfo != null && wifiInfo.getSSID() != null &&

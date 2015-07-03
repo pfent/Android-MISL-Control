@@ -30,7 +30,7 @@ public class StartActivity extends FragmentActivity {
     /**
      * The ASEP connector.
      */
-    private final IConnector connector = new ASEPConnector();
+    private final IConnector connector = new ASEPConnector(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class StartActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_start);
-        if (connector.checkConnection(this)) {
+        if (connector.checkConnection()) {
             // auto forward to main activity
             delayedActionHandler.postDelayed(new Runnable() {
                 @Override
