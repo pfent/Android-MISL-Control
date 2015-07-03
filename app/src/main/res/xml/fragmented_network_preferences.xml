@@ -3,6 +3,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:title="Network Settings">
-
+        <EditTextPreference
+            android:title="ASEP WiFi SSID"
+            android:key="asep_wifi_ssid"
+            android:summary="The WiFi SSID this app tries to connect to"
+            android:hint="TODO" /> <!-- TODO -->
+        <EditTextPreference
+            android:title="ASEP WiFi passphrase"
+            android:key="asep_wifi_pass"
+            android:summary="The WiFi passphrase this app tries for autoconnecting to ASEP"
+            android:hint="************"
+            android:inputType="textPassword" />
+        <EditTextPreference
+            android:title="ASEP IP address"
+            android:key="asep_ip"
+            android:summary="The IP address ASEP is listening on. \nDon't change this, if you don't know what you are doing"
+            android:hint="TODO" /> <!-- TODO -->
+        <EditTextPreference
+            android:title="ASEP port"
+            android:key="asep_port"
+            android:summary="The network port ASEP is listening on. \nDon't change this, if you don't know what you are doing"
+            android:hint="TODO"/>
     </PreferenceCategory>
 </PreferenceScreen>
