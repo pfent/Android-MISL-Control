@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
                     dataFragment.setAcceleration(packet.getXAccel(), packet.getYAccel(), packet.getZAccel());
                 }
                 if(mapView != null && (packet.getLatitude() != 0 || packet.getLongitude() != 0)) {
-                    mapView.addRouteLocation(packet.getLatitude(), packet.getLatitude());
+                    mapView.addRouteLocation(packet.getLatitude(), packet.getLongitude());
                 }
 
                 if (model3dView != null) {
