@@ -1,11 +1,16 @@
 package de.tum.in.mislcontrol;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
 import java.util.List;
+
+import de.psdev.licensesdialog.LicensesDialog;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -68,16 +73,45 @@ public class SettingsActivity extends PreferenceActivity {
         }
     }
 
-    /**
-     * This fragment shows the preferences for the first header.
-     */
-    public static class TestPrefsFragment extends PreferenceFragment {
+    public static class AboutPrefsFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            // Load the preferences from an XML resource
-            addPreferencesFromResource(R.xml.fragmented_preferences);
+            addPreferencesFromResource(R.xml.fragmented_about_preferences);
+
+            findPreference("linkToMisl").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent link = new Intent(Intent.ACTION_VIEW);
+                    link.setData(Uri.parse("http://eset-wiki.net/index.php?title=Modular_Integrated_Stackable_Layer"));
+                    startActivity(link);
+                    return true;
+                }
+            });
+
+            findPreference("linkToGithub").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent link = new Intent(Intent.ACTION_VIEW);
+                    link.setData(Uri.parse("https://github.com/pfent/Android-MISL-Control"));
+                    startActivity(link);
+                    return true;
+                }
+            });
+
+            findPreference("openSourceLicenses").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    new LicensesDialog.Builder(getActivity())
+                            .setNotices(R.raw.notices)
+                            .build().show();
+                    return true;
+                }
+            });
         }
+
+
     }
+
 }
