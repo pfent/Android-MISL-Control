@@ -7,22 +7,22 @@
             android:title="@string/wifi_ssid"
             android:key="@string/preferenceKey_ssid"
             android:summary="@string/wifi_ssid_summary"
-            android:hint="TODO" /> <!-- TODO -->
+            android:defaultValue="MISL_ROBOT_WPA" />
         <EditTextPreference
             android:title="@string/wifi_pass"
             android:key="@string/preferenceKey_wifiPass"
             android:summary="@string/wifi_pass_summary"
-            android:hint="@string/wifi_hint"
+            android:defaultValue="password"
             android:inputType="textPassword" />
         <EditTextPreference
             android:title="@string/ip_address"
             android:key="@string/preferenceKey_ipaddr"
             android:summary="@string/ip_address_summary"
-            android:hint="TODO" /> <!-- TODO -->
+            android:defaultValue="192.168.16.254"/>
         <EditTextPreference
             android:title="@string/network_port"
             android:key="@string/preferenceKey_port"
             android:summary="@string/network_port_summary"
-            android:hint="TODO"/>
+            android:defaultValue="30190"/>
     </PreferenceCategory>
 </PreferenceScreen>

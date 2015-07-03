@@ -51,10 +51,8 @@
     <string name="preferenceKey_openSourceLicenses">openSourceLicenses</string>
     <string name="contributors">Benjamin Sautermeister \nPhilipp Fent</string>
     <string name="contributorsTitle">Contributors</string>
-    <string name="preferenceKey_linkToGithub">linkToGithub</string>
     <string name="linkToGithubSummary">Source code and documentation of this app</string>
     <string name="github">Github</string>
-    <string name="preferenceKey_linkToMisl">linkToMisl</string>
     <string name="mislSummary">The Modular Integrated Stackable Layer architecture ASEP is based on</string>
     <string name="misl">MISL</string>
     <string name="universities"><![CDATA[Texas A&M University \nTechnical University of Munich]]></string>
@@ -80,4 +78,7 @@
     <string name="network_port_summary">The network port ASEP is listening on. \nDon\'t change this, if you don\'t know what you are doing</string>
     <string name="link_misl_esetwiki">http://eset-wiki.net/index.php?title=Modular_Integrated_Stackable_Layer</string>
     <string name="link_github_mislcontrol">https://github.com/pfent/Android-MISL-Control</string>
+    <string name="control_category">Control Settings</string>
+    <string name="control_type">Control Type</string>
+    <string name="control_type_summary">Select how you would like to control ASEP.</string>
 </resources>

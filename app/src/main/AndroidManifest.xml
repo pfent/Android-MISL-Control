@@ -50,14 +50,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AboutActivity"
-            android:label="@string/title_activity_about"
-            android:parentActivityName=".SettingsActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.tum.in.mislcontrol.SettingsActivity" />
-        </activity>
-        <activity
             android:name=".VideoStreamSenderActivity"
             android:label="@string/title_activity_video_steam_sender"
             android:parentActivityName=".SettingsActivity" >

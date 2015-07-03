@@ -28,6 +28,7 @@ import de.tum.in.mislcontrol.math.Vector2D;
  * The ASEP connector implementations to send commands and receive status information.
  */
 public class ASEPConnector implements IConnector {
+    //TODO use preferences
     private static final int DEFAULT_PORT = 30190;
     private static final byte[] DEFAULT_BYTE_ADDRESS = {(byte) 192, (byte) 168, (byte) 16, (byte) 254};
     public static final String WIFI_SSID = "MISL_ROBOT_WPA";

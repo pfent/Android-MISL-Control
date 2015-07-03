@@ -1,6 +1,6 @@
 package de.tum.in.mislcontrol;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -80,38 +80,16 @@ public class SettingsActivity extends PreferenceActivity {
 
             addPreferencesFromResource(R.xml.fragmented_about_preferences);
 
-            findPreference(getString(R.string.preferenceKey_linkToMisl))
-                    .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                        @Override
-                        public boolean onPreferenceClick(Preference preference) {
-                            Intent link = new Intent(Intent.ACTION_VIEW);
-                            link.setData(Uri.parse(getString(R.string.link_misl_esetwiki)));
-                            startActivity(link);
-                            return true;
-                        }
-                    });
-
-            findPreference(getString(R.string.preferenceKey_linkToGithub))
-                    .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                        @Override
-                        public boolean onPreferenceClick(Preference preference) {
-                            Intent link = new Intent(Intent.ACTION_VIEW);
-                            link.setData(Uri.parse(getString(R.string.link_github_mislcontrol)));
-                            startActivity(link);
-                            return true;
-                        }
-                    });
-
             findPreference(getString(R.string.preferenceKey_openSourceLicenses))
                     .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    new LicensesDialog.Builder(getActivity())
-                            .setNotices(R.raw.notices)
-                            .build().show();
-                    return true;
-                }
-            });
+                        @Override
+                        public boolean onPreferenceClick(Preference preference) {
+                            new LicensesDialog.Builder(getActivity())
+                                    .setNotices(R.raw.notices)
+                                    .build().show();
+                            return true;
+                        }
+                    });
         }
 
 

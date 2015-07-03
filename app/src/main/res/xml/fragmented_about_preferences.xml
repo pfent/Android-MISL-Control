@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
-        android:title="@string/aboutPreferences">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/aboutPreferences">
+        <Preference android:summary="@string/universities" />
         <Preference
-            android:summary="@string/universities" />
-        <Preference
-            android:title="@string/misl"
             android:summary="@string/mislSummary"
-            android:key="@string/preferenceKey_linkToMisl" />
+            android:title="@string/misl">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/link_misl_esetwiki" />
+        </Preference>
         <Preference
-            android:title="@string/github"
             android:summary="@string/linkToGithubSummary"
-            android:key="@string/preferenceKey_linkToGithub" />
+            android:title="@string/github">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/link_github_mislcontrol" />
+        </Preference>
         <Preference
-            android:title="@string/contributorsTitle"
-            android:summary="@string/contributors" />
+            android:summary="@string/contributors"
+            android:title="@string/contributorsTitle" />
     </PreferenceCategory>
-    <PreferenceCategory
-        android:title="@string/licenses" >
+    <PreferenceCategory android:title="@string/licenses">
+        <Preference android:summary="@string/apacheLicense" />
         <Preference
-            android:summary="@string/apacheLicense"/>
-        <Preference
-            android:title="@string/openSourceLicenses"
-            android:key="@string/preferenceKey_openSourceLicenses"/>
+            android:key="@string/preferenceKey_openSourceLicenses"
+            android:title="@string/openSourceLicenses" />
     </PreferenceCategory>
 </PreferenceScreen>

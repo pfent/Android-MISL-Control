@@ -3,16 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="Control Settings">
+        android:title="@string/control_category">
 
         <ListPreference
             android:key="@string/setting_controlType_key"
-            android:title="Control Type"
-            android:summary="Select how you would like to control ASEP."
+            android:title="@string/control_type"
+            android:summary="@string/control_type_summary"
             android:defaultValue="@string/setting_controlType_joystick"
             android:entries="@array/controlTypeArray"
             android:entryValues="@array/controlTypeValues"
-            android:dialogTitle="Control Type" />
+            android:dialogTitle="@string/control_type" />
 
     </PreferenceCategory>
 
