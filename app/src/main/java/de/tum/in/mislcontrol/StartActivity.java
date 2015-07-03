@@ -27,15 +27,10 @@ public class StartActivity extends FragmentActivity {
      */
     private final Handler delayedActionHandler = new Handler();
 
-    /**
-     * The ASEP connector.
-     */
-    private final IConnector connector = new ASEPConnector(this);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(savedInstanceState);
+        IConnector connector = new ASEPConnector(this);
 
         setContentView(R.layout.activity_start);
         if (connector.checkConnection()) {

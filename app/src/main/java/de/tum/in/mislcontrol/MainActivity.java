@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
     /**
      * The connection to ASEP.
      */
-    private final IConnector connection = new ASEPConnector(this);
+    private IConnector connection;
 
     /**
      * The input controller to steer ASEP.
@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        connection = new ASEPConnector(this);
         setContentView(R.layout.activity_main);
     }
 

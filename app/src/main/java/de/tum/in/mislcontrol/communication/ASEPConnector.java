@@ -32,10 +32,10 @@ import de.tum.in.mislcontrol.math.Vector2D;
  */
 public class ASEPConnector implements IConnector {
     //TODO use preferences
-    private static final int FALLBACK_PORT = 30190;
-    private int port = FALLBACK_PORT;
+    private static final String FALLBACK_PORT = "30190";
+    private int port = Integer.parseInt(FALLBACK_PORT);
     private static final String FALLBACK_SSID = "MISL_ROBOT_WPA";
-    public  String WIFI_SSID = FALLBACK_SSID;
+    public static String WIFI_SSID = FALLBACK_SSID;
     private static final String FALLBACK_IP = "192.168.16.254";
     private static InetAddress inetAddress;
     private OnTelemetryReceivedListener receiver;
@@ -55,7 +55,8 @@ public class ASEPConnector implements IConnector {
     public ASEPConnector(Context context) {
         this.context = context;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        port = prefs.getInt(context.getString(R.string.preferenceKey_port), FALLBACK_PORT);
+        port = Integer.parseInt(prefs.getString(context.getString(R.string.preferenceKey_port),
+                FALLBACK_PORT));
         WIFI_SSID = prefs.getString(context.getString(R.string.preferenceKey_ssid), FALLBACK_SSID);
         try {
             String address = prefs.getString(context.getString(R.string.preferenceKey_ipaddr),

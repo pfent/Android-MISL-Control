@@ -23,6 +23,7 @@
             android:title="@string/network_port"
             android:key="@string/preferenceKey_port"
             android:summary="@string/network_port_summary"
+            android:numeric="integer"
             android:defaultValue="30190"/>
     </PreferenceCategory>
 </PreferenceScreen>
