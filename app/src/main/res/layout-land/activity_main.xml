@@ -1,47 +1,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal"
-    tools:context=".MainActivity" tools:ignore="MergeRootFrame"
-    android:weightSum="100">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:weightSum="100"
+    tools:context=".MainActivity"
+    tools:ignore="MergeRootFrame">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="40"
         android:orientation="vertical"
-        android:layout_weight="40">
+        android:padding="5dp">
+
         <FrameLayout
+            android:id="@+id/mapContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:id="@+id/mapContainer"/>
+            android:layout_weight="1" />
+
         <FrameLayout
+            android:id="@+id/accelerometerDataContainer"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/accelerometerDataContainer"/>
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="60"
         android:orientation="vertical"
-        android:weightSum="100"
-        android:layout_weight="60">
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="40"
-            android:id="@+id/model3dContainer"/>
+        android:padding="5dp"
+        android:weightSum="100">
 
         <FrameLayout
+            android:id="@+id/model3dContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="60"
-            android:id="@+id/controlContainer"/>
+            android:layout_weight="40" />
+
+        <FrameLayout
+            android:id="@+id/controlContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="60" />
     </LinearLayout>
-
-
-
 
 
 </LinearLayout>
