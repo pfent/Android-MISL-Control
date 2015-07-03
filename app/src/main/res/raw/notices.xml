@@ -1,0 +1,35 @@
+<notices>
+    <notice>
+        <name>Android Support Libraries</name>
+        <copyright>Copyright (C) 2012 The Android Open Source Project</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>osmdroid - OpenStreetMap-Tools for Android</name>
+        <url>https://github.com/osmdroid/osmdroid</url>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>WizarDroid</name>
+        <url>https://github.com/Nimrodda/WizarDroid</url>
+        <copyright>Copyright (c) 2013 Nimrod Dayan (CodePond.org)</copyright>
+        <license>MIT License</license>
+    </notice>
+    <notice>
+        <name>SLF4J Android</name>
+        <url>http://www.slf4j.org/android/</url>
+        <copyright>Copyright (c) 2004-2013 QOS.ch</copyright>
+        <license>MIT License</license>
+    </notice>
+    <notice>
+        <name>LicensesDialog</name>
+        <url>https://github.com/PSDev/LicensesDialog</url>
+        <copyright>Copyright 2013 Philip Schiffer</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Icons</name>
+        <copyright>Thomas Le Bas, Bjoern Andersson</copyright>
+        <url>https://creativecommons.org/licenses/by/3.0/us/</url>
+    </notice>
+</notices>
