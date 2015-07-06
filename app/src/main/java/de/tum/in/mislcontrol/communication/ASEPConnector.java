@@ -31,16 +31,17 @@ import de.tum.in.mislcontrol.math.Vector2D;
  * The ASEP connector implementations to send commands and receive status information.
  */
 public class ASEPConnector implements IConnector {
-    private static final String FALLBACK_PORT = "30190";
-    private int port = Integer.parseInt(FALLBACK_PORT);
-    private static final String FALLBACK_SSID = "MISL_ROBOT_WPA";
+    private static final String FALLBACK_PORT = "30190",
+            FALLBACK_SSID = "MISL_ROBOT_WPA",
+            FALLBACK_IP = "192.168.16.254";
     public static String WIFI_SSID = FALLBACK_SSID;
-    private static final String FALLBACK_IP = "192.168.16.254";
     private static InetAddress inetAddress;
-    private OnTelemetryReceivedListener receiver;
-    private IInputController inputController;
     private final CommandPacket sending = new CommandPacket();
     private final Context context;
+    private final Object sockLock = new Object();
+    private int port = Integer.parseInt(FALLBACK_PORT);
+    private OnTelemetryReceivedListener receiver;
+    private IInputController inputController;
     private DatagramSocket sock;
     private ScheduledExecutorService schedulerService;
     private boolean listening = false;
@@ -134,7 +135,9 @@ public class ASEPConnector implements IConnector {
                         TelemetryPacket nextTelemetry = new TelemetryPacket();
                         DatagramPacket packet =
                                 new DatagramPacket(nextTelemetry.getData(), nextTelemetry.getLength());
-                        sock.receive(packet);
+                        synchronized (sockLock) {
+                            sock.receive(packet);
+                        }
 
                         //ignore sequence count, since ASEP does not update them
                         timedOut = false;
@@ -146,7 +149,7 @@ public class ASEPConnector implements IConnector {
                             receiver.onTelemetryTimedOut();
                         }
                     } catch (IOException e) {
-                        Log.e("ASEPConnector", "Unexpected Exception while recieving", e); // FIXME: what else can we do here? We get a SocketException every time when we close the app. We should stop the thread safely :)
+                        Log.e("ASEPConnector", "Unexpected Exception while recieving", e);
                     }
                 }
             }
@@ -182,7 +185,9 @@ public class ASEPConnector implements IConnector {
     public void close() {
         stop();
         if (sock != null) {
-            sock.close();
+            synchronized (sockLock) {
+                sock.close();
+            }
         }
     }
 }

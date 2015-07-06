@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
             @Override
             public void run() {
                 Toast.makeText(getApplicationContext(),
-                        "Connection timed out.\n Is ASEP still in range?", Toast.LENGTH_LONG).show();
+                        getString(R.string.connection_timeout), Toast.LENGTH_LONG).show();
             }
         });
     }
