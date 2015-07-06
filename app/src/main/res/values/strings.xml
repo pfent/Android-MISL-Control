@@ -55,4 +55,5 @@
     <string name="control_type">Control Type</string>
     <string name="control_type_summary">Select how you would like to control ASEP.</string>
     <string name="default_acceleration">0.00 g(s)</string>
+    <string name="wizard_intro">Make sure batteries are charged and plugged in for both ASEP and your device</string>
 </resources>

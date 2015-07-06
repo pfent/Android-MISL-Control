@@ -13,7 +13,7 @@ public class MockConnector implements IConnector {
 
     IInputController inputController;
 
-    float latitude = 0, longitude = 0;
+    float latitude = 30.617326f, longitude = -96.341768f;
 
     /**
      * The first few packets from Hectors packetdump

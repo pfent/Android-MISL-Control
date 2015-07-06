@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
         super.onResume();
 
         View dataContainer = findViewById(R.id.accelerometerDataContainer);
-        if (dataContainer != null) {
+        if (dataContainer != null && dataFragment == null) {
             dataFragment = new AccelerometerDataFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.accelerometerDataContainer, dataFragment)
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
         }
 
         // check if layout has a container for the map
-        if (findViewById(R.id.mapContainer) != null) {
+        if (findViewById(R.id.mapContainer) != null && mapView == null) {
             OpenStreetMapsFragment mapFragment = OpenStreetMapsFragment.newInstance(19, 30.617326, -96.341768); // Texas A&M
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.mapContainer, mapFragment)
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
             mapView = mapFragment;
         }
 
-        if (findViewById(R.id.model3dContainer) != null) {
+        if (findViewById(R.id.model3dContainer) != null && model3dView == null) {
             Model3DFragment model3DFragment = new Model3DFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.model3dContainer, model3DFragment)

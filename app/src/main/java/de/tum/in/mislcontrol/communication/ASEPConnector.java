@@ -31,7 +31,6 @@ import de.tum.in.mislcontrol.math.Vector2D;
  * The ASEP connector implementations to send commands and receive status information.
  */
 public class ASEPConnector implements IConnector {
-    //TODO use preferences
     private static final String FALLBACK_PORT = "30190";
     private int port = Integer.parseInt(FALLBACK_PORT);
     private static final String FALLBACK_SSID = "MISL_ROBOT_WPA";
@@ -115,11 +114,8 @@ public class ASEPConnector implements IConnector {
                         Vector2D direction = inputController.getValue();
                         Pair<Short, Short> channels = ASEPAdapter.drive(direction.getX(), direction.getY());
                         setCommand(channels.first, channels.second);
-                        //Log.d("ASEPConnector", "Joystick returned x:" + direction.getX() + ", y:" + direction.getY());
                     }
                     sendCommand(ch1, ch2);
-                    Log.d("ASEPConnector", "Sent command ch1:" + ch1 + ", ch2:" + ch2);
-
                 } catch (IOException e) {
                     Log.e("ASEPConnector", "Unexpected Exception while sending", e);
                 }
