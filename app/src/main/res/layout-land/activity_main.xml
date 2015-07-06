@@ -1,54 +1,88 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
-    android:orientation="horizontal"
-    android:weightSum="100"
     tools:context=".MainActivity"
     tools:ignore="MergeRootFrame">
-
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="40"
-        android:orientation="vertical"
-        android:padding="5dp">
-
-        <FrameLayout
-            android:id="@+id/mapContainer"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <FrameLayout
-            android:id="@+id/accelerometerDataContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:layout_gravity="center_horizontal" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="60"
-        android:orientation="vertical"
-        android:padding="5dp"
+        android:orientation="horizontal"
         android:weightSum="100">
 
-        <FrameLayout
-            android:id="@+id/model3dContainer"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="40" />
+            android:layout_height="match_parent"
+            android:layout_weight="40"
+            android:orientation="vertical"
+            android:padding="5dp">
 
-        <FrameLayout
-            android:id="@+id/controlContainer"
+            <FrameLayout
+                android:id="@+id/mapContainer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <FrameLayout
+                android:id="@+id/accelerometerDataContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="60" />
+            android:layout_height="match_parent"
+            android:layout_weight="60"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:weightSum="100">
+
+            <FrameLayout
+                android:id="@+id/model3dContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="40" />
+
+            <FrameLayout
+                android:id="@+id/controlContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="60" />
+        </LinearLayout>
+
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="6dp">
+        <TextView
+            android:layout_width="wrap_content" android:textColor="#FF0000"
+            android:layout_height="wrap_content" android:text="EulerX: " />
+        <TextView
+            android:layout_width="wrap_content" android:textColor="#FF0000"
+            android:layout_height="wrap_content" android:id="@+id/textViewEulerX" android:text="-"
+            android:textSize="14pt" />
+        <TextView
+            android:layout_width="wrap_content" android:textColor="#FF0000"
+            android:layout_height="wrap_content" android:text="EulerY: " />
+        <TextView
+            android:layout_width="wrap_content" android:textColor="#FF0000"
+            android:layout_height="wrap_content" android:id="@+id/textViewEulerY" android:text="-"
+            android:textSize="14pt"/>
+        <TextView
+            android:layout_width="wrap_content" android:textColor="#FF0000"
+            android:layout_height="wrap_content" android:text="EulerZ: " />
+        <TextView
+            android:layout_width="wrap_content" android:textColor="#FF0000"
+            android:layout_height="wrap_content" android:id="@+id/textViewEulerZ" android:text="123"
+            android:textSize="14pt"/>
+    </LinearLayout>
 
-</LinearLayout>
-
+</RelativeLayout>

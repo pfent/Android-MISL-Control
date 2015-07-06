@@ -9,11 +9,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import de.tum.in.mislcontrol.communication.ASEPConnector;
 import de.tum.in.mislcontrol.communication.IConnector;
-import de.tum.in.mislcontrol.communication.MockConnector;
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 import de.tum.in.mislcontrol.controls.IInputController;
 import de.tum.in.mislcontrol.controls.JoystickView;
@@ -144,6 +144,14 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
                 if (model3dView != null) {
                     model3dView.setRotation(packet.getXEuler(), packet.getZEuler(), packet.getYEuler());
                 }
+
+                TextView textViewX = (TextView)findViewById(R.id.textViewEulerX);
+                TextView textViewY = (TextView)findViewById(R.id.textViewEulerY);
+                TextView textViewZ = (TextView)findViewById(R.id.textViewEulerZ);
+
+                textViewX.setText(String.format("%.5f", packet.getXEuler()));
+                textViewY.setText(String.format("%.5f", packet.getYEuler()));
+                textViewZ.setText(String.format("%.5f", packet.getZEuler()));
             }
         });
     }
