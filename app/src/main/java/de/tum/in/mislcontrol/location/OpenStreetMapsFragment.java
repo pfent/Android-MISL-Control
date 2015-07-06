@@ -93,6 +93,14 @@ public class OpenStreetMapsFragment extends Fragment implements IMapView {
         return rootView;
     }
 
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if(mMapView != null)
+            mMapView.getTileProvider().detach();
+    }
+
     @Override
     public void resetCamera() {
         mMapController.setZoom(initialZoomLevel);
