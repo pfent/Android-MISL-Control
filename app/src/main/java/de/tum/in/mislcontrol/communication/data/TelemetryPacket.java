@@ -95,4 +95,37 @@ public class TelemetryPacket implements IPacket {
         data[38] = raw[2];
         data[39] = raw[3];
     }
+
+    /**
+     * only to be used for mocking!
+     */
+    public void setXEuler(float radianAngle) {
+        byte[] raw = ByteBuffer.allocate(4).putFloat(radianAngle).order(ByteOrder.BIG_ENDIAN).array();
+        data[8] = raw[0];
+        data[9] = raw[1];
+        data[10] = raw[2];
+        data[11] = raw[3];
+    }
+
+    /**
+     * only to be used for mocking!
+     */
+    public void setYEuler(float radianAngle) {
+        byte[] raw = ByteBuffer.allocate(4).putFloat(radianAngle).order(ByteOrder.BIG_ENDIAN).array();
+        data[12] = raw[0];
+        data[13] = raw[1];
+        data[14] = raw[2];
+        data[15] = raw[3];
+    }
+
+    /**
+     * only to be used for mocking!
+     */
+    public void setZEuler(float radianAngle) {
+        byte[] raw = ByteBuffer.allocate(4).putFloat(radianAngle).order(ByteOrder.BIG_ENDIAN).array();
+        data[16] = raw[0];
+        data[17] = raw[1];
+        data[18] = raw[2];
+        data[19] = raw[3];
+    }
 }

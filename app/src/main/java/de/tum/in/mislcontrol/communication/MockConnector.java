@@ -102,6 +102,60 @@ public class MockConnector implements IConnector {
     };
 
     /**
+     * The rotation mock data.
+     */
+    private float[][] rotationMockData = {
+            { 0.0f, 0.0f, 0.0f }, // x, y , z
+            { 1.0f, 0.0f, 0.0f },
+            { 2.0f, 0.0f, 0.0f },
+            { 3.0f, 0.0f, 0.0f },
+            { 4.0f, 0.0f, 0.0f },
+            { 5.0f, 0.0f, 0.0f },
+            { 6.0f, 0.0f, 0.0f },
+            { 0.0f, 0.0f, 0.0f },
+            { 1.0f, 0.0f, 0.0f },
+            { 2.0f, 0.0f, 0.0f },
+            { 3.0f, 0.0f, 0.0f },
+            { 4.0f, 0.0f, 0.0f },
+            { 5.0f, 0.0f, 0.0f },
+            { 6.0f, 0.0f, 0.0f },
+            { 0.0f, 0.0f, 0.0f },
+            { 0.0f, 1.0f, 0.0f },
+            { 0.0f, 2.0f, 0.0f },
+            { 0.0f, 3.0f, 0.0f },
+            { 0.0f, 4.0f, 0.0f },
+            { 0.0f, 5.0f, 0.0f },
+            { 0.0f, 6.0f, 0.0f },
+            { 0.0f, 0.0f, 0.0f },
+            { 0.0f, 1.0f, 0.0f },
+            { 0.0f, 2.0f, 0.0f },
+            { 0.0f, 3.0f, 0.0f },
+            { 0.0f, 4.0f, 0.0f },
+            { 0.0f, 5.0f, 0.0f },
+            { 0.0f, 6.0f, 0.0f },
+            { 0.0f, 0.0f, 0.0f },
+            { 0.0f, 0.0f, 6.0f },
+            { 0.0f, 0.0f, 5.0f },
+            { 0.0f, 0.0f, 4.0f },
+            { 0.0f, 0.0f, 3.0f },
+            { 0.0f, 0.0f, 2.0f },
+            { 0.0f, 0.0f, 1.0f },
+            { 0.0f, 0.0f, 0.0f },
+            { 0.0f, 0.0f, 6.0f },
+            { 0.0f, 0.0f, 5.0f },
+            { 0.0f, 0.0f, 4.0f },
+            { 0.0f, 0.0f, 3.0f },
+            { 0.0f, 0.0f, 2.0f },
+            { 0.0f, 0.0f, 1.0f },
+            { 0.0f, 0.0f, 0.0f },
+    };
+
+    /**
+     * The current mock rotation index.
+     */
+    private int currentRotationIndex;
+
+    /**
      * The handler for repeated events.
      */
     private final Handler repeatHandler = new Handler();
@@ -133,7 +187,7 @@ public class MockConnector implements IConnector {
                     receiver.onTelemetryReceived(mockTelemetryPacket);
                 }
 
-                repeatHandler.postDelayed(this, DEFAULT_INTERVAL);
+                repeatHandler.postDelayed(this, 1000);
             }
         }
 
@@ -153,8 +207,16 @@ public class MockConnector implements IConnector {
             //Return the same packet 40 times, which equals ~ 40*25ms = 1s
             byte[] mockPacket = mockPackets[(counter / 40) % mockPackets.length];
             System.arraycopy(mockPacket, 0, telemetryPacket.getData(), 0, mockPacket.length);
+
+            // set test location
             telemetryPacket.setLatitude(latitude);
             telemetryPacket.setLongitude(longitude);
+
+            // set test rotation
+            telemetryPacket.setXEuler(rotationMockData[currentRotationIndex][0]);
+            telemetryPacket.setYEuler(rotationMockData[currentRotationIndex][1]);
+            telemetryPacket.setZEuler(rotationMockData[currentRotationIndex][2]);
+            currentRotationIndex = (++currentRotationIndex) % rotationMockData.length;
         }
     };
 

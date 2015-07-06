@@ -150,7 +150,7 @@ public class ASEPConnector implements IConnector {
                             receiver.onTelemetryTimedOut();
                         }
                     } catch (IOException e) {
-                        Log.e("ASEPConnector", "Unexpected Exception while recieving", e);
+                        Log.e("ASEPConnector", "Unexpected Exception while recieving", e); // FIXME: what else can we do here? We get a SocketException every time when we close the app. We should stop the thread safely :)
                     }
                 }
             }
