@@ -93,28 +93,34 @@ public class Model3DFragment extends RenderFragment implements IModel3dView {
         float nextRoll = (float)MathHelper.exponentialFilter(roll, targetRoll, FILTER_ALPHA);
         float nextPitch = (float)MathHelper.exponentialFilter(pitch, targetPitch, FILTER_ALPHA);
         float nextYaw = (float)MathHelper.exponentialFilter(yaw, targetYaw, FILTER_ALPHA);
-
+        Log.d(LOG_TAG, String.format("nextRoll: %f (roll: %f, target: %f)", nextRoll, roll, targetRoll));
         // try to adjust the values back in range
         if (targetRoll < 0 && roll < 0) {
             targetRoll += PI_2;
             roll += PI_2;
+            nextRoll += PI_2;
         } else if (targetRoll >= PI_2 && roll >= PI_2) {
             targetRoll -= PI_2;
             roll -= PI_2;
+            nextRoll -= PI_2;
         }
         if (targetPitch < 0 && pitch < 0) {
             targetPitch += PI_2;
             pitch += PI_2;
+            nextPitch += PI_2;
         } else if (targetPitch >= PI_2 && pitch >= PI_2) {
             targetPitch -= PI_2;
             pitch -= PI_2;
+            nextPitch -= PI_2;
         }
         if (targetYaw < 0 && yaw < 0) {
             targetYaw += PI_2;
             yaw += PI_2;
+            nextYaw += PI_2;
         } else if (targetYaw >= PI_2 && yaw >= PI_2) {
             targetYaw -= PI_2;
             yaw -= PI_2;
+            nextYaw -= PI_2;
         }
 
         this.roll = nextRoll;
@@ -124,9 +130,6 @@ public class Model3DFragment extends RenderFragment implements IModel3dView {
         objModel.rotation().x = (float)Math.toDegrees(-this.roll);
         objModel.rotation().y = (float)Math.toDegrees(this.pitch);
         objModel.rotation().z = (float)Math.toDegrees(this.yaw);
-
-        Log.d(LOG_TAG, String.format("> ObjModel-Rotation: %s", objModel.rotation().toString()));
-        Log.d(LOG_TAG, String.format("Target-Rotation: roll: %f, pitch: %f, yaw: %f", targetRoll, targetPitch, targetYaw));
     }
 
     /**
@@ -154,6 +157,9 @@ public class Model3DFragment extends RenderFragment implements IModel3dView {
         this.targetRoll = currentRoll + minDiffRoll;
         this.targetPitch = currentPitch + minDiffPitch;
         this.targetYaw = currentYaw + minDiffYaw;
+
+        Log.d(LOG_TAG, "MinDiff Roll: " + minDiffRoll);
+        Log.d(LOG_TAG, "Target Roll: " + targetRoll);
     }
 
     /**
