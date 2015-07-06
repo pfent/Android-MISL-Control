@@ -63,7 +63,7 @@
             android:layout_height="wrap_content" android:text="EulerZ: " />
         <TextView
             android:layout_width="wrap_content" android:textColor="#FF0000"
-            android:layout_height="wrap_content" android:id="@+id/textViewEulerZ" android:text="123"
+            android:layout_height="wrap_content" android:id="@+id/textViewEulerZ" android:text="-"
             android:textSize="14pt"/>
     </LinearLayout>
 </RelativeLayout>
