@@ -1,5 +1,7 @@
 package de.tum.in.mislcontrol;
 
+import android.util.Log;
+
 import de.tum.in.mislcontrol.math.MathHelper;
 import de.tum.in.mislcontrol.model3d.IModel3dView;
 import de.tum.in.mislcontrol.model3d.RenderFragment;
@@ -14,11 +16,12 @@ import min3d.vos.Number3d;
  * The fragment for rendering the 3D model of ASEP.
  */
 public class Model3DFragment extends RenderFragment implements IModel3dView {
+    private static final String LOG_TAG = "Model3DFragment";
 
     /**
      * The alpha value of the exponential filter for smooth rotation.
      */
-    private final static double FILTER_ALPHA = 0.2f;
+    private final static double FILTER_ALPHA = 0.05f;
 
     /**
      * 2 * PI to optimize calculations.
@@ -82,7 +85,7 @@ public class Model3DFragment extends RenderFragment implements IModel3dView {
     }
 
     @Override
-    public void updateScene() {
+    public synchronized void updateScene() {
         if (objModel == null)
             return;
 
@@ -92,32 +95,38 @@ public class Model3DFragment extends RenderFragment implements IModel3dView {
         float nextYaw = (float)MathHelper.exponentialFilter(yaw, targetYaw, FILTER_ALPHA);
 
         // try to adjust the values back in range
-        if (targetRoll < 0 || roll < 0) {
+        if (targetRoll < 0 && roll < 0) {
             targetRoll += PI_2;
             roll += PI_2;
-        } else if (targetRoll >= PI_2 || roll >= PI_2) {
+        } else if (targetRoll >= PI_2 && roll >= PI_2) {
             targetRoll -= PI_2;
             roll -= PI_2;
         }
-        if (targetPitch < 0 || pitch < 0) {
+        if (targetPitch < 0 && pitch < 0) {
             targetPitch += PI_2;
             pitch += PI_2;
-        } else if (targetPitch >= PI_2 || pitch >= PI_2) {
+        } else if (targetPitch >= PI_2 && pitch >= PI_2) {
             targetPitch -= PI_2;
             pitch -= PI_2;
         }
-        if (targetYaw < 0 || yaw < 0) {
+        if (targetYaw < 0 && yaw < 0) {
             targetYaw += PI_2;
             yaw += PI_2;
-        } else if (targetYaw >= PI_2 || yaw >= PI_2) {
+        } else if (targetYaw >= PI_2 && yaw >= PI_2) {
             targetYaw -= PI_2;
             yaw -= PI_2;
         }
 
-        objModel.rotation().x = (float)Math.toDegrees(-nextRoll);
-        objModel.rotation().y = (float)Math.toDegrees(nextYaw);
-        objModel.rotation().z = (float)Math.toDegrees(nextPitch);
-        // TODO check whether the rotations are correct?
+        this.roll = nextRoll;
+        this.pitch = nextPitch;
+        this.yaw = nextYaw;
+
+        objModel.rotation().x = (float)Math.toDegrees(-this.roll);
+        objModel.rotation().y = (float)Math.toDegrees(this.pitch);
+        objModel.rotation().z = (float)Math.toDegrees(this.yaw);
+
+        Log.d(LOG_TAG, String.format("> ObjModel-Rotation: %s", objModel.rotation().toString()));
+        Log.d(LOG_TAG, String.format("Target-Rotation: roll: %f, pitch: %f, yaw: %f", targetRoll, targetPitch, targetYaw));
     }
 
     /**
@@ -127,7 +136,7 @@ public class Model3DFragment extends RenderFragment implements IModel3dView {
      * @param yaw The yaw (z)
      */
     @Override
-    public void setRotation(float roll, float pitch, float yaw) {
+    public synchronized void setRotation(float roll, float pitch, float yaw) {
         // ensure value in range [0, 2*PI]
         float positiveRoll = (roll < 0) ? (float)(roll + PI_2) : roll;
         float positivePitch = (pitch < 0) ? (float)(pitch + PI_2) : pitch;
@@ -144,7 +153,7 @@ public class Model3DFragment extends RenderFragment implements IModel3dView {
 
         this.targetRoll = currentRoll + minDiffRoll;
         this.targetPitch = currentPitch + minDiffPitch;
-        this.targetYaw = currentRoll + minDiffYaw;
+        this.targetYaw = currentYaw + minDiffYaw;
     }
 
     /**
@@ -162,10 +171,10 @@ public class Model3DFragment extends RenderFragment implements IModel3dView {
 
         double minDiff = Math.min(diff1, Math.min(diff2, diff3));
         if (minDiff == diff1)
-            return from - value1;
+            return value1 - from;
         else if (minDiff == diff2)
-            return from - value2;
+            return value2 - from;
         else
-            return from - value3;
+            return value3 - from;
     }
 }

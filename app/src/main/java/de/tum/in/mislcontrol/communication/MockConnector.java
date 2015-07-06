@@ -147,7 +147,7 @@ public class MockConnector implements IConnector {
             { 0.0f, 0.0f, 3.0f },
             { 0.0f, 0.0f, 2.0f },
             { 0.0f, 0.0f, 1.0f },
-            { 0.0f, 0.0f, 0.0f },
+            { 0.0f, 0.0f, 0.0f }
     };
 
     /**
@@ -187,7 +187,7 @@ public class MockConnector implements IConnector {
                     receiver.onTelemetryReceived(mockTelemetryPacket);
                 }
 
-                repeatHandler.postDelayed(this, 1000);
+                repeatHandler.postDelayed(this, 2000);
             }
         }
 

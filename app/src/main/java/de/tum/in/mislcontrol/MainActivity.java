@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import de.tum.in.mislcontrol.communication.ASEPConnector;
 import de.tum.in.mislcontrol.communication.IConnector;
+import de.tum.in.mislcontrol.communication.MockConnector;
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 import de.tum.in.mislcontrol.controls.IInputController;
 import de.tum.in.mislcontrol.controls.JoystickView;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
         if (dataContainer != null && dataFragment == null) {
             dataFragment = new AccelerometerDataFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.accelerometerDataContainer, dataFragment)
+                    .replace(R.id.accelerometerDataContainer, dataFragment)
                     .commit();
         }
 
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
         if (findViewById(R.id.mapContainer) != null && mapView == null) {
             OpenStreetMapsFragment mapFragment = OpenStreetMapsFragment.newInstance(19, 30.617326, -96.341768); // Texas A&M
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.mapContainer, mapFragment)
+                    .replace(R.id.mapContainer, mapFragment)
                     .commit();
             mapView = mapFragment;
         }
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
         if (findViewById(R.id.model3dContainer) != null && model3dView == null) {
             Model3DFragment model3DFragment = new Model3DFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.model3dContainer, model3DFragment)
+                    .replace(R.id.model3dContainer, model3DFragment)
                     .commit();
             model3dView = model3DFragment;
         }
@@ -168,6 +169,8 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
         // check if current control view has changed
         if (inputController != null && !inputController.getType().equals(newControlType)) {
             removeControlView();
+        } else if (inputController != null) {
+            return;
         }
 
         ViewGroup controlContainer = (ViewGroup) findViewById(R.id.controlContainer);
