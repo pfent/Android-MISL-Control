@@ -2,6 +2,7 @@ package de.tum.in.mislcontrol;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
                 if (dataFragment != null) {
                     dataFragment.setAcceleration(packet.getXAccel(), packet.getYAccel(), packet.getZAccel());
                 }
-                if(mapView != null && (packet.getLatitude() != 0 || packet.getLongitude() != 0)) {
+                if (mapView != null && (packet.getLatitude() != 0 || packet.getLongitude() != 0)) {
                     mapView.addRouteLocation(packet.getLatitude(), packet.getLongitude());
                 }
 
@@ -162,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
             @Override
             public void run() {
                 Toast.makeText(getApplicationContext(),
-                        "Connection timed out.\n Is ASEP still in range?", Toast.LENGTH_LONG).show();
+                        getString(R.string.connection_timeout), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -183,10 +184,12 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
 
         ViewGroup controlContainer = (ViewGroup) findViewById(R.id.controlContainer);
         if (newControlType == null || newControlType.equals(getString(R.string.setting_controlType_joystick))) {
+            releaseOrientation();
             JoystickView controlView = new JoystickView(this);
             controlContainer.addView(controlView);
             inputController = controlView;
         } else {
+            lockOrientation();
             SensorControlView controlView = new SensorControlView(this);
             controlContainer.addView(controlView);
             inputController = controlView;
@@ -202,5 +205,13 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
             controlContainer.removeAllViews();
         }
         inputController = null;
+    }
+
+    private void lockOrientation() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    }
+
+    private void releaseOrientation() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 }
