@@ -1,6 +1,6 @@
 <resources>
     <!-- General -->
-    <string name="app_name">Android-MISL-Control</string>
+    <string name="app_name">Android MISL Control</string>
 
     <!-- Settings -->
     <string name="title_activity_settings">Settings</string>
