@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import de.tum.in.mislcontrol.communication.ASEPConnector;
 import de.tum.in.mislcontrol.communication.IConnector;
+import de.tum.in.mislcontrol.communication.MockConnector;
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 import de.tum.in.mislcontrol.controls.IInputController;
 import de.tum.in.mislcontrol.controls.JoystickView;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        connection = new ASEPConnector(this);
+        connection = new MockConnector();
         setContentView(R.layout.activity_main);
     }
 
@@ -143,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
                 }
 
                 if (model3dView != null) {
-                    model3dView.setRotation(packet.getXEuler(), packet.getZEuler(), packet.getYEuler());
+                    model3dView.setRotation(packet.getXEuler(), packet.getYEuler(), packet.getZEuler());
                 }
 
                 TextView textViewX = (TextView)findViewById(R.id.textViewEulerX);

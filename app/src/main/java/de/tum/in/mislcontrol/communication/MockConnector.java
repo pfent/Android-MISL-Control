@@ -11,8 +11,23 @@ import de.tum.in.mislcontrol.math.Vector2D;
  */
 public class MockConnector implements IConnector {
 
+    /**
+     * The input controller.
+     */
     IInputController inputController;
 
+    /**
+     * The test interval for events.
+     */
+    private static final long TEST_INTERVAL = 3000;
+
+    // Math constants for shorter code
+    private static float PI_HALF = (float)Math.PI / 2;
+    private static float PI = (float)Math.PI;
+
+    /**
+     * The mock location.
+     */
     float latitude = 30.617326f, longitude = -96.341768f;
 
     /**
@@ -102,10 +117,51 @@ public class MockConnector implements IConnector {
     };
 
     /**
-     * The rotation mock data.
+     * The rotation mock data (with several test cases).
      */
     private float[][] rotationMockData = {
-            { 0.0f, 0.0f, 0.0f }, // x, y , z
+            {0, 0, 0}, // --- SIGNAL TEST CASE START
+            {-3.12f,-0.05f, -2f}, // FLAT
+            { -2.9f, -0.37f, -2.0f }, // >> FRONT LEFT
+            {-3.12f,-0.05f, -2f}, // FLAT
+            { -2.8f, +0.18f, -1.94f }, // >> FRONT RIGHT
+            {-3.12f,-0.05f, -2}, // FLAT
+            { -2.6f, -0.16f, -1.94f }, // z=? // >> FRONT
+            {-3.12f,-0.05f, -2}, // FLAT
+            { 2.74f, -0.338f, -1.84f }, // >> BACK LEFT
+            {-3.12f,-0.05f, -2}, // FLAT
+            { 2.8f, +0.32f, -1.90f }, // >> BACK RIGHT
+            {-3.12f,-0.05f, -2}, // FLAT
+            { 2.71f, -0.02f, -1.93f }, // >> BACK
+
+            {0, 0, 0}, // --- SIGNAL TEST CASE START
+            {(float)Math.PI, 0, 0},
+            {(float)Math.PI, 0.5f, 0},
+            {(float)Math.PI, 0, 0},
+            {(float)Math.PI + 0.5f, 0, 0},
+            {(float)Math.PI, 0, 0},
+            {(float)Math.PI, 0, PI_HALF},
+            {(float)Math.PI, 0.5f, PI_HALF},
+            {(float)Math.PI, 0, PI_HALF},
+            {(float)Math.PI + 0.5f, 0, PI_HALF},
+            {(float)Math.PI, 0, PI_HALF},
+            {(float)Math.PI, 0, PI},
+            {(float)Math.PI, 0.5f, PI},
+            {(float)Math.PI, 0, PI},
+            {(float)Math.PI + 0.5f, 0, PI},
+            {(float)Math.PI, 0, PI},
+            {(float)Math.PI, 0, PI + PI_HALF},
+            {(float)Math.PI, 0.5f, PI + PI_HALF},
+            {(float)Math.PI, 0, PI + PI_HALF},
+            {(float)Math.PI + 0.5f, 0, PI + PI_HALF},
+            {(float)Math.PI, 0, PI + PI_HALF},
+            {(float)Math.PI, 0, PI + PI_HALF},
+            {(float)Math.PI, 0.5f, PI + PI_HALF},
+            {(float)Math.PI, 0, PI + PI_HALF},
+            {(float)Math.PI, 0 + 0.5f, PI + PI_HALF},
+            {(float)Math.PI, 0, PI + PI_HALF},
+
+            { 0, 0, 0 }, // --- SIGNAL TEST CASE START
             { 1.0f, 0.0f, 0.0f },
             { 2.0f, 0.0f, 0.0f },
             { 3.0f, 0.0f, 0.0f },
@@ -172,7 +228,10 @@ public class MockConnector implements IConnector {
      */
     private OnTelemetryReceivedListener receiver;
 
-    private int counter = 0;
+    /**
+     * The index for the mock packages.
+     */
+    private int mockPackageIndex = 0;
 
     /**
      * The repeat callback of the handler for repeated events.
@@ -187,7 +246,7 @@ public class MockConnector implements IConnector {
                     receiver.onTelemetryReceived(mockTelemetryPacket);
                 }
 
-                repeatHandler.postDelayed(this, 2000);
+                repeatHandler.postDelayed(this, TEST_INTERVAL);
             }
         }
 
@@ -203,9 +262,9 @@ public class MockConnector implements IConnector {
             latitude += singleSpeed * 6 * direction.getX();
             longitude += singleSpeed * 6 * direction.getY();
 
-            counter++;
+            mockPackageIndex++;
             //Return the same packet 40 times, which equals ~ 40*25ms = 1s
-            byte[] mockPacket = mockPackets[(counter / 40) % mockPackets.length];
+            byte[] mockPacket = mockPackets[(mockPackageIndex / 40) % mockPackets.length];
             System.arraycopy(mockPacket, 0, telemetryPacket.getData(), 0, mockPacket.length);
 
             // set test location

@@ -29,6 +29,11 @@ public class Model3DFragment extends RenderFragment implements IModel3dView {
     private final static double PI_2 = 2* Math.PI;
 
     /**
+     * The cameras distance from the 3D model.
+     */
+    private final static float CAMERA_DISTANCE = 7.5f;
+
+    /**
      * The 3d model container.
      */
     private Object3dContainer objModel;
@@ -78,7 +83,7 @@ public class Model3DFragment extends RenderFragment implements IModel3dView {
 
             // rotate camera so that it is located in third person view
             scene.camera().position.z = 0f;
-            scene.camera().position.x = -7.5f;
+            scene.camera().position.x = -CAMERA_DISTANCE;
             scene.camera().position.y = -0.5f;
             scene.camera().upAxis = new Number3d(0, -1, 0);
         }
@@ -93,7 +98,6 @@ public class Model3DFragment extends RenderFragment implements IModel3dView {
         float nextRoll = (float)MathHelper.exponentialFilter(roll, targetRoll, FILTER_ALPHA);
         float nextPitch = (float)MathHelper.exponentialFilter(pitch, targetPitch, FILTER_ALPHA);
         float nextYaw = (float)MathHelper.exponentialFilter(yaw, targetYaw, FILTER_ALPHA);
-        Log.d(LOG_TAG, String.format("nextRoll: %f (roll: %f, target: %f)", nextRoll, roll, targetRoll));
         // try to adjust the values back in range
         if (targetRoll < 0 && roll < 0) {
             targetRoll += PI_2;
@@ -127,9 +131,12 @@ public class Model3DFragment extends RenderFragment implements IModel3dView {
         this.pitch = nextPitch;
         this.yaw = nextYaw;
 
-        objModel.rotation().x = (float)Math.toDegrees(-this.roll);
-        objModel.rotation().y = (float)Math.toDegrees(this.pitch);
-        objModel.rotation().z = (float)Math.toDegrees(this.yaw);
+        objModel.rotation().x = (float)Math.toDegrees(this.pitch);
+        objModel.rotation().z = (float)Math.toDegrees(this.roll);
+
+        // rotate camera to simulate YAW
+        scene.camera().position.x = CAMERA_DISTANCE * (float)Math.cos(this.yaw);
+        scene.camera().position.z = CAMERA_DISTANCE * (float)Math.sin(this.yaw);
     }
 
     /**
@@ -157,9 +164,6 @@ public class Model3DFragment extends RenderFragment implements IModel3dView {
         this.targetRoll = currentRoll + minDiffRoll;
         this.targetPitch = currentPitch + minDiffPitch;
         this.targetYaw = currentYaw + minDiffYaw;
-
-        Log.d(LOG_TAG, "MinDiff Roll: " + minDiffRoll);
-        Log.d(LOG_TAG, "Target Roll: " + targetRoll);
     }
 
     /**
