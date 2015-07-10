@@ -24,6 +24,9 @@ import de.tum.in.mislcontrol.location.IMapView;
 import de.tum.in.mislcontrol.location.OpenStreetMapsFragment;
 import de.tum.in.mislcontrol.model3d.IModel3dView;
 
+/**
+ * The main activity of the app, that allows to control ASEP and view its status.
+ */
 public class MainActivity extends AppCompatActivity implements IConnector.OnTelemetryReceivedListener {
 
     /**
@@ -79,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
             mapView = mapFragment;
         }
 
+        // check if layout has a container for the 3d model
         if (findViewById(R.id.model3dContainer) != null && model3dView == null) {
             Model3DFragment model3DFragment = new Model3DFragment();
             getSupportFragmentManager().beginTransaction()
@@ -89,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
 
         addOrReplaceControlView();
 
+        // set up the controller and start the connection
         connection.setOnTelemetryReceivedListener(this);
         connection.setInputController(inputController);
         connection.start();
@@ -207,10 +212,16 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
         inputController = null;
     }
 
+    /**
+     * Locks the screen orientation.
+     */
     private void lockOrientation() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
+    /**
+     * Releases the screen orientation.
+     */
     private void releaseOrientation() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }

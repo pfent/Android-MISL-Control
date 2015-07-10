@@ -7,6 +7,9 @@ import java.nio.ByteOrder;
  * The ASEP command packet.
  */
 public class CommandPacket implements IPacket {
+    /**
+     * The default packet data.
+     */
     private final byte[] data = {
             0x02, 0x03, //Packet Version
             0x00, 0x40, //Size = 64
@@ -38,24 +41,39 @@ public class CommandPacket implements IPacket {
         return ByteBuffer.wrap(data, 5, 2).order(ByteOrder.BIG_ENDIAN).getShort();
     }
 
+    /**
+     * Increases the sequence counter.
+     * Note: Currently not used, because ASEP is not even looking on this value.
+     */
     public void increaseSeqCnt() {
         if (++data[4] == 0) {
             data[5]++; //In case of overflow
         }
     }
 
+    /**
+     * Sets the command on channel 1.
+     * @param cmd The command value in range[-6, 6].
+     */
     public void setCH1Cmd(short cmd) {
         byte[] raw = ByteBuffer.allocate(2).putShort(cmd).order(ByteOrder.BIG_ENDIAN).array();
         data[8] = raw[0];
         data[9] = raw[1];
     }
 
+    /**
+     * Sets the command on channel 2.
+     * @param cmd The command value in range[-6, 6].
+     */
     public void setCH2Cmd(short cmd) {
         byte[] raw = ByteBuffer.allocate(2).putShort(cmd).order(ByteOrder.BIG_ENDIAN).array();
         data[10] = raw[0];
         data[11] = raw[1];
     }
 
+    /**
+     * Calculates the checksum.
+     */
     public void calculateChecksum() {
         // Checksum calculation according to "WizFi630Board.c"
         // Note, that the buffer_w has an offset of 2 in comparison to our buffer!

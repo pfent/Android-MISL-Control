@@ -2,11 +2,10 @@ package de.tum.in.mislcontrol;
 
 import android.util.Pair;
 
+/**
+ * The ASEP adapter class.
+ */
 public class ASEPAdapter {
-
-    private ASEPAdapter(){
-    }
-
     /**
      * Translates a double value to a corresponding ASEP value
      *

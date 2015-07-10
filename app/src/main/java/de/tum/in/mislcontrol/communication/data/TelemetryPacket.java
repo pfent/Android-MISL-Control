@@ -7,6 +7,9 @@ import java.nio.ByteOrder;
  * The ASEP telemetry packet.
  */
 public class TelemetryPacket implements IPacket {
+    /**
+     * The telemetry packet data.
+     */
     private final byte[] data = {
             0x02, 0x03, //Packet Version
             0x00, 0x40, //Size = 64
@@ -42,34 +45,66 @@ public class TelemetryPacket implements IPacket {
         return ByteBuffer.wrap(data, 4, 2).order(ByteOrder.BIG_ENDIAN).getShort();
     }
 
+    /**
+     * Gets the X euler angle in radians.
+     * @return The X euler angle.
+     */
     public float getXEuler() {
         return ByteBuffer.wrap(data, 8, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }
 
+    /**
+     * Gets the Y euler angle in radians.
+     * @return The Y euler angle.
+     */
     public float getYEuler() {
         return ByteBuffer.wrap(data, 12, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }
 
+    /**
+     * Gets the Z euler angle in radians.
+     * @return The Z euler angle.
+     */
     public float getZEuler() {
         return ByteBuffer.wrap(data, 16, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }
 
+    /**
+     * Gets the X acceleration.
+     * @return The X acceleration.
+     */
     public float getXAccel() {
         return ByteBuffer.wrap(data, 20, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }
 
+    /**
+     * Gets the Y acceleration.
+     * @return The Y acceleration.
+     */
     public float getYAccel() {
         return ByteBuffer.wrap(data, 24, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }
 
+    /**
+     * Gets the Z acceleration.
+     * @return The Z acceleration.
+     */
     public float getZAccel() {
         return ByteBuffer.wrap(data, 28, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }
 
+    /**
+     * Gets the latitude.
+     * @return The latitude.
+     */
     public float getLatitude() {
         return ByteBuffer.wrap(data, 32, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }
 
+    /**
+     * Gets the longitude.
+     * @return The longitude.
+     */
     public float getLongitude() {
         return ByteBuffer.wrap(data, 36, 4).order(ByteOrder.BIG_ENDIAN).getFloat();
     }

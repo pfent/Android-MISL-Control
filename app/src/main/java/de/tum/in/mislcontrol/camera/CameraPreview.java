@@ -14,59 +14,82 @@ import java.io.IOException;
  * This code is taken from the Android SDK API page:
  * URL: http://developer.android.com/guide/topics/media/camera.html
  */
+
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private static final String LOG_TAG = "CameraPreview";
 
+    /**
+     * The surface holder.
+     */
     private final SurfaceHolder surfaceHolder;
+
+    /**
+     * The Android camera implemention (we use the old implementation to support Android API 14)
+     */
     private final Camera camera;
 
+    /**
+     * Creates a camera preview instance.
+     * @param context The context.
+     * @param camera The Android device camera.
+     */
     public CameraPreview(Context context, Camera camera) {
         super(context);
         this.camera = camera;
 
-        // Install a SurfaceHolder.Callback so we get notified when the
-        // underlying surface is created and destroyed.
+        // install a SurfaceHolder callbacks so we get notified about its lifecycle events.
         surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
-        // deprecated setting, but required on Android versions prior to 3.0
+
+        // deprecated setting, but required on old Android versions
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
 
+    /**
+     * The Surface has been created, so we now tell the camera where to draw the preview.
+     * @param holder The surface holder instance.
+     */
+    @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        // The Surface has been created, now tell the camera where to draw the preview.
         try {
             camera.setPreviewDisplay(holder);
             camera.startPreview();
         } catch (IOException | RuntimeException e) {
-            Log.d(LOG_TAG, "Error setting camera preview: " + e.getMessage());
+            Log.w(LOG_TAG, "Error setting camera preview: " + e.getMessage());
         }
     }
 
+    /**
+     * The surface got destroyed.
+     * @param holder The surface holder instance.
+     */
+    @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        // empty. Take care of releasing the Camera preview in your activity.
+        // we take care about releasing our camera in the Android activity
     }
 
-    public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-        // If your preview can change or rotate, take care of those events here.
-        // Make sure to stop the preview before resizing or reformatting it.
-
+    /**
+     * The surface got changed.
+     * @param holder The surface holder instance.
+     * @param format The format.
+     * @param width The width.
+     * @param height The height.
+     */
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         if (surfaceHolder.getSurface() == null){
             // preview surface does not exist
             return;
         }
 
-        // stop preview before making changes
+        // stop preview before making any changes
         try {
             camera.stopPreview();
         } catch (Exception e){
-            // ignore: tried to stop a non-existent preview
+            Log.w(LOG_TAG, "Error stopping camera preview: " + e.getMessage());
         }
-
-        // set preview size and make any resize, rotate or
-        // reformatting changes here
-
-        // start preview with new settings
+        
         try {
+            // start preview with new settings
             camera.setPreviewDisplay(surfaceHolder);
             camera.startPreview();
 

@@ -3,6 +3,9 @@ package de.tum.in.mislcontrol.wizard;
 import org.codepond.wizardroid.WizardFlow;
 import org.codepond.wizardroid.layouts.BasicWizardLayout;
 
+/**
+ * The start setup wizard to guide the users to connect to ASEP.
+ */
 public class StartWizard extends BasicWizardLayout {
 
     /**

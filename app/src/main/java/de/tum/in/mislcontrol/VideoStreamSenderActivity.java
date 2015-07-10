@@ -116,6 +116,9 @@ public class VideoStreamSenderActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Closes the server socket in a safe fasion.
+     */
     private void closeServerSocket() {
         try {
             if (serverSocket != null) {
@@ -127,6 +130,9 @@ public class VideoStreamSenderActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Releases the media recorder.
+     */
     private void releaseMediaRecorder(){
         if (recorder != null) {
             recorder.reset();   // clear recorder configuration
@@ -136,93 +142,86 @@ public class VideoStreamSenderActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The thread to send the video as a UDP stream.
+     */
     public class SendVideoThread implements Runnable{
         private final static String LOG_TAG = "SendVideoThread";
 
         public void run(){
-            // From Server.java
             try {
-                if(SERVERIP != null){
-                    WifiManager wm = (WifiManager) getSystemService(WIFI_SERVICE);
-                    final String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
-                    InetAddress addr = InetAddress.getByName(ip);
-                    serverSocket = new ServerSocket(SERVERPORT, 50, addr);
-                    handler.post(new Runnable() {
+                WifiManager wm = (WifiManager) getSystemService(WIFI_SERVICE);
+                final String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+                InetAddress addr = InetAddress.getByName(ip);
+                serverSocket = new ServerSocket(SERVERPORT, 50, addr);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        connectionStatus.setText("Listening on IP: " + ip + " Port: " + SERVERPORT);
+                    }
+                });
+
+                while(true) {
+                    //listen for incoming clients
+                    Socket client = serverSocket.accept();
+                    handler.post(new Runnable(){
                         @Override
-                        public void run() {
-                            connectionStatus.setText("Listening on IP: " + ip + " Port: " + SERVERPORT);
+                        public void run(){
+                            connectionStatus.setText("Connected.");
                         }
                     });
-                    //SocketAddress address2 = serverSocket.getLocalSocketAddress();
-                    while(true) {
-                        //listen for incoming clients
-                        Socket client = serverSocket.accept();
+                    try{
+                        // Begin video communication
+                        final ParcelFileDescriptor pfd = ParcelFileDescriptor.fromSocket(client);
                         handler.post(new Runnable(){
                             @Override
                             public void run(){
-                                connectionStatus.setText("Connected.");
+                                // Steps from: http://developer.android.com/guide/topics/media/camera.html
+                                recorder = new MediaRecorder();
+
+                                // Step 1: Unlock and set camera to MediaRecorder
+                                camera.unlock();
+                                recorder.setCamera(camera);
+
+                                // Step 2: Set sources
+                                recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+
+                                // Step 3: Set a CamcorderProfile (requires API Level 8 or higher)
+                                //recorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
+                                recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+                                recorder.setVideoEncoder(MediaRecorder.VideoEncoder.DEFAULT);
+                                //recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                                //recorder.setVideoFrameRate(20); http://stackoverflow.com/questions/11249642/mediarecorder-start-failed-19
+                                recorder.setVideoSize(176,144);
+                                //recorder.setVideoEncoder(MediaRecorder.VideoEncoder.H263);
+
+                                // Step 4: Set output file
+                                recorder.setOutputFile(pfd.getFileDescriptor());
+
+                                // Step 5: Set the preview output
+                                //recorder.setPreviewDisplay(cameraPreview.getSurface());
+                                try {
+                                    recorder.prepare();
+                                } catch (IllegalStateException e) {
+                                    Log.w("LOG_TAG", "Illegal state.");
+                                    releaseMediaRecorder();
+                                } catch (IOException e) {
+                                    Log.w("LOG_TAG", "IO error.");
+                                    releaseMediaRecorder();
+                                }
+                                //camera.lock();
+                                recorder.start();
                             }
                         });
-                        try{
-                            // Begin video communication
-                            final ParcelFileDescriptor pfd = ParcelFileDescriptor.fromSocket(client);
-                            handler.post(new Runnable(){
-                                @Override
-                                public void run(){
-                                    // Steps from: http://developer.android.com/guide/topics/media/camera.html
-                                    recorder = new MediaRecorder();
-
-                                    // Step 1: Unlock and set camera to MediaRecorder
-                                    camera.unlock();
-                                    recorder.setCamera(camera);
-
-                                    // Step 2: Set sources
-                                    recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-
-                                    // Step 3: Set a CamcorderProfile (requires API Level 8 or higher)
-                                    //recorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
-                                    recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-                                    recorder.setVideoEncoder(MediaRecorder.VideoEncoder.DEFAULT);
-                                    //recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                                    //recorder.setVideoFrameRate(20); http://stackoverflow.com/questions/11249642/mediarecorder-start-failed-19
-                                    recorder.setVideoSize(176,144);
-                                    //recorder.setVideoEncoder(MediaRecorder.VideoEncoder.H263);
-
-                                    // Step 4: Set output file
-                                    recorder.setOutputFile(pfd.getFileDescriptor());
-
-                                    // Step 5: Set the preview output
-                                    //recorder.setPreviewDisplay(cameraPreview.getSurface());
-                                    try {
-                                        recorder.prepare();
-                                    } catch (IllegalStateException e) {
-                                        Log.w("LOG_TAG", "Illegal state.");
-                                        releaseMediaRecorder();
-                                    } catch (IOException e) {
-                                        Log.w("LOG_TAG", "IO error.");
-                                        releaseMediaRecorder();
-                                    }
-                                    //camera.lock();
-                                    recorder.start();
-                                }
-                            });
-                        } catch (Exception e) {
-                            handler.post(new Runnable(){
-                                @Override
-                                public void run(){
-                                    connectionStatus.setText("Oops.Connection interrupted. Please reconnect your phones.");
-                                }
-                            });
-                            e.printStackTrace();
-                        }
+                    } catch (Exception e) {
+                        handler.post(new Runnable(){
+                            @Override
+                            public void run(){
+                                connectionStatus.setText("Oops.Connection interrupted. Please reconnect your phones.");
+                            }
+                        });
+                        e.printStackTrace();
                     }
-                } else {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run(){
-                            connectionStatus.setText("Couldn't detect internet connection.");
-                        }
-                    });
                 }
             } catch (Exception e){
                 handler.post(new Runnable() {
@@ -236,7 +235,6 @@ public class VideoStreamSenderActivity extends AppCompatActivity {
             finally {
                 closeServerSocket();
             }
-            // End from server.java
         }
     }
 }

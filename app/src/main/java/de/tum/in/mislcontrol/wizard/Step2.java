@@ -10,6 +10,9 @@ import org.codepond.wizardroid.WizardStep;
 
 import de.tum.in.mislcontrol.R;
 
+/**
+ * The wizards page second step.
+ */
 public class Step2 extends WizardStep {
 
     //Wire the layout to the step

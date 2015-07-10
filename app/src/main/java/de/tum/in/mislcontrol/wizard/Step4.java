@@ -16,6 +16,9 @@ import org.codepond.wizardroid.WizardStep;
 import de.tum.in.mislcontrol.MainActivity;
 import de.tum.in.mislcontrol.R;
 
+/**
+ * The wizards page fourth step.
+ */
 public class Step4 extends WizardStep {
 
     /* WIFI ICON BY Bjoern Andersson */

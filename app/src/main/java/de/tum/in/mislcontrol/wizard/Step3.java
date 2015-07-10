@@ -10,6 +10,9 @@ import org.codepond.wizardroid.WizardStep;
 
 import de.tum.in.mislcontrol.R;
 
+/**
+ * The wizards page third step.
+ */
 public class Step3 extends WizardStep {
 
     /*Thomas Le Bas*/

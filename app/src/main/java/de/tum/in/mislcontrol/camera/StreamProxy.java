@@ -27,16 +27,37 @@ import android.util.Log;
 public class StreamProxy implements Runnable {
     public static final String LOG_TAG = "StreamProxy";
 
+    /**
+     * The server port.
+     */
     private static final int SERVER_PORT=8888;
 
+    /**
+     * The server thread.
+     */
     private Thread thread;
+
+    /**
+     * Indicates whether the server thread is running.
+     */
     private static boolean isRunning;
+
+    /**
+     * The server socket.
+     */
     private ServerSocket socket;
+
+    /**
+     * The sockets local port.
+     */
     private int port;
 
+    /**
+     * Creates a new StreamProxy instance.
+     */
     public StreamProxy() {
 
-        // Create listening socket
+        // create listening socket
         try {
             socket = new ServerSocket(SERVER_PORT, 0, InetAddress.getByAddress(new byte[] {127,0,0,1}));
             socket.setSoTimeout(5000);
@@ -45,14 +66,19 @@ public class StreamProxy implements Runnable {
         } catch (IOException e) {
             Log.e(LOG_TAG, "IOException initializing server", e);
         }
-
     }
 
+    /**
+     * Starts the stream proxy.
+     */
     public void start() {
         thread = new Thread(this);
         thread.start();
     }
 
+    /**
+     * Stops the stream proxy.
+     */
     public void stop() {
         isRunning = false;
         thread.interrupt();
@@ -94,14 +120,35 @@ public class StreamProxy implements Runnable {
      */
     private static class StreamToMediaPlayerTask extends AsyncTask<String, Void, Integer> {
 
+        /**
+         * The local path to store the stream.
+         */
         String localPath;
+
+        /**
+         * The client socket.
+         */
         final Socket client;
+
+        /**
+         * The skipped bytes of the header.
+         */
         int cbSkip;
 
+        /**
+         * Creates a new StreamToMediaPlayerTask instance.
+         * @param client The client socket.
+         */
         public StreamToMediaPlayerTask(Socket client) {
             this.client = client;
         }
 
+        /**
+         * Reads the available content on the stream.
+         * @param inputStream The input stream.
+         * @return The read content.
+         * @throws IOException
+         */
         private static String readTextStreamAvailable(InputStream inputStream) throws IOException {
             byte[] buffer = new byte[4096];
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream(4096);
@@ -123,8 +170,12 @@ public class StreamProxy implements Runnable {
             return new String(outputStream.toByteArray());
         }
 
+        /**
+         * Processes the HTTP request.
+         * @return Returns true for success, else false.
+         */
         public boolean processRequest() {
-            // Read HTTP headers
+            // read HTTP headers
             String headers;
             try {
                 headers = readTextStreamAvailable(client.getInputStream());
@@ -175,7 +226,7 @@ public class StreamProxy implements Runnable {
             headers += "Connection: close\r\n";
             headers += "\r\n";
 
-            // Begin with HTTP header
+            // begin with HTTP header
             int fc = 0;
             long cbToSend = fileSize - cbSkip;
             OutputStream output = null;
@@ -184,10 +235,10 @@ public class StreamProxy implements Runnable {
                 output = new BufferedOutputStream(client.getOutputStream(), 32*1024);
                 output.write(headers.getBytes());
 
-                // Loop as long as there's stuff to send
+                // loop as long as there's stuff to send
                 while (isRunning && cbToSend>0 && !client.isClosed()) {
 
-                    // See if there's more to send
+                    // see if there's more to send
                     File file = new File(localPath);
                     fc++;
                     int cbSentThisBatch = 0;
@@ -211,7 +262,7 @@ public class StreamProxy implements Runnable {
                         input.close();
                     }
 
-                    // If we did nothing this batch, block for a second
+                    // when we did nothing this batch, block for a second
                     if (cbSentThisBatch == 0) {
                         Log.d(LOG_TAG, "Blocking until more data appears");
                         Thread.sleep(1000);
@@ -227,7 +278,7 @@ public class StreamProxy implements Runnable {
                 e.printStackTrace();
             }
 
-            // Cleanup
+            // cleanup
             try {
                 if (output != null) {
                     output.close();

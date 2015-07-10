@@ -31,20 +31,73 @@ import de.tum.in.mislcontrol.math.Vector2D;
  * The ASEP connector implementations to send commands and receive status information.
  */
 public class ASEPConnector implements IConnector {
+    private static final String LOG_TAG = "ASEPConnector";
+
+    /**
+     * Defalut connection settings.
+     */
     private static final String FALLBACK_PORT = "30190",
             FALLBACK_SSID = "MISL_ROBOT_WPA",
             FALLBACK_IP = "192.168.16.254";
+
+    /**
+     * The WiFi SSID.
+     */
     public static String WIFI_SSID = FALLBACK_SSID;
+
+    /**
+     * The IP address.
+     */
     private static InetAddress inetAddress;
+
+    /**
+     * The sending command packet.
+     */
     private final CommandPacket sending = new CommandPacket();
+
+    /**
+     * The android context.
+     */
     private final Context context;
+
+    /**
+     * The socket sync-monitor object.
+     */
     private final Object sockLock = new Object();
+
+    /**
+     * The socket port.
+     */
     private int port = Integer.parseInt(FALLBACK_PORT);
+
+    /**
+     * The telemetry received callback.
+     */
     private OnTelemetryReceivedListener receiver;
+
+    /**
+     * The input controller implementation.
+     */
     private IInputController inputController;
+
+    /**
+     * The UDP socket to send packets to ASEP.
+     */
     private DatagramSocket sock;
+
+    /**
+     * The thread pool for async request to ASEP.
+     */
     private ScheduledExecutorService schedulerService;
+
+    /**
+     * Indicates whether we are currently listening to ASEP or not.
+     */
     private boolean listening = false;
+
+    /**
+     * The recent channel commands.
+     */
     private short ch1, ch2;
 
     /**
@@ -68,7 +121,7 @@ public class ASEPConnector implements IConnector {
             sock.bind(new InetSocketAddress(port));
             sock.setSoTimeout(DEFAULT_TIMEOUT);
         } catch (UnknownHostException | SocketException e) {
-            Log.e("ASEPConnector", "Unexpected Exception while initializing", e);
+            Log.e(LOG_TAG, "Unexpected Exception while initializing", e);
         }
     }
 
@@ -118,7 +171,7 @@ public class ASEPConnector implements IConnector {
                     }
                     sendCommand(ch1, ch2);
                 } catch (IOException e) {
-                    Log.e("ASEPConnector", "Unexpected Exception while sending", e);
+                    Log.e(LOG_TAG, "Unexpected Exception while sending", e);
                 }
             }
         }, 0, DEFAULT_INTERVAL, TimeUnit.MILLISECONDS);
@@ -151,7 +204,7 @@ public class ASEPConnector implements IConnector {
                             receiver.onTelemetryTimedOut();
                         }
                     } catch (IOException e) {
-                        Log.e("ASEPConnector", "Unexpected Exception while recieving", e);
+                        Log.e(LOG_TAG, "Unexpected Exception while recieving", e);
                     }
                 }
             }
@@ -166,7 +219,7 @@ public class ASEPConnector implements IConnector {
             try {
                 schedulerService.awaitTermination(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS);
             } catch (InterruptedException e) {
-                //System.exit(1)????
+                Log.w(LOG_TAG, "Stopping the scheduler service timed out.");
             }
         }
     }
