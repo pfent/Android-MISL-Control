@@ -2,7 +2,6 @@ package de.tum.in.mislcontrol.wizard;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,11 +13,8 @@ import android.widget.TextView;
 
 import org.codepond.wizardroid.WizardStep;
 
-import java.util.List;
-
 import de.tum.in.mislcontrol.MainActivity;
 import de.tum.in.mislcontrol.R;
-import de.tum.in.mislcontrol.communication.ASEPConnector;
 
 public class Step4 extends WizardStep {
 
@@ -42,26 +38,8 @@ public class Step4 extends WizardStep {
         iv.setImageResource(R.drawable.wifi);
 
         WifiManager wifiMan = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
-        wifiMan.setWifiEnabled(true);
-
-        WifiConfiguration wifiC = new WifiConfiguration();
-        wifiC.SSID = "\"" + ASEPConnector.WIFI_SSID + "\"";
-        wifiC.preSharedKey = "\"" + "password" + "\"";
-
-        //TODO:
-        //wifiMan.addNetwork(wifiC);
-        List<WifiConfiguration> configs = wifiMan.getConfiguredNetworks();
-        if (configs != null)
-            for (WifiConfiguration config : configs) {
-                if (config.SSID != null && config.SSID.equals(wifiC.SSID)) {
-                    wifiMan.disconnect();
-                    wifiMan.enableNetwork(config.networkId, true);
-                    wifiMan.reconnect();
-                    notifyCompleted();
-                    break;
-                }
-            }
-
+        if (wifiMan != null)
+            wifiMan.setWifiEnabled(true);
         return v;
     }
 
