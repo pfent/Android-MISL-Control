@@ -136,6 +136,9 @@ public class ASEPConnector implements IConnector {
                         DatagramPacket packet =
                                 new DatagramPacket(nextTelemetry.getData(), nextTelemetry.getLength());
                         synchronized (sockLock) {
+                            if (sock.isClosed()) {
+                                break;
+                            }
                             sock.receive(packet);
                         }
 
