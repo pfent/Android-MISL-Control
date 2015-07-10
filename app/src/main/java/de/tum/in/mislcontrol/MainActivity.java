@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        connection = new MockConnector();
+        connection = new ASEPConnector(this);
         setContentView(R.layout.activity_main);
     }
 
@@ -87,12 +87,11 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
             model3dView = model3DFragment;
         }
 
-        connection.start();
-
         addOrReplaceControlView();
 
         connection.setOnTelemetryReceivedListener(this);
         connection.setInputController(inputController);
+        connection.start();
     }
 
     @Override

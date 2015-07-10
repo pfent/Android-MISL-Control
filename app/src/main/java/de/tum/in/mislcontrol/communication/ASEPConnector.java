@@ -98,7 +98,7 @@ public class ASEPConnector implements IConnector {
 
     @Override
     public synchronized void start() {
-        if (listening || sock == null) {
+        if (listening || sock == null || receiver == null) {
             return;
         }
         listening = true;
@@ -136,9 +136,8 @@ public class ASEPConnector implements IConnector {
                         DatagramPacket packet =
                                 new DatagramPacket(nextTelemetry.getData(), nextTelemetry.getLength());
                         synchronized (sockLock) {
-                            if (sock.isClosed()) {
+                            if (sock.isClosed())
                                 break;
-                            }
                             sock.receive(packet);
                         }
 
@@ -147,7 +146,7 @@ public class ASEPConnector implements IConnector {
                         receiver.onTelemetryReceived(nextTelemetry);
                     } catch (InterruptedIOException e) {
                         //this means the DEFAULT_TIMEOUT expired, connection has been lost
-                        if (!timedOut) {
+                        if (!timedOut && listening) {
                             timedOut = true;
                             receiver.onTelemetryTimedOut();
                         }
@@ -162,8 +161,14 @@ public class ASEPConnector implements IConnector {
     @Override
     public synchronized void stop() {
         listening = false;
-        if (schedulerService != null)
+        if (schedulerService != null) {
             schedulerService.shutdown();
+            try {
+                schedulerService.awaitTermination(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException e) {
+                //System.exit(1)????
+            }
+        }
     }
 
     @Override
