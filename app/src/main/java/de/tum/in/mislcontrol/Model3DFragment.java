@@ -24,11 +24,6 @@ public class Model3DFragment extends RenderFragment implements IModel3dView {
     private final static double FILTER_ALPHA = 0.05f;
 
     /**
-     * 2 * PI to optimize calculations.
-     */
-    private final static double PI_2 = 2* Math.PI;
-
-    /**
      * The cameras distance from the 3D model.
      */
     private final static float CAMERA_DISTANCE = 7.5f;
@@ -100,31 +95,31 @@ public class Model3DFragment extends RenderFragment implements IModel3dView {
         float nextYaw = (float)MathHelper.exponentialFilter(yaw, targetYaw, FILTER_ALPHA);
         // try to adjust the values back in range
         if (targetRoll < 0 && roll < 0) {
-            targetRoll += PI_2;
-            roll += PI_2;
-            nextRoll += PI_2;
-        } else if (targetRoll >= PI_2 && roll >= PI_2) {
-            targetRoll -= PI_2;
-            roll -= PI_2;
-            nextRoll -= PI_2;
+            targetRoll += MathHelper.PI_2;
+            roll += MathHelper.PI_2;
+            nextRoll += MathHelper.PI_2;
+        } else if (targetRoll >= MathHelper.PI_2 && roll >= MathHelper.PI_2) {
+            targetRoll -= MathHelper.PI_2;
+            roll -= MathHelper.PI_2;
+            nextRoll -= MathHelper.PI_2;
         }
         if (targetPitch < 0 && pitch < 0) {
-            targetPitch += PI_2;
-            pitch += PI_2;
-            nextPitch += PI_2;
-        } else if (targetPitch >= PI_2 && pitch >= PI_2) {
-            targetPitch -= PI_2;
-            pitch -= PI_2;
-            nextPitch -= PI_2;
+            targetPitch += MathHelper.PI_2;
+            pitch += MathHelper.PI_2;
+            nextPitch += MathHelper.PI_2;
+        } else if (targetPitch >= MathHelper.PI_2 && pitch >= MathHelper.PI_2) {
+            targetPitch -= MathHelper.PI_2;
+            pitch -= MathHelper.PI_2;
+            nextPitch -= MathHelper.PI_2;
         }
         if (targetYaw < 0 && yaw < 0) {
-            targetYaw += PI_2;
-            yaw += PI_2;
-            nextYaw += PI_2;
-        } else if (targetYaw >= PI_2 && yaw >= PI_2) {
-            targetYaw -= PI_2;
-            yaw -= PI_2;
-            nextYaw -= PI_2;
+            targetYaw += MathHelper.PI_2;
+            yaw += MathHelper.PI_2;
+            nextYaw += MathHelper.PI_2;
+        } else if (targetYaw >= MathHelper.PI_2 && yaw >= MathHelper.PI_2) {
+            targetYaw -= MathHelper.PI_2;
+            yaw -= MathHelper.PI_2;
+            nextYaw -= MathHelper.PI_2;
         }
 
         this.roll = nextRoll;
@@ -148,18 +143,18 @@ public class Model3DFragment extends RenderFragment implements IModel3dView {
     @Override
     public synchronized void setRotation(float roll, float pitch, float yaw) {
         // ensure value in range [0, 2*PI]
-        float positiveRoll = (roll < 0) ? (float)(roll + PI_2) : roll;
-        float positivePitch = (pitch < 0) ? (float)(pitch + PI_2) : pitch;
-        float positiveYaw = (yaw < 0) ? (float)(yaw + PI_2) : yaw;
+        float positiveRoll = (roll < 0) ? (roll + MathHelper.PI_2) : roll;
+        float positivePitch = (pitch < 0) ? (pitch + MathHelper.PI_2) : pitch;
+        float positiveYaw = (yaw < 0) ? (yaw + MathHelper.PI_2) : yaw;
 
         // get current values to make (almost) sure they are consistent during calculation (to range [0, 2 * PI])
-        float currentRoll = (this.roll < 0) ? (float)(this.roll + PI_2) : this.roll;
-        float currentPitch = (this.pitch < 0) ? (float)(this.pitch + PI_2) : this.pitch;
-        float currentYaw = (this.yaw < 0) ? (float)(this.yaw + PI_2) : this.yaw;
+        float currentRoll = (this.roll < 0) ? (this.roll + MathHelper.PI_2) : this.roll;
+        float currentPitch = (this.pitch < 0) ? (this.pitch + MathHelper.PI_2) : this.pitch;
+        float currentYaw = (this.yaw < 0) ? (this.yaw + MathHelper.PI_2) : this.yaw;
 
-        float minDiffRoll = (float)minDiff3(currentRoll, positiveRoll - PI_2, positiveRoll, positiveRoll + PI_2);
-        float minDiffPitch = (float)minDiff3(currentPitch, positivePitch - PI_2, positivePitch, positivePitch + PI_2);
-        float minDiffYaw = (float)minDiff3(currentYaw, positiveYaw - PI_2, positiveYaw, positiveYaw + PI_2);
+        float minDiffRoll = (float)minDiff3(currentRoll, positiveRoll - MathHelper.PI_2, positiveRoll, positiveRoll + MathHelper.PI_2);
+        float minDiffPitch = (float)minDiff3(currentPitch, positivePitch - MathHelper.PI_2, positivePitch, positivePitch + MathHelper.PI_2);
+        float minDiffYaw = (float)minDiff3(currentYaw, positiveYaw - MathHelper.PI_2, positiveYaw, positiveYaw + MathHelper.PI_2);
 
         this.targetRoll = currentRoll + minDiffRoll;
         this.targetPitch = currentPitch + minDiffPitch;

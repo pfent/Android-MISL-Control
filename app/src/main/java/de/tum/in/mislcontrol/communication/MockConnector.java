@@ -4,6 +4,7 @@ import android.os.Handler;
 
 import de.tum.in.mislcontrol.communication.data.TelemetryPacket;
 import de.tum.in.mislcontrol.controls.IInputController;
+import de.tum.in.mislcontrol.math.MathHelper;
 import de.tum.in.mislcontrol.math.Vector2D;
 
 /**
@@ -20,10 +21,6 @@ public class MockConnector implements IConnector {
      * The test interval for events.
      */
     private static final long TEST_INTERVAL = 3000;
-
-    // Math constants for shorter code
-    private static float PI_HALF = (float)Math.PI / 2;
-    private static float PI = (float)Math.PI;
 
     /**
      * The mock location.
@@ -140,26 +137,26 @@ public class MockConnector implements IConnector {
             {(float)Math.PI, 0, 0},
             {(float)Math.PI + 0.5f, 0, 0},
             {(float)Math.PI, 0, 0},
-            {(float)Math.PI, 0, PI_HALF},
-            {(float)Math.PI, 0.5f, PI_HALF},
-            {(float)Math.PI, 0, PI_HALF},
-            {(float)Math.PI + 0.5f, 0, PI_HALF},
-            {(float)Math.PI, 0, PI_HALF},
-            {(float)Math.PI, 0, PI},
-            {(float)Math.PI, 0.5f, PI},
-            {(float)Math.PI, 0, PI},
-            {(float)Math.PI + 0.5f, 0, PI},
-            {(float)Math.PI, 0, PI},
-            {(float)Math.PI, 0, PI + PI_HALF},
-            {(float)Math.PI, 0.5f, PI + PI_HALF},
-            {(float)Math.PI, 0, PI + PI_HALF},
-            {(float)Math.PI + 0.5f, 0, PI + PI_HALF},
-            {(float)Math.PI, 0, PI + PI_HALF},
-            {(float)Math.PI, 0, PI + PI_HALF},
-            {(float)Math.PI, 0.5f, PI + PI_HALF},
-            {(float)Math.PI, 0, PI + PI_HALF},
-            {(float)Math.PI, 0 + 0.5f, PI + PI_HALF},
-            {(float)Math.PI, 0, PI + PI_HALF},
+            {(float)Math.PI, 0, MathHelper.PI_HALF},
+            {(float)Math.PI, 0.5f, MathHelper.PI_HALF},
+            {(float)Math.PI, 0, MathHelper.PI_HALF},
+            {(float)Math.PI + 0.5f, 0, MathHelper.PI_HALF},
+            {(float)Math.PI, 0, MathHelper.PI_HALF},
+            {(float)Math.PI, 0, MathHelper.PI},
+            {(float)Math.PI, 0.5f, MathHelper.PI},
+            {(float)Math.PI, 0, MathHelper.PI},
+            {(float)Math.PI + 0.5f, 0, MathHelper.PI},
+            {(float)Math.PI, 0, MathHelper.PI},
+            {(float)Math.PI, 0, MathHelper.PI + MathHelper.PI_HALF},
+            {(float)Math.PI, 0.5f, MathHelper.PI + MathHelper.PI_HALF},
+            {(float)Math.PI, 0, MathHelper.PI + MathHelper.PI_HALF},
+            {(float)Math.PI + 0.5f, 0, MathHelper.PI + MathHelper.PI_HALF},
+            {(float)Math.PI, 0, MathHelper.PI + MathHelper.PI_HALF},
+            {(float)Math.PI, 0, MathHelper.PI + MathHelper.PI_HALF},
+            {(float)Math.PI, 0.5f, MathHelper.PI + MathHelper.PI_HALF},
+            {(float)Math.PI, 0, MathHelper.PI + MathHelper.PI_HALF},
+            {(float)Math.PI, 0 + 0.5f, MathHelper.PI + MathHelper.PI_HALF},
+            {(float)Math.PI, 0, MathHelper.PI + MathHelper.PI_HALF},
 
             { 0, 0, 0 }, // --- SIGNAL TEST CASE START
             { 1.0f, 0.0f, 0.0f },

@@ -7,6 +7,21 @@ package de.tum.in.mislcontrol.math;
 public class MathHelper {
 
     /**
+     * (PI / 2) as float.
+     */
+    public static float PI_HALF = (float)Math.PI / 2;
+
+    /**
+     * PI as float.
+     */
+    public static float PI = (float)Math.PI;
+
+    /**
+     * (2 * PI) as float.
+     */
+    public final static float PI_2 = 2 * (float)Math.PI;
+
+    /**
      * Ensures the value is in a given range.
      * @param value The value to clamp.
      * @param min The minimum value.
