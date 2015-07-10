@@ -14,11 +14,11 @@
         android:summary="@string/controlsSummary">
     </header>
 
-    <header android:icon="@android:drawable/ic_media_play"
+    <!--<header android:icon="@android:drawable/ic_media_play"
         android:title="@string/videoStreamTitle">
         <intent android:targetPackage="de.tum.in.mislcontrol"
             android:targetClass="de.tum.in.mislcontrol.VideoStreamSenderActivity" />
-    </header>
+    </header>-->
 
     <header
         android:fragment="de.tum.in.mislcontrol.SettingsActivity$AboutPrefsFragment"
