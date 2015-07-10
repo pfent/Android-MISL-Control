@@ -37,20 +37,19 @@
             android:layout_height="match_parent"
             android:layout_weight="60"
             android:orientation="vertical"
-            android:padding="5dp"
-            android:weightSum="100">
+            android:padding="5dp">
 
             <FrameLayout
                 android:id="@+id/model3dContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="40" />
+                android:layout_weight="1" />
 
             <FrameLayout
                 android:id="@+id/controlContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="60" />
+                android:layout_width="192dp"
+                android:layout_height="172dp"
+                android:layout_gravity="right"/>
         </LinearLayout>
 
     </LinearLayout>
