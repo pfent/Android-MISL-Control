@@ -7,31 +7,34 @@
 
     <TextView android:layout_row="0" android:layout_column="0"
         android:layout_gravity="center_horizontal" android:layout_columnWeight="1"
-        android:textStyle="bold" android:layout_margin="6dp"
+        android:textStyle="bold" android:textSize="18sp" android:layout_margin="6dp"
         android:text="@string/x_acceleration"/>
 
     <TextView android:layout_row="1" android:layout_column="0"
         android:layout_gravity="center_horizontal" android:layout_columnWeight="1"
+        android:textSize="18sp"
         android:text="@string/default_acceleration"
         android:id="@+id/textViewAccX"/>
 
     <TextView android:layout_row="0" android:layout_column="1"
-        android:textStyle="bold" android:layout_margin="6dp"
+        android:textStyle="bold" android:textSize="18sp" android:layout_margin="6dp"
         android:layout_gravity="center_horizontal" android:layout_columnWeight="1"
         android:text="@string/y_acceleration" />
 
     <TextView android:layout_row="1" android:layout_column="1"
         android:layout_gravity="center_horizontal" android:layout_columnWeight="1"
+        android:textSize="18sp"
         android:text="@string/default_acceleration"
         android:id="@+id/textViewAccY"/>
 
     <TextView android:layout_row="0" android:layout_column="2"
         android:layout_gravity="center_horizontal" android:layout_columnWeight="1"
-        android:textStyle="bold" android:layout_margin="6dp"
+        android:textStyle="bold" android:textSize="18sp" android:layout_margin="6dp"
         android:text="@string/z_acceleration" />
 
     <TextView android:layout_row="1" android:layout_column="2"
         android:layout_gravity="center_horizontal" android:layout_columnWeight="1"
+        android:textSize="18sp"
         android:text="@string/default_acceleration"
         android:id="@+id/textViewAccZ"/>
 
