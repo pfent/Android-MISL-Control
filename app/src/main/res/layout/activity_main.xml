@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     tools:ignore="MergeRootFrame">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,8 +28,8 @@
                 android:id="@+id/mapContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_alignParentLeft="true" />
+                android:layout_alignParentLeft="true"
+                android:layout_weight="1" />
 
             <FrameLayout
                 android:id="@+id/controlContainer"
@@ -36,36 +37,6 @@
                 android:layout_height="172dp"
                 android:layout_gravity="bottom" />
         </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="6dp">
-        <TextView
-            android:layout_width="wrap_content" android:textColor="#FF0000"
-            android:layout_height="wrap_content" android:text="EulerX: " />
-        <TextView
-            android:layout_width="wrap_content" android:textColor="#FF0000"
-            android:layout_height="wrap_content" android:id="@+id/textViewEulerX" android:text="-"
-            android:textSize="14pt" />
-        <TextView
-            android:layout_width="wrap_content" android:textColor="#FF0000"
-            android:layout_height="wrap_content" android:text="EulerY: " />
-        <TextView
-            android:layout_width="wrap_content" android:textColor="#FF0000"
-            android:layout_height="wrap_content" android:id="@+id/textViewEulerY" android:text="-"
-            android:textSize="14pt"/>
-        <TextView
-            android:layout_width="wrap_content" android:textColor="#FF0000"
-            android:layout_height="wrap_content" android:text="EulerZ: " />
-        <TextView
-            android:layout_width="wrap_content" android:textColor="#FF0000"
-            android:layout_height="wrap_content" android:id="@+id/textViewEulerZ" android:text="-"
-            android:textSize="14pt"/>
     </LinearLayout>
 </RelativeLayout>
 

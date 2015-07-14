@@ -150,14 +150,6 @@ public class MainActivity extends AppCompatActivity implements IConnector.OnTele
                 if (model3dView != null) {
                     model3dView.setRotation(packet.getXEuler(), packet.getYEuler(), packet.getZEuler());
                 }
-
-                TextView textViewX = (TextView)findViewById(R.id.textViewEulerX);
-                TextView textViewY = (TextView)findViewById(R.id.textViewEulerY);
-                TextView textViewZ = (TextView)findViewById(R.id.textViewEulerZ);
-
-                textViewX.setText(String.format("%.5f", packet.getXEuler()));
-                textViewY.setText(String.format("%.5f", packet.getYEuler()));
-                textViewZ.setText(String.format("%.5f", packet.getZEuler()));
             }
         });
     }
