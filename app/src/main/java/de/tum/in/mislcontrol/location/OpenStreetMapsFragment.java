@@ -47,8 +47,9 @@ public class OpenStreetMapsFragment extends Fragment implements IMapView {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     * @param zoomLevel The zoom level.
-     * @param centerLatitude The latitude value of the maps center.
+     *
+     * @param zoomLevel       The zoom level.
+     * @param centerLatitude  The latitude value of the maps center.
      * @param centerLongitude The longitude value of the maps center
      * @return A new instance of fragment OpenStreetMapsFragment.
      */
@@ -93,11 +94,17 @@ public class OpenStreetMapsFragment extends Fragment implements IMapView {
         return rootView;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mMapView != null && mMapView.getTileProvider() != null)
+            mMapView.getTileProvider().clearTileCache();
+    }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        if(mMapView != null)
+        if (mMapView != null && mMapView.getTileProvider() != null)
             mMapView.getTileProvider().detach();
     }
 
